@@ -7,7 +7,7 @@ An online tool that helps film creators and editors to schedule and orgainse the
 * [ ] 📝 Add events
 * [ ] 🙈 View all events
 * [ ] 🔍 Search
-* [ ] ➡️ Assign user to an event 
+* [ ] ➡️ Assign user to an event
 * [ ] 🗃 Show events for specific user
 * [ ] 💬 Chat room
 
@@ -15,12 +15,12 @@ An online tool that helps film creators and editors to schedule and orgainse the
 
 * Client Side:
   * HTML
-  * CSS
+  * CSS/SASS
   * JavaScript
   * jQuery
   * React/Vue
   * Materialize
-    
+
 * Server Side:
   * NodeJS
   * HandlebarJS
