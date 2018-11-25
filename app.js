@@ -1,53 +1,111 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var sassMiddleware = require('node-sass-middleware');
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+var exphbs = require("express-handlebars");
+var expressValidator = require("express-validator");
+var flash = require("connect-flash");
+var session = require("express-session");
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+var mongo = require("mongodb");
+var mongoose = require("mongoose");
+const MongoClient = require('mongodb').MongoClient;
 
-// routes
-var index = require('./routes/index');
+//connecting to mastodon db, make sure you have created this db locally
+mongoose.connect("mongodb://localhost/eventhub");
+var db = mongoose.connection;
 
+
+// Store the routes for each page
+var users = require("./routes/users");
+var events = require("./routes/events");
+
+var editDetails = require("./routes/editDetails");
+var changePassword = require("./routes/changePassword");
+// store routes here
+
+// Init App
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+//No need to worry about all this, but must add path to a route below
+
+// View Engine
+app.engine("handlebars", exphbs({ defaultLayout: "layout"}));
+
+app.set("view engine", "handlebars");
+app.set("views", path.join(__dirname, "views"));
 
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
+// BodyParser Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(sassMiddleware({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: false, // true = .sass and false = .scss
-  sourceMap: true
-}));
 
-app.use(express.static(path.join(__dirname, 'public')));
+// Set Static Folder
+app.use(express.static(path.join(__dirname, "public")));
 
+// Express Session
+app.use(
+  session({
+    secret: "secret",
+    saveUninitialized: true,
+    resave: true
+  })
+);
 
-// paths
-app.use('/', index);
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
 
-// catch 404 and forward to error handler
+// Express Validator
+app.use(
+  expressValidator({
+    errorFormatter: function(param, msg, value) {
+      var namespace = param.split("."),
+        root = namespace.shift(),
+        formParam = root;
+
+      while (namespace.length) {
+        formParam += "[" + namespace.shift() + "]";
+      }
+      return {
+        param: formParam,
+        msg: msg,
+        value: value
+      };
+    }
+  })
+);
+
+// Connect Flash
+app.use(flash());
+
+// Global Vars
 app.use(function(req, res, next) {
-  next(createError(404));
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.error = req.flash("error");
+
+  user = req.user || null;
+  res.locals.user = user;
+
+  next();
 });
 
+//when a url path is requested, call the router for that page
+app.use("/", events);
+app.use("/users", users);
+app.use("/api/events", events);
 
+app.use("/editDetails", editDetails);
+app.use("/changePassword", changePassword);
+//add path to a route here
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// Set Port
+app.set("port", process.env.PORT || 3000);
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.listen(app.get("port"), function() {
+  console.log("Server started on port " + app.get("port"));
 });
-
-module.exports = app;

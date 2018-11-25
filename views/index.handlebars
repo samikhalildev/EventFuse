@@ -1,0 +1,428 @@
+<link rel="stylesheet" href="https://refreshless.com/nouislider/distribute/nouislider.min.css">
+<link rel="stylesheet" href="http://materializecss.com/extras/noUiSlider/nouislider.css">
+<section class="events box">
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <div class="">
+                    <h1 class="center"> Dashboard </h1>
+
+                    <ul class="alert-box">
+                        {{#if success_msg}}
+                            <li class="alert success-msg"> {{success_msg}} </li>
+                        {{/if}}
+
+                        {{#if error_msg}}
+                            <li class="alert error-msg"> {{error_msg}} </li>
+                        {{/if}}
+                    </ul>
+
+                    <!-- Search bar -->
+                    <div class="searchBar left">
+                        <div class="input-field s6">
+                            <i class="material-icons prefix">search</i>
+                            <input type="text" id="search-input" class="search">
+
+                            <label for="search-input">Search</label>
+                            <span class="helper-text"> name or date</span>
+                        </div>
+                    </div>
+
+
+                    <script>
+
+                        // get input element
+                        let filterInput = document.getElementById('search-input');
+
+                        // add event listener
+                        filterInput.addEventListener('keyup', lookUpText);
+
+                        // This gets called when a user types something
+                        function lookUpText(){
+
+                            // get the value
+                            let filterValue = document.getElementById('search-input').value.toLowerCase();
+
+                            console.log(filterValue);
+                        }
+
+                    </script>
+
+
+                    <!-- Add Event Button -->
+                    <div class="addEventBtn right">
+                        <a class="waves-effect waves-light btn-large button-secondary modal-trigger" href="#add-event-modal">
+                            <i class="material-icons left">add</i>
+                            <span> Add Event </span>
+                        </a>
+                    </div>
+
+                    <!-- Add Event Form -->
+                    <div id="add-event-modal" class="addEventModal modal">
+                        <div class="modal-content">
+                            <a href="#!" class="modal-action modal-close">
+                                <i class="material-icons right">close</i>
+                            </a>
+                            <h4 class="addEventHeading">Add Event </h4>
+
+                            <form action="/api/events" method="POST">
+
+                                <!-- Events Type -->
+                                <div class="input-field col s6">
+                                    <select class="eventTypes">
+                                        <option value="" disabled selected>Choose an option</option>
+                                        <option value="1">Wedding</option>
+                                        <option value="2">Engagement</option>
+                                        <option value="3">Holy Communion</option>
+                                        <option value="4">Christening</option>
+                                        <option value="5">Birthday</option>
+                                    </select>
+                                    <label>Event Type</label>
+                                </div>
+
+                                <!-- Name -->
+                                <div class="input-field col s6">
+                                    <input name="name" id="name" type="text" class="validate">
+                                    <label for="name">Name</label>
+                                </div>
+
+                                <!-- Date -->
+                                <div class="input-field col s4">
+                                    <input name="date" id="date" type="text" class="datepicker">
+                                    <label for="date">Date</label>
+                                </div>
+
+                                <!-- Storage -->
+                                <div class="input-field col s4">
+                                    <input name="storage" id="storage" type="text" class="validate">
+                                    <label for="storage">Storage</label>
+                                </div>
+
+                                <!-- Status -->
+                                <div class="input-field col s4">
+                                    <select class="status">
+                                        <option value="1">Waiting</option>
+                                        <option value="2">Editing</option>
+                                        <option value="3">Complete</option>
+                                        <option value="4">Canceled</option>
+                                        <option value="5">Missing</option>
+                                    </select>
+                                    <label>Status</label>
+                                </div>
+
+                                <!-- Price Slider -->
+                                <div class="input-field col s12 priceSection">
+                                    <label class="priceLabel">Price</label>
+                                    <div id="priceSlider"></div>
+                                </div>
+
+
+                                <div class="input-field col s6 notesField">
+                                    <textarea name="notes" id="notes" class="materialize-textarea"></textarea>
+                                    <label for="notes">Notes (additional info/song requests)</label>
+                                </div>
+
+                                <!-- Assigned To -->
+                                <div class="input-field col s6">
+                                    <select class="status">
+                                        <option value="1">No one</option>
+                                        <option value="2">Dhia</option>
+                                        <option value="3">Sami</option>
+                                        <option value="4">Dalieda</option>
+                                    </select>
+                                    <label>Assigned To</label>
+                                </div>
+
+                                <div class="modal-footer input-field col s12">
+                                    <button class="modal-action button-secondary waves-effect waves-light left" type="submit" id="register-btn-submit">
+                                        <span>Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <!-- EVENTS TABLE -->
+                    <div class="tableSection">
+                        <table id="eventsTable" class="table bordered highlight centered responsive-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Event Type</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Status</th>     <!-- Complete: Green, In Progress: yellow, N/A, On hold -->
+                                    <th scope="col">Storage</th>
+                                    <th scope="col">Notes</th>
+                                    <th scope="col">Assigned to</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody v-if="success">
+
+                                <tr v-for="event in events">
+                                    <td scope="row">1</td>
+                                    <td> \{{ event.type }}</td>
+                                    <td> \{{ event.name }}</td>
+                                    <td> \{{ event.date }}</td>
+                                    <td> \{{ event.price }}</td>
+                                    <td> \{{ event.status }}</td>
+                                    <td> \{{ event.storage}}</td>
+                                    <td> \{{ event.notes }}</td>
+                                    <td> \{{ event.assigedTo }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr>
+
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr>
+
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr>
+
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr>
+
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr>
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr>
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr><tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr><tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr><tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr><tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr>
+                                <tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr><tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr><tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr><tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr><tr>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                    <td>fsdfd</td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+
+<script type="text/javascript" src="/js/search.js"></script>
+
+<script src="https://refreshless.com/nouislider/distribute/nouislider.min.js"></script>
+<script src="http://materializecss.com/extras/noUiSlider/nouislider.js"></script>
+
+<script type="text/javascript" src="/js/startupscript.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<!-- View Events -->
+<script>
+    var events = new Vue ({
+        el: '#eventsTable',
+
+        data: {
+            events: [],
+            success: false
+        },
+
+        created () {
+            const url = 'http://localhost:3000/api/events/users/' + "{{user._id}}";
+
+            fetch(url)
+                    .then(response => response.json())
+                    .then(json => {
+                        this.events = json.events;
+                        this.success = json.success;
+                    });
+        }
+    });
+</script>
+
+<script>
+    const url = '';
+
+    const data = {
+        name: this.events;
+    }
+
+    fetch(url, data);
+</script>
+
+
+
+
+
+
+
+
+

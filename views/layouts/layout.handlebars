@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Event Fuse</title>
+
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Hind:400,600|Poppins:700" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="transparent whiteBG">
+        <div class="nav-wrapper">
+            <div class="logoSection">
+                <a href="/" class="brand-logo">
+                    <img class="logo" src="/images/eventhub-logo.png">
+                </a>
+            </div>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+                {{#if user}}
+                    <li class="menuItem"> <a href="/"> HI, {{user.username}} </a> </li>
+                    <li class="menuItem"> <a href="/"> DASHBOARD </a> </li>
+                    <li class="menuItem"> <a href="/users/logout"> LOGOUT </a> </li>
+                {{else}}
+                    <li class="menuItem"> <a href="/users/login"> LOGIN </a> </li>
+                    <li class="menuItem"> <a href="/users/register"> REGISTER </a> </li>
+                {{/if}}
+            </ul>
+        </div>
+    </nav>
+
+    {{{body}}}
+
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</body>
+
+</html>

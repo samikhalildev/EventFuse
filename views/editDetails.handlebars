@@ -1,0 +1,44 @@
+<main class="container-fluid">
+    <div class="row">
+        <section class="col-lg-8">
+            <h2 class="page-header"><p align="left">Edit personal Details</p></h2>
+            {{#if userExsists}}
+            <div class="alert alert-danger"><p align="left">Username has taken already try new</p></div>
+            {{/if}} {{#if mail}}
+            <div class="alert alert-danger"><p align="left">Email has taken already try new</p></div>
+            {{/if}} {{#if errors}} {{#each errors}}
+            <div class="alert alert-danger">{{msg}}</div>
+            {{/each}}{{/if}}
+            <form method="post" action="/editDetails">
+                <div class="form-group">
+                   <p align="left"><label>Name</label></p>
+                    <input type="text" class="form-control" placeholder="Name" name="name" value="{{loggedinUser.name}}">
+                    </div>
+
+                    <div class="form-group">
+                       <p align="left"><label>Username</label></p>
+                        <input type="text" class="form-control" placeholder="Username" name="username" value="{{loggedinUser.username}}">
+                    </div>
+
+                    <div class="form-group">
+                        <p align="left"><label>Email</label></p>
+                        <input type="email" class="form-control" placeholder="Email" name="email" value="{{loggedinUser.email}}">
+                    </div>
+
+                    {{#if isDoctor}}
+                        <div class="form-group">
+                            <p align="left"><label>Bio (Optional)</label></p>
+                            <textarea name="bio" class="form-control" placeholder="{{loggedinUser.name}} is the Robert P. Kelch, MD Research Professor of Pediatrics at the ..." rows="5">{{loggedinUser.bio}}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <p align="left"><label>Specialty (Optional)</label></p>
+                            <input type="text" class="form-control" placeholder="Pathology" name="specialty" value="{{loggedinUser.specialty}}">
+                        </div>
+                    {{/if}}
+
+                    <p align="left"><button type="submit" class="btn btn-default">Submit</button></p>
+            </form>
+        </section>
+    </div>
+</main>

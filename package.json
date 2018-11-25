@@ -1,18 +1,36 @@
 {
-  "name": "eventfuse",
+  "name": "EventHub",
   "version": "1.0.0",
-  "private": true,
+  "description": "",
+  "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app.js",
+    "test": "node_modules/.bin/wdio wdio.conf.js"
   },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.9",
-    "express": "~4.16.0",
-    "hbs": "~4.0.1",
-    "http-errors": "~1.6.2",
-    "morgan": "~1.9.0",
-    "node-sass-middleware": "0.11.0",
-    "nodemon": "^1.18.6"
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "casperjs": "^1.1.4",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "connect-flash": "*",
+    "cookie-parser": "^1.4.1",
+    "express": "*",
+    "express-handlebars": "*",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "mocha": "^5.2.0",
+    "mongodb": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*",
+    "webdriverio": "^4.13.2"
+  },
+  "devDependencies": {
+    "wdio-mocha-framework": "^0.6.3"
   }
 }

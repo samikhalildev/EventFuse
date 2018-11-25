@@ -3,7 +3,7 @@ An online tool that helps film creators and editors to schedule and orgainse the
 
 ## Some Features
 
-* [ ] ⌨️ Login/signup
+* [x] ⌨️ Login/signup
 * [ ] 📝 Add events
 * [ ] 🙈 View all events
 * [ ] 🔍 Search

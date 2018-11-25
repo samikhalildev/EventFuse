@@ -1,0 +1,74 @@
+
+<form id="addEventsForm" class="">
+
+    <div class="form-group">
+        <label for="evenType">Event Type</label>
+        <input name="type" type="text" class="form-control" id="username" placeholder="Type">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Event Name</label>
+        <input name="name" type="text" class="form-control" id="password" placeholder="Name">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Event Date</label>
+        <input name="date" type="date" class="form-control" id="password" placeholder="Date">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Assigned To</label>
+        <input name="assignedTo" type="text" class="form-control" id="password" placeholder="Assigned to">
+    </div>
+
+    <div class="center">
+        <button type="submit" class="btn btn-primary customBtn">Submit</button>
+    </div>
+</form>
+
+
+
+<input value="{{user._id}}" id="userID" type="hidden">
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+
+    /*
+
+    addEventsForm.addEventListener("submit", event => {
+        event.preventDefault();
+
+        const addEventFormData = new FormData(addEventsForm);
+
+        const type = addEventFormData.get('type');
+        const name = addEventFormData.get('name');
+        const date = addEventFormData.get('date');
+        const assignedTo = addEventFormData.get('assignedTo');
+
+        const newEvent = {
+            type,
+            name,
+            date,
+            assignedTo
+        }
+
+        // API POST to /api/events
+        fetch('http://localhost:3000/api/events', {
+            method: 'POST',
+            body: JSON.stringify(newEvent),
+            headers: {
+                'content-type' : 'application/json'
+        }).then(response => response.json())
+                .then(createdEvent => {
+                    console.log(createdEvent);
+                    addEventsForm.style.display = 'none';
+                    eventsTable.style.display = '';
+                    DisplayEvents();
+                });
+        });
+     */
+
+
+
+</script>

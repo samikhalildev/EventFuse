@@ -1,0 +1,54 @@
+
+<section class="loginForm box">
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <div class="">
+                    <div class="center">
+                        <img class="logo-pg" src="/images/eventhub-logo.png">
+                    </div>
+
+                    <ul class="alert-box">
+                        {{#if success_msg}}
+                            <li class="alert success-msg"> {{success_msg}} </li>
+                        {{/if}}
+
+                        {{#if error_msg}}
+                            <li class="alert error-msg"> {{error_msg}} </li>
+                        {{/if}}
+                    </ul>
+
+                    <form action="/users/login" method="POST">
+
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_box</i>
+                            <input value="{{username}}" name="username" id="username" type="text" class="validate">
+                            <label for="username">Username</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">lock_outline</i>
+                            <input name="password" id="password" type="password" class="validate">
+                            <label for="password">Password</label>
+                        </div>
+
+                        <div class="right">
+                            <a href="/users/register">
+                                <span> Don't have an account? </span>
+                            </a>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <button class="button-primary waves-effect waves-light" type="submit" id="register-btn-submit">
+                                <span>Sign In</span>
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

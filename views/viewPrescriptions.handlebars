@@ -1,0 +1,10 @@
+<main class="container-fluid">
+    <div class="row">
+        <section class="col-lg-8">
+            {{#each prescriptions}}
+                <h2>Doctor: {{this.doctor}}</h2>
+                <h4>Description: {{this.description}}</h4>
+            {{/each}}
+        </section>
+    </div>
+</main>
