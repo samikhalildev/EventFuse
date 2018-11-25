@@ -1,4 +1,4 @@
-# EventFuse
+# EventHub
 An online tool that helps film creators and editors to schedule and orgainse their events in a new way.
 
 ## Some Features
@@ -16,13 +16,13 @@ An online tool that helps film creators and editors to schedule and orgainse the
 * Client Side:
   * HTML
   * CSS/SASS
+  * Materialize
   * JavaScript
   * jQuery
-  * React/Vue
-  * Materialize
+  * Vue
 
 * Server Side:
   * NodeJS
-  * HandlebarJS
+  * Handlebars
   * Express
   * MongoDB
