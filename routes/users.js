@@ -29,14 +29,14 @@ router.post("/register", function(req, res) {
   var password2 = req.body.password2;
 
   // Validation
-  req.checkBody("firstname", "First name is too short.").isLength({min: 3});
+  req.checkBody("firstname", "First name is too short or doesn't exist.").isLength({min: 3});
   req.checkBody("firstname", "First name must contain letters only.").isAlpha();
 
-  req.checkBody("lastname", "Last name is too short.").isLength({min: 3});
+  req.checkBody("lastname", "Last name is too short or doesn't exist.").isLength({min: 3});
   req.checkBody("lastname", "Last name must contain letters only.").isAlpha();
 
   req.checkBody("email", "Email is not valid").isEmail();
-  req.checkBody("username", "Username is too short.").isLength({min: 3});
+  req.checkBody("username", "Username is too short or doesn't exist.").isLength({min: 3});
 
   req.checkBody("password", "Password must be atleast 6 characters.").isLength({min: 6});
   req.checkBody("password2", "Password does not match.").equals(password);
@@ -70,14 +70,19 @@ router.post("/register", function(req, res) {
               });
             } else {
 
+                let _firstname = capitalizeFirstLetter(firstname.toString().toLowerCase());
+                let _lastname = capitalizeFirstLetter(lastname.toString().toLowerCase());
+
                 // Creates a new user object
               var newUser = new User({
-                  firstname: firstname,
-                  lastname: lastname,
+                  firstname: _firstname,
+                  lastname: _lastname,
                   email: email,
                   username: username,
                   password: password
               });
+
+              console.log("User created: " + newUser);
 
               User.createUser(newUser, function(err, user) {
                 if (err) throw err;
@@ -144,5 +149,9 @@ router.get("/logout", function(req, res) {
   req.flash("success_msg", "You have logged out.");
   res.redirect("/users/login");
 });
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 module.exports = router;

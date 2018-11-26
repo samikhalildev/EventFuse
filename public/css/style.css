@@ -304,6 +304,7 @@ table.highlight>tbody>tr:hover{
 
 .modal {
     max-height: 90%;
+    width: 65%;
 }
 
 .modal-form-row {
@@ -317,6 +318,14 @@ table.highlight>tbody>tr:hover{
 .addEventHeading{
     margin-left: 10px;
     margin-bottom: 40px;
+}
+
+.requiredField{
+    color: red;
+}
+
+.disabled{
+    margin-top: 0px !important;
 }
 
 

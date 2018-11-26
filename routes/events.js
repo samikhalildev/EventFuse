@@ -12,6 +12,14 @@ router.get("/", ensureAuthenticated, function(req, res) {
 });
 
 
+
+router.get("/api", function (req, res) {
+   res.json({
+       message: "hey"
+   });
+});
+
+
 // GET Events By User ID
 router.get('/api/events/users/:_id', function (req, res) {
 

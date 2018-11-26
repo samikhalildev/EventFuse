@@ -31,10 +31,10 @@ var UserSchema = mongoose.Schema({
         required: true
     },
 
-    company: {
+    company: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company'
-    }
+    }]
 });
 
 var User = (module.exports = mongoose.model("User", UserSchema));

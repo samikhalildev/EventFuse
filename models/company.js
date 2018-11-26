@@ -9,16 +9,27 @@ const companySchema = mongoose.Schema({
         required: true
     },
 
-    isOwner: {
-        type: Boolean,
-        required: true
-    },
+    team: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
 
-    event: {
+        isAdmin: {
+            type: Boolean,
+            default: false
+        },
+
+        isOwner: {
+            type: Boolean,
+            default: false
+        }
+    }],
+
+    event: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Event',
-        required: true
-    }
+        ref: 'Event'
+    }]
 });
 
 const Company = module.exports = mongoose.model('Company', companySchema);

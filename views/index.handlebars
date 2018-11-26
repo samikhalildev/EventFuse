@@ -29,6 +29,7 @@
                         </div>
                     </div>
 
+                    <input type="hidden" id="userID" value="{{user._id}}">
 
                     <script>
 
@@ -66,31 +67,31 @@
                             </a>
                             <h4 class="addEventHeading">Add Event </h4>
 
-                            <form action="/api/events" method="POST">
+                            <form id="addEventForm" action="/api/events" method="POST">
 
-                                <!-- Events Type -->
+                                <!-- Type -->
                                 <div class="input-field col s6">
-                                    <select class="eventTypes">
-                                        <option value="" disabled selected>Choose an option</option>
-                                        <option value="1">Wedding</option>
-                                        <option value="2">Engagement</option>
-                                        <option value="3">Holy Communion</option>
-                                        <option value="4">Christening</option>
-                                        <option value="5">Birthday</option>
+                                    <select name="type" class="eventTypes">
+                                        <option value="None" disabled selected>Choose an option</option>
+                                        <option value="Wedding">Wedding</option>
+                                        <option value="Engagement">Engagement</option>
+                                        <option value="Holy Communion">Holy Communion</option>
+                                        <option value="Christening">Christening</option>
+                                        <option value="Birthday">Birthday</option>
                                     </select>
-                                    <label>Event Type</label>
+                                    <label>Event Type <span class="requiredField">*</span></label>
                                 </div>
 
                                 <!-- Name -->
                                 <div class="input-field col s6">
-                                    <input name="name" id="name" type="text" class="validate">
-                                    <label for="name">Name</label>
+                                    <input name="name" id="name" type="text" class="validate" required="" aria-required="true">
+                                    <label for="name">Name <span class="requiredField">*</span></label>
                                 </div>
 
                                 <!-- Date -->
                                 <div class="input-field col s4">
-                                    <input name="date" id="date" type="text" class="datepicker">
-                                    <label for="date">Date</label>
+                                    <input name="date" id="date" type="text" class="datepicker" required="" aria-required="true">
+                                    <label for="date">Date <span class="requiredField">*</span></label>
                                 </div>
 
                                 <!-- Storage -->
@@ -101,23 +102,23 @@
 
                                 <!-- Status -->
                                 <div class="input-field col s4">
-                                    <select class="status">
-                                        <option value="1">Waiting</option>
-                                        <option value="2">Editing</option>
-                                        <option value="3">Complete</option>
-                                        <option value="4">Canceled</option>
-                                        <option value="5">Missing</option>
+                                    <select name="status" class="status">
+                                        <option value="Waiting">Waiting</option>
+                                        <option value="Editing">Editing</option>
+                                        <option value="Complete">Complete</option>
+                                        <option value="Canceled">Canceled</option>
+                                        <option value="Missing">Missing</option>
                                     </select>
                                     <label>Status</label>
                                 </div>
 
                                 <!-- Price Slider -->
                                 <div class="input-field col s12 priceSection">
-                                    <label class="priceLabel">Price</label>
-                                    <div id="priceSlider"></div>
+                                    <label class="priceLabel">Price $ <span id="price">50</span> </label>
+                                    <div onmouseup="" id="priceSlider"></div>
                                 </div>
 
-
+                                <!-- Notes -->
                                 <div class="input-field col s6 notesField">
                                     <textarea name="notes" id="notes" class="materialize-textarea"></textarea>
                                     <label for="notes">Notes (additional info/song requests)</label>
@@ -125,11 +126,11 @@
 
                                 <!-- Assigned To -->
                                 <div class="input-field col s6">
-                                    <select class="status">
-                                        <option value="1">No one</option>
-                                        <option value="2">Dhia</option>
-                                        <option value="3">Sami</option>
-                                        <option value="4">Dalieda</option>
+                                    <select name="assignedTo" class="status">
+                                        <option value="No one">No one</option>
+                                        <option value="Dhia">Dhia</option>
+                                        <option value="Sami">Sami</option>
+                                        <option value="Dalieda">Dalieda</option>
                                     </select>
                                     <label>Assigned To</label>
                                 </div>
@@ -138,7 +139,12 @@
                                     <button class="modal-action button-secondary waves-effect waves-light left" type="submit" id="register-btn-submit">
                                         <span>Submit</span>
                                     </button>
+
+                                    <div class="alert-box">
+                                        <span id="validation"></span>
+                                    </div>
                                 </div>
+
                             </form>
                         </div>
                     </div>
@@ -167,7 +173,6 @@
                             </thead>
 
                             <tbody v-if="success">
-
                                 <tr v-for="event in events">
                                     <td scope="row">1</td>
                                     <td> \{{ event.type }}</td>
@@ -179,189 +184,6 @@
                                     <td> \{{ event.notes }}</td>
                                     <td> \{{ event.assigedTo }}</td>
                                 </tr>
-
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr>
-
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr>
-
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr>
-
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr>
-
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr>
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr>
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr><tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr><tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr><tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr><tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr>
-                                <tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr><tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr><tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr><tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr><tr>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                    <td>fsdfd</td>
-                                </tr>
-
-
                             </tbody>
                         </table>
                     </div>
@@ -380,10 +202,10 @@
 <script src="https://refreshless.com/nouislider/distribute/nouislider.min.js"></script>
 <script src="http://materializecss.com/extras/noUiSlider/nouislider.js"></script>
 
-<script type="text/javascript" src="/js/startupscript.js"></script>
-
+<script type="text/javascript" src="/js/events.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 
 <!-- View Events -->
 <script>
@@ -406,16 +228,6 @@
                     });
         }
     });
-</script>
-
-<script>
-    const url = '';
-
-    const data = {
-        name: this.events;
-    }
-
-    fetch(url, data);
 </script>
 
 
