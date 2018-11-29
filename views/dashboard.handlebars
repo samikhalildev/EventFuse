@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col s12">
                 <div class="">
-                    <h1 class="center"> Dashboard </h1>
+                    <h2 class="heading"> Dashboard </h2>
 
                     <ul class="alert-box">
                         {{#if success_msg}}
@@ -17,6 +17,21 @@
                             <li class="alert error-msg"> {{error_msg}} </li>
                         {{/if}}
                     </ul>
+
+                    <div class="row">
+                        <div class="input-field col s2">
+                            <select class="selectCompany">
+                                {{#if companies.length}}
+                                    {{#each companies}}
+                                        <option value="{{_id}}"> {{name}} </option>
+                                    {{/each}}
+                                {{else}}
+                                    <option value="" disabled aria-disabled="">Please add a company</option>
+                                {{/if}}
+                            </select>
+                            <label class="selectCompanyLabel">Select a company</label>
+                        </div>
+                    </div>
 
                     <!-- Search bar -->
                     <div class="searchBar left">
@@ -60,12 +75,12 @@
                     </div>
 
                     <!-- Add Event Form -->
-                    <div id="add-event-modal" class="addEventModal modal">
+                    <div id="add-event-modal" class="PopUpWindow modal customModal">
                         <div class="modal-content">
                             <a href="#!" class="modal-action modal-close">
                                 <i class="material-icons right">close</i>
                             </a>
-                            <h4 class="addEventHeading">Add Event </h4>
+                            <h4 class="PopupHeading">Add Event </h4>
 
                             <form id="addEventForm" action="/api/events" method="POST">
 
@@ -172,6 +187,12 @@
                                 </tr>
                             </thead>
 
+                            {{#unless companies}}
+                                <tr>
+                                    <td colspan="9" aria-colspan="9"> Go to manage and create a company.</td>
+                                </tr>
+                            {{/unless}}
+
                             <tbody v-if="success">
                                 <tr v-for="event in events">
                                     <td scope="row">1</td>
@@ -184,6 +205,10 @@
                                     <td> \{{ event.notes }}</td>
                                     <td> \{{ event.assigedTo }}</td>
                                 </tr>
+                                <tr v-if="events == 0">
+                                    <td colspan="9" aria-colspan="9"> Please add some events.</td>
+                                </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -209,22 +234,31 @@
 
 <!-- View Events -->
 <script>
+
     var events = new Vue ({
         el: '#eventsTable',
 
         data: {
             events: [],
-            success: false
+            success: false,
+            loading: true
         },
 
+
         created () {
-            const url = 'http://localhost:3000/api/events/users/' + "{{user._id}}";
+            var selector = document.querySelector('.selectCompany');
+            var companyID = selector.options[selector.selectedIndex].value;
+            console.log(companyID);
+
+            const url = 'http://localhost:3000/api/company/' + companyID;
 
             fetch(url)
                     .then(response => response.json())
                     .then(json => {
                         this.events = json.events;
                         this.success = json.success;
+                        console.log(json);
+
                     });
         }
     });

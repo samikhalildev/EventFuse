@@ -1,0 +1,138 @@
+
+<section class="events box">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <div class="">
+                    <h2 class="heading"> Manage</h2>
+
+                    <ul class="alert-box">
+                        {{#if success_msg}}
+                            <li class="alert success-msg"> {{success_msg}} </li>
+                        {{/if}}
+
+                        {{#if error_msg}}
+                            <li class="alert error-msg"> {{error_msg}} </li>
+                        {{/if}}
+                    </ul>
+
+                    <input type="hidden" id="userID" value="{{user._id}}">
+
+                    <!-- Dashboard button -->
+                    <div class="center">
+                        <div class="col s6">
+                            <a class="waves-effect waves-light large-button button-primary" href="/">
+                                <i class="material-icons left">dashboard</i>
+                                <span> Go to dashboard</span>
+                            </a>
+                        </div>
+
+                        <!-- Create Company Button -->
+                        <div class="col s6">
+                            <a class="waves-effect waves-light large-button button-primary modal-trigger" href="#create-company-modal">
+                                <i class="material-icons left">add</i>
+                                <span> Create a Company</span>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <!-- Create Comapny form Form -->
+                    <div id="create-company-modal" class="PopUpWindow modal">
+                        <div class="modal-content">
+                            <a href="#!" class="modal-action modal-close">
+                                <i class="material-icons right">close</i>
+                            </a>
+                            <h4 class="PopupHeading"> Create Company</h4>
+
+                            <form id="createCompanyForm">
+                                <!-- Name -->
+                                <div class="input-field col s12">
+                                    <input name="name" id="name" type="text" placeholder="Google" class="validate" required="" aria-required="true">
+                                    <label for="name">Company Name <span class="requiredField">*</span></label>
+                                </div>
+
+                                <div class="modal-footer input-field col s12">
+                                    <button class="modal-action button-secondary waves-effect waves-light left" type="submit" id="register-btn-submit">
+                                        <span>Submit</span>
+                                    </button>
+
+                                    <div class="alert-box">
+                                        <span id="CompanyValidation"></span>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- List of companies -->
+                    <div class="col s12">
+
+                        {{#each companies}}
+                        <ul class="collection ListOfCompanies">
+                                <li class="collection-item avatar">
+                                    <span class="title">{{name}}</span>
+
+                                    <p>
+                                        {{#team}}
+                                            {{#if isOwner}}
+                                                 Owner: {{username}} <br> Team:
+                                            {{else}}
+                                                {{username}} |
+                                            {{/if}}
+                                        {{/team}}
+                                    </p>
+
+                                    <button onclick="addTeamMemberButton(this)" value="{{_id}}" class="secondary-content modal-trigger button-secondary3" href="#add-team-members-modal">
+                                        <i class="material-icons left">add</i>
+                                        <span class="right"> Add team members</span>
+                                    </button>
+                                </li>
+                        </ul>
+                        {{/each}}
+
+                    </div>
+
+
+                    <!-- Add team members form -->
+                    <div id="add-team-members-modal" class="PopUpWindow modal">
+                        <div class="modal-content">
+                            <a href="#!" class="modal-action modal-close">
+                                <i class="material-icons right">close</i>
+                            </a>
+                            <h4 class="PopupHeading"> Add A Team Member </h4>
+
+                            <form id="addTeamMembersForm">
+
+                                <!-- Name -->
+                                <div class="input-field col s12">
+                                    <input name="name" id="name" type="text" placeholder="Johny" class="validate" required="" aria-required="true">
+                                    <label for="name">Member's Name <span class="requiredField">*</span></label>
+                                </div>
+
+                                <div class="modal-footer input-field col s12">
+                                    <button class="modal-action button-secondary waves-effect waves-light left" type="submit" id="register-btn-submit">
+                                        <span>Submit</span>
+                                    </button>
+
+                                    <div class="alert-box">
+                                        <span id="MemberValidation"></span>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script src="/js/createCompany.js"></script>
+

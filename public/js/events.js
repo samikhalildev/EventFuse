@@ -1,7 +1,7 @@
 
 // START UP
 const addEvent = document.querySelector('#addEventForm');
-const API_URL = 'http://localhost:3000/api/events';
+const API_URL = 'http://localhost:3000/api/addEvents/';
 const userID = document.getElementById('userID').value;
 var validateElement = document.getElementById('validation');
 
@@ -67,8 +67,8 @@ addEvent.addEventListener('submit', (event) => {
         type: type,
         name: name,
         date: date,
-        storage: storage,
         status: status,
+        storage: storage,
         price: price,
         notes: notes,
         assignedTo: assignedTo
@@ -94,14 +94,21 @@ addEvent.addEventListener('submit', (event) => {
 
         console.log(newEvent);
 
+        var selector = document.querySelector('.selectCompany');
+        var companyID = selector.options[selector.selectedIndex].value;
+
         // USING FETCH TO POST DATA TO THE SERVER USING JSON
-        fetch(API_URL + userID, {
+        fetch(API_URL + companyID, {
             method: 'POST',
             body: JSON.stringify(newEvent),
             headers: {
                 'content-type': 'application/json'
             }
-        });
+        }).then(respones => respones.json())
+            .then(json => {
+                console.log(json);
+                addEvent.reset();
+            });
     }
 
 

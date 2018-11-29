@@ -5,7 +5,7 @@ An online tool that helps film creators and editors to schedule and orgainse the
 
 * [x] ⌨️ Login/signup
 * [x] 📝 Add events
-* [ ] 🙈 View all events
+* [x] 🙈 View all events
 * [ ] 🔍 Search
 * [ ] ➡️ Assign user to an event
 * [ ] 🗃 Show events for specific user

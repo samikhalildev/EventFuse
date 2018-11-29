@@ -19,7 +19,8 @@ var db = mongoose.connection;
 
 // Store the routes for each page
 var users = require("./routes/users");
-var events = require("./routes/events");
+var dashboard = require("./routes/dashboard");
+var manage = require("./routes/manage");
 
 var editDetails = require("./routes/editDetails");
 var changePassword = require("./routes/changePassword");
@@ -95,9 +96,10 @@ app.use(function(req, res, next) {
 });
 
 //when a url path is requested, call the router for that page
-app.use("/", events);
+app.use("/", dashboard);
+app.use("/manage", manage);
 app.use("/users", users);
-app.use("/api/events", events);
+app.use("/api/events", dashboard);
 
 app.use("/editDetails", editDetails);
 app.use("/changePassword", changePassword);

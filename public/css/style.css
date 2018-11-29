@@ -43,6 +43,15 @@ hr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.heading{
+    color: #3a416f !important;
+    letter-spacing: 1.5px;
+    padding: 0 20px;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+}
+
 .subHeading{
     font-weight: 400;
     font-size: 2.25rem;
@@ -63,6 +72,7 @@ hr {
     padding: 0 20px;
     font-size: 0.75rem;
     font-weight: 600;
+    text-transform: uppercase;
 }
 
 .menuItem a:hover{
@@ -215,9 +225,10 @@ hr {
 }
 
 .button-secondary3 {
-    padding: 18px 30px;
-    font-size: 1.2em;
-    background: #0facf3;
+    padding: 13px 25px;
+    font-size: 1.1em;
+    background: #0f82bd;
+    border-radius: 4px;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -235,6 +246,15 @@ hr {
     color: #fff;
     transition: all .2s ease;
 }
+
+.large-button{
+    text-transform: uppercase;
+    padding: 75px !important;
+    text-align: center;
+    font-size: 20px;
+    width: 100%;
+}
+
 
 
 /* Form input colour */
@@ -298,13 +318,13 @@ table.highlight>tbody>tr:hover{
 
 
 /* Add Event Window */
-.addEventModal{
+.PopUpWindow{
     padding: 50px;
 }
 
-.modal {
-    max-height: 90%;
-    width: 65%;
+.customModal {
+    max-height: 90% !important;
+    width: 65% !important;
 }
 
 .modal-form-row {
@@ -315,7 +335,7 @@ table.highlight>tbody>tr:hover{
     margin-bottom: 10px;
 }
 
-.addEventHeading{
+.PopupHeading{
     margin-left: 10px;
     margin-bottom: 40px;
 }
@@ -341,4 +361,8 @@ table.highlight>tbody>tr:hover{
 
 .noUi-target.noUi-horizontal .noUi-tooltip {
     background-color: #4f6df5 !important;
+}
+
+.title{
+    font-weight: bold;
 }

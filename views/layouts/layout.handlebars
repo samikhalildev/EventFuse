@@ -30,8 +30,9 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
 
                 {{#if user}}
-                    <li class="menuItem"> <a href="/"> HI, {{user.username}} </a> </li>
+                    <li class="menuItem"> <a href="#"> HI, {{user.firstname}} </a> </li>
                     <li class="menuItem"> <a href="/"> DASHBOARD </a> </li>
+                    <li class="menuItem"> <a href="/manage"> Manage </a> </li>
                     <li class="menuItem"> <a href="/users/logout"> LOGOUT </a> </li>
                 {{else}}
                     <li class="menuItem"> <a href="/users/login"> LOGIN </a> </li>

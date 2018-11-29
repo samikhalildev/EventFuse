@@ -27,10 +27,7 @@ const eventSchema = mongoose.Schema({
 
     notes: String,
 
-    assignedTo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }
+    assignedTo: String
 });
 
 const Event = module.exports = mongoose.model('Event', eventSchema);

@@ -2,8 +2,9 @@ var mongoose = require("mongoose");
 var bcrypt = require("bcryptjs");
 var Comapny = require("./company");
 
+
 // User Schema
-var UserSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
 
     firstname: {
         type: String,
@@ -22,22 +23,21 @@ var UserSchema = mongoose.Schema({
 
     username: {
         type: String,
-        required: true,
-        index: true
+        required: true
     },
 
     password: {
         type: String,
         required: true
-    },
-
-    company: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Company'
-    }]
+    }
 });
 
+
+
 var User = (module.exports = mongoose.model("User", UserSchema));
+
+
+
 
 module.exports.createUser = function(newUser, callback) {
   bcrypt.genSalt(10, function(err, salt) {
@@ -90,10 +90,6 @@ module.exports.updatePassword = function(id, password, callback) {
   });
 };
 
-module.exports.addPrescription = function(id, doctor, description, callback) {
-    query = { $set: { doctor, description }};
-    User.findOneAndUpdate({ _id: id }, query, { new: true }, callback);
-};
 
 module.exports.comparePassword = function(candidatePassword, hash, callback) {
   bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
