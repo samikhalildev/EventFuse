@@ -14,8 +14,14 @@ $(document).ready(function(){
     $('.datepicker').datepicker({
         format: 'dd-mmm-yyyy'
     });
-    $('select').formSelect();
+
 });
+
+
+// Loads these functions when page loads
+window.onload = function(){
+    fetchEvents();
+}
 
 
 // Price Slider Range
@@ -86,7 +92,7 @@ addEvent.addEventListener('submit', (event) => {
 
         // Send data to the server
     } else {
-        var success = "Submitted successfully!";
+        var success = "Added successfully!";
         DisplayError(success, false);
 
         // display button
@@ -108,6 +114,7 @@ addEvent.addEventListener('submit', (event) => {
             .then(json => {
                 console.log(json);
                 addEvent.reset();
+                fetchEvents();
             });
     }
 
@@ -132,3 +139,80 @@ function DisplayError(msg, error) {
 
     validateElement.innerText = msg;
 }
+
+
+
+
+let selector = document.querySelector('.selectCompany');
+selector.addEventListener('change', fetchEvents);
+
+
+function fetchEvents(){
+    var companyID = selector.value;
+
+    fetch('http://localhost:3000/api/company/' + companyID)
+        .then(response => response.json())
+        .then(data => {
+            var events = data.company.events;
+            var team = data.company.team;
+            var success = data.success;
+
+            let table = '';
+            var teamData = `<option value="No one">No one</option>`;
+
+
+            if(events.length == 0){
+                table +=
+                    `<tr>
+                        <td class="alert error-msg"  colspan="9" aria-colspan="9">  You currently have no events. Click the add event button!</td>
+                    </tr>
+                    `;
+            } else if(success){
+                events.forEach((event) => {
+                    table += `
+                               <tr>
+                                    <td scope="row">1</td>
+                                    <td> ${event.type} </td>
+                                    <td> ${event.name}</td>
+                                    <td> ${event.date}</td>
+                                    <td> ${event.price}</td>
+                                    <td> ${event.storage}</td>
+                                    <td> ${event.notes}</td>
+                                    <td>
+                                         <button class="button-status ${event.status}">
+                                            ${event.status}
+                                         </button> 
+                                     </td>
+                                     <td> ${event.assignedTo}</td>
+                               </tr>
+                            `;
+                });
+
+            } else if(!success){
+                table +=
+                    `<tr>
+                        <td class="alert error-msg" colspan="9" aria-colspan="9"> There was an error trying to display your events.</td>
+                    </tr>
+                    `;
+            }
+
+            if(success){
+                team.forEach((t) => {
+                    teamData += `
+                                <option value="${t.username}">${t.username}</option>
+                            `;
+                });
+            }
+
+            document.getElementById('here').innerHTML = table;
+            document.getElementById('teamData').innerHTML = teamData;
+
+            $(document).ready(function(){
+                $('select').formSelect();
+            });
+
+        })
+        .catch(err => console.log(err));
+
+}
+

@@ -1,11 +1,12 @@
 <link rel="stylesheet" href="https://refreshless.com/nouislider/distribute/nouislider.min.css">
 <link rel="stylesheet" href="http://materializecss.com/extras/noUiSlider/nouislider.css">
 <section class="events box">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <div class="">
+                <div id="table" class="">
                     <h2 class="heading"> Dashboard </h2>
 
                     <ul class="alert-box">
@@ -118,11 +119,11 @@
                                 <!-- Status -->
                                 <div class="input-field col s4">
                                     <select name="status" class="status">
-                                        <option value="Waiting">Waiting</option>
-                                        <option value="Editing">Editing</option>
-                                        <option value="Complete">Complete</option>
-                                        <option value="Canceled">Canceled</option>
-                                        <option value="Missing">Missing</option>
+                                        <option class="waiting" value="Waiting">Waiting</option>
+                                        <option class="editing" value="Editing">Editing</option>
+                                        <option class="completed" value="Complete">Complete</option>
+                                        <option class="canceled" value="Canceled">Canceled</option>
+                                        <option class="missing" value="Missing">Missing</option>
                                     </select>
                                     <label>Status</label>
                                 </div>
@@ -140,15 +141,11 @@
                                 </div>
 
                                 <!-- Assigned To -->
-                                <div class="input-field col s6">
-                                    <select name="assignedTo" class="status">
-                                        <option value="No one">No one</option>
-                                        <option value="Dhia">Dhia</option>
-                                        <option value="Sami">Sami</option>
-                                        <option value="Dalieda">Dalieda</option>
-                                    </select>
+                                 <div class="input-field col s6">
+                                    <select id="teamData" name="assignedTo" class="assignedTo"></select>
                                     <label>Assigned To</label>
                                 </div>
+
 
                                 <div class="modal-footer input-field col s12">
                                     <button class="modal-action button-secondary waves-effect waves-light left" type="submit" id="register-btn-submit">
@@ -163,9 +160,6 @@
                             </form>
                         </div>
                     </div>
-
-
-
 
 
 
@@ -189,25 +183,11 @@
 
                             {{#unless companies}}
                                 <tr>
-                                    <td colspan="9" aria-colspan="9"> Go to manage and create a company.</td>
+                                    <td class="alert error-msg" colspan="9" aria-colspan="9"> Please go to manager and create a company.</td>
                                 </tr>
                             {{/unless}}
 
-                            <tbody v-if="success">
-                                <tr v-for="event in events">
-                                    <td scope="row">1</td>
-                                    <td> \{{ event.type }}</td>
-                                    <td> \{{ event.name }}</td>
-                                    <td> \{{ event.date }}</td>
-                                    <td> \{{ event.price }}</td>
-                                    <td> \{{ event.status }}</td>
-                                    <td> \{{ event.storage}}</td>
-                                    <td> \{{ event.notes }}</td>
-                                    <td> \{{ event.assigedTo }}</td>
-                                </tr>
-                                <tr v-if="events == 0">
-                                    <td colspan="9" aria-colspan="9"> Please add some events.</td>
-                                </tr>
+                            <tbody id="here">
 
                             </tbody>
                         </table>
@@ -228,41 +208,6 @@
 <script src="http://materializecss.com/extras/noUiSlider/nouislider.js"></script>
 
 <script type="text/javascript" src="/js/events.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-
-<!-- View Events -->
-<script>
-
-    var events = new Vue ({
-        el: '#eventsTable',
-
-        data: {
-            events: [],
-            success: false,
-            loading: true
-        },
-
-
-        created () {
-            var selector = document.querySelector('.selectCompany');
-            var companyID = selector.options[selector.selectedIndex].value;
-            console.log(companyID);
-
-            const url = 'http://localhost:3000/api/company/' + companyID;
-
-            fetch(url)
-                    .then(response => response.json())
-                    .then(json => {
-                        this.events = json.events;
-                        this.success = json.success;
-                        console.log(json);
-
-                    });
-        }
-    });
-</script>
 
 
 

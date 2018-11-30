@@ -60,8 +60,8 @@ const Company = module.exports = mongoose.model('Company', CompanySchema);
 
 
 // Get company by ID
-module.exports.getCompanyById = function (id, callback) {
-    Company.findById(id, callback);
+module.exports.getCompanyById = function (companyID, callback) {
+    Company.findById(companyID, callback);
 }
 
 module.exports.getAllUserCompanies = function (username, callback){
@@ -72,7 +72,6 @@ module.exports.getAllUserCompanies = function (username, callback){
 
     Company.find(query, callback);
 }
-
 
 // Add Comapny
 module.exports.addCompany = function (newCompany, callback) {

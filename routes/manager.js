@@ -15,7 +15,7 @@ router.get("/", ensureAuthenticated, function(req, res) {
         if(err)
             return console.log("An error occured: " + err);
 
-        res.render("manage", {
+        res.render("manager", {
             companies: companies,
         });
     });
@@ -41,7 +41,7 @@ router.post("/create", ensureAuthenticated, function (req, res) {
         console.log("Company created: " + company);
     });
 
-    res.render("manage");
+    res.render("manager");
 
 });
 
@@ -60,7 +60,7 @@ router.post("/addTeam/:_id", ensureAuthenticated, function (req, res) {
 
     });
 
-    res.redirect("/manage");
+    res.redirect("/manager");
 
 });
 

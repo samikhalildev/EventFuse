@@ -2,8 +2,8 @@
 const createComapny = document.querySelector('#createCompanyForm');
 const addTeamMembers = document.querySelector('#addTeamMembersForm');
 
-const API_URL_ADD_COMPANY = 'http://localhost:3000/manage/create';
-const API_URL_ADD_TEAM = 'http://localhost:3000/manage/addTeam/';
+const API_URL_ADD_COMPANY = 'http://localhost:3000/manager/create';
+const API_URL_ADD_TEAM = 'http://localhost:3000/manager/addTeam/';
 
 const userID = document.getElementById('userID').value;
 var companyValidateElement = document.getElementById('CompanyValidation');
@@ -97,7 +97,11 @@ function addTeamMemberButton(btn) {
             headers: {
                 'content-type': 'application/json'
             }
-        });
+        }).then(respones => respones.json())
+            .then(newTeam => {
+                console.log(newTeam);
+                addTeamMembers.reset();
+            });
     });
 }
 

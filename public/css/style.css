@@ -255,6 +255,61 @@ hr {
     width: 100%;
 }
 
+/* Status buttons */
+.button-status {
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    text-transform: uppercase;
+    padding: 10px 15px;
+}
+
+.button-status:hover{
+    /*background: #4f6df5;*/
+    color: #fff;
+    cursor: pointer;
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02);
+}
+
+.Waiting{
+    background-color: #f9c546;
+}
+
+.Complete{
+    background-color: #58c6a5;
+}
+
+.Canceled{
+    background-color: #ee596e;
+}
+
+.Missing{
+    background-color: #ee596e;
+}
+
+.Editing{
+    background-color: #14aaf5;
+}
+
+.Button {
+    align-items: center;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 13px;
+    justify-content: center;
+    line-height: 1;
+    min-width: 50px;
+    text-align: center;
+    transition-duration: .2s;
+    transition-property: background, border, box-shadow, color, fill;
+}
 
 
 /* Form input colour */
@@ -366,3 +421,13 @@ table.highlight>tbody>tr:hover{
 .title{
     font-weight: bold;
 }
+
+
+.select-wrapper .caret{
+    fill: #4f6df5;
+}
+
+.select-dropdown.dropdown-content li.selected{
+    background-color: #d8d7e2 !important;
+}
+

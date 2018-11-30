@@ -29,7 +29,7 @@ router.get('/api/company/:_id', function (req, res) {
 
     var companyID = req.params._id;
 
-    Company.getAllEventsByCompany(companyID, function (err, events) {
+    Company.getAllEventsByCompany(companyID, function (err, company) {
 
         if(err){
             res.status(404);
@@ -38,12 +38,33 @@ router.get('/api/company/:_id', function (req, res) {
 
         res.json({
             success: true,
-            events: events.events
+            company: company
         });
 
     });
 });
 
+
+
+// GET Company team
+router.get('/api/company/team/:_id', function (req, res) {
+
+    var companyID = req.params._id;
+
+    Company.getCompanyById(companyID, function (err, company) {
+
+        if(err){
+            res.status(404);
+            res.json({success: false});
+        }
+
+        res.json({
+            success: true,
+            company: company
+        });
+
+    });
+});
 
 // GET An Event BY ID
 router.get('/api/events/:_id', function (req, res) {
