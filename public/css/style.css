@@ -340,6 +340,14 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 
 /* Search */
 
+.search{
+    background-image: linear-gradient(to right, #0facf3 , #49bc9a);
+    background-color: #0facf3;
+    margin-top: 150px;
+    margin-bottom: 15px;
+}
+
+
 .dropdown-content li>span {
     font-size: 15px;
     color: #10a5e8;
@@ -349,6 +357,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 .tableSection{
 
 }
+
 
 .table tr th, td{
     border: 1px solid #e5e5e5;
@@ -430,4 +439,3 @@ table.highlight>tbody>tr:hover{
 .select-dropdown.dropdown-content li.selected{
     background-color: #d8d7e2 !important;
 }
-

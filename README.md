@@ -4,11 +4,13 @@ An online tool that helps film creators and editors to schedule and orgainse the
 ## Some Features
 
 * [x] ⌨️ Login/signup
-* [x] 📈 Create companies
+* [x] 📈 Create a company
+* [x] 🙋 Add team members
 * [x] 📝 Add events
 * [x] 🙈 View events
-* [x] ➡️ Assign user to an event
-* [ ] 🔍 Search
+* [x] ➡️ Assign a member to an event
+* [x] 🔍 Search
+* [ ] ␥ Edit & delete
 * [ ] 🗃 Show events for specific user
 * [ ] 💬 Chat room
 

@@ -1,12 +1,14 @@
 <link rel="stylesheet" href="https://refreshless.com/nouislider/distribute/nouislider.min.css">
 <link rel="stylesheet" href="http://materializecss.com/extras/noUiSlider/nouislider.css">
-<section class="events box">
+
+
+<section class="box">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <div id="table" class="">
+                <div id="events">
                     <h2 class="heading"> Dashboard </h2>
 
                     <ul class="alert-box">
@@ -19,7 +21,7 @@
                         {{/if}}
                     </ul>
 
-                    <div class="row">
+                    <!-- Select company -->
                         <div class="input-field col s2">
                             <select class="selectCompany">
                                 {{#if companies.length}}
@@ -32,9 +34,8 @@
                             </select>
                             <label class="selectCompanyLabel">Select a company</label>
                         </div>
-                    </div>
 
-                    <!-- Search bar -->
+                    <!-- Search bar
                     <div class="searchBar left">
                         <div class="input-field s6">
                             <i class="material-icons prefix">search</i>
@@ -44,6 +45,11 @@
                             <span class="helper-text"> name or date</span>
                         </div>
                     </div>
+
+                    <span class="sort small btn" data-sort="type">Sort by type</span>
+                    <span class="sort small btn" data-sort="status">Sort by status</span>
+                    -->
+
 
                     <input type="hidden" id="userID" value="{{user._id}}">
 
@@ -162,6 +168,17 @@
                     </div>
 
 
+                    <nav class="search">
+                        <div class="nav-wrapper">
+                            <form>
+                                <div class="input-field">
+                                    <input id="search" type="search" required>
+                                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                                </div>
+                            </form>
+                        </div>
+                    </nav>
+
 
                     <!-- EVENTS TABLE -->
                     <div class="tableSection">
@@ -173,9 +190,9 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Price</th>
-                                    <th scope="col">Status</th>     <!-- Complete: Green, In Progress: yellow, N/A, On hold -->
                                     <th scope="col">Storage</th>
                                     <th scope="col">Notes</th>
+                                    <th scope="col">Status</th>     <!-- Complete: Green, In Progress: yellow, N/A, On hold -->
                                     <th scope="col">Assigned to</th>
 
                                 </tr>
@@ -187,7 +204,7 @@
                                 </tr>
                             {{/unless}}
 
-                            <tbody id="here">
+                            <tbody class="list" id="here">
 
                             </tbody>
                         </table>
@@ -199,21 +216,16 @@
 
 </section>
 
+<!-- List.js -->
+<script type="text/javascript" src="/js/list.min.js"></script>
+
+<!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
-
-<script type="text/javascript" src="/js/search.js"></script>
-
+<!-- Price slider -->
 <script src="https://refreshless.com/nouislider/distribute/nouislider.min.js"></script>
 <script src="http://materializecss.com/extras/noUiSlider/nouislider.js"></script>
 
+<!-- Events.js -->
 <script type="text/javascript" src="/js/events.js"></script>
-
-
-
-
-
-
-
-
 

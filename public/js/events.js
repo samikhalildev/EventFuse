@@ -169,21 +169,22 @@ function fetchEvents(){
                     `;
             } else if(success){
                 events.forEach((event) => {
+
                     table += `
                                <tr>
                                     <td scope="row">1</td>
-                                    <td> ${event.type} </td>
-                                    <td> ${event.name}</td>
-                                    <td> ${event.date}</td>
-                                    <td> ${event.price}</td>
-                                    <td> ${event.storage}</td>
-                                    <td> ${event.notes}</td>
-                                    <td>
+                                    <td class="type"> ${event.type} </td>
+                                    <td class="name"> ${event.name}</td>
+                                    <td class="date"> ${event.date}</td>
+                                    <td class="price"> ${event.price}</td>
+                                    <td class="storage"> ${event.storage}</td>
+                                    <td class="notes"> ${event.notes}</td>
+                                    <td class="status">
                                          <button class="button-status ${event.status}">
                                             ${event.status}
                                          </button> 
-                                     </td>
-                                     <td> ${event.assignedTo}</td>
+                                    </td>
+                                    <td class="assignedTo"> ${event.assignedTo}</td>
                                </tr>
                             `;
                 });
@@ -210,6 +211,13 @@ function fetchEvents(){
             $(document).ready(function(){
                 $('select').formSelect();
             });
+
+            var options = {
+                valueNames: [ 'type', 'name', 'date', 'price', 'storage', 'notes', 'status', 'assignedTo' ]
+            };
+
+            var userList = new List('events', options);
+
 
         })
         .catch(err => console.log(err));
