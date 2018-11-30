@@ -258,7 +258,7 @@ hr {
 /* Status buttons */
 .button-status {
     color: #fff;
-    border-radius: 5px;
+    border-radius: 7px;
     border: none;
     text-transform: uppercase;
     padding: 10px 15px;
@@ -270,6 +270,15 @@ hr {
     cursor: pointer;
     -webkit-transform: scale(1.02);
     transform: scale(1.02);
+}
+
+/* edit and delete */
+.edit{
+    color: #76b3f5;
+}
+
+.delete{
+    color: #ee849b;
 }
 
 .Waiting{
@@ -342,8 +351,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 
 .search{
     background-image: linear-gradient(to right, #0facf3 , #49bc9a);
-    background-color: #0facf3;
-    margin-top: 150px;
+    margin-top: 100px;
     margin-bottom: 15px;
 }
 

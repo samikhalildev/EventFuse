@@ -50,28 +50,7 @@
                     <span class="sort small btn" data-sort="status">Sort by status</span>
                     -->
 
-
                     <input type="hidden" id="userID" value="{{user._id}}">
-
-                    <script>
-
-                        // get input element
-                        let filterInput = document.getElementById('search-input');
-
-                        // add event listener
-                        filterInput.addEventListener('keyup', lookUpText);
-
-                        // This gets called when a user types something
-                        function lookUpText(){
-
-                            // get the value
-                            let filterValue = document.getElementById('search-input').value.toLowerCase();
-
-                            console.log(filterValue);
-                        }
-
-                    </script>
-
 
                     <!-- Add Event Button -->
                     <div class="addEventBtn right">
@@ -167,6 +146,16 @@
                         </div>
                     </div>
 
+                    <!-- Delete Event Modal -->
+                    <div id="delete-modal" class="modal">
+                        <div class="modal-content">
+                            <h4>Are you sure you would like to delete this event?</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-action modal-close waves-effect waves-red btn red lighten-1">Yes</a>
+                            <a href="#!" class="modal-action modal-close waves-effect waves-red btn red lighten-1">No</a>
+                        </div>
+                    </div>
 
                     <nav class="search">
                         <div class="nav-wrapper">
@@ -191,9 +180,10 @@
                                     <th scope="col">Date</th>
                                     <th scope="col">Price</th>
                                     <th scope="col">Storage</th>
-                                    <th scope="col">Notes</th>
                                     <th scope="col">Status</th>     <!-- Complete: Green, In Progress: yellow, N/A, On hold -->
                                     <th scope="col">Assigned to</th>
+                                    <th scope="col">Notes</th>
+                                    <th scope="col" colspan="2"><i class="material-icons previx">settings</i></th>
 
                                 </tr>
                             </thead>
@@ -229,3 +219,23 @@
 <!-- Events.js -->
 <script type="text/javascript" src="/js/events.js"></script>
 
+<!--
+<script>
+
+    // get input element
+    let filterInput = document.getElementById('search-input');
+
+    // add event listener
+    filterInput.addEventListener('keyup', lookUpText);
+
+    // This gets called when a user types something
+    function lookUpText(){
+
+        // get the value
+        let filterValue = document.getElementById('search-input').value.toLowerCase();
+
+        console.log(filterValue);
+    }
+
+</script>
+-->

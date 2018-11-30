@@ -158,8 +158,9 @@ function fetchEvents(){
             var success = data.success;
 
             let table = '';
-            var teamData = `<option value="No one">No one</option>`;
+            var teamData = `<option value="">No one</option>`;
 
+            var id = 1;
 
             if(events.length == 0){
                 table +=
@@ -172,19 +173,27 @@ function fetchEvents(){
 
                     table += `
                                <tr>
-                                    <td scope="row">1</td>
+                                    <td scope="row">${id++}</td>
                                     <td class="type"> ${event.type} </td>
                                     <td class="name"> ${event.name}</td>
                                     <td class="date"> ${event.date}</td>
-                                    <td class="price"> ${event.price}</td>
+                                    <td class="price"> $${event.price}</td>
                                     <td class="storage"> ${event.storage}</td>
-                                    <td class="notes"> ${event.notes}</td>
                                     <td class="status">
                                          <button class="button-status ${event.status}">
                                             ${event.status}
                                          </button> 
                                     </td>
                                     <td class="assignedTo"> ${event.assignedTo}</td>
+                                    <td class="notes"> ${event.notes}</td>
+                                    
+                                    <td class=""> 
+                                        <a href="/fdsf"> <i class="material-icons prefix edit">edit</i> </a> 
+                                    </td>
+                                    
+                                    <td class=""> 
+                                        <a href="#delete-modal"> <i class="material-icons prefix delete modal-trigger">delete</i> </a> 
+                                    </td>
                                </tr>
                             `;
                 });
@@ -223,4 +232,3 @@ function fetchEvents(){
         .catch(err => console.log(err));
 
 }
-
