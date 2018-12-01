@@ -5,7 +5,6 @@ var path = require("path");
 
 var Company = require("../models/company");
 var User = require("../models/user");
-var Event = require("../models/event");
 
 
 router.get("/", ensureAuthenticated, function(req, res) {

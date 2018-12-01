@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Event = require('./event');
 var ObjectId = require('mongodb').ObjectID
 
 // Company Schema
@@ -133,3 +132,31 @@ module.exports.getEvent = function (eventID, callback) {
 
     Company.findById(query, callback);
 }
+
+/*
+
+// Update Event (data from the form)
+module.exports.updateEvent = function (id, updatedEvent, callback) {
+    var query = {_ID: id};
+
+    var data = {
+        type: updatedEvent.type,
+        name: updatedEvent.name,
+        date: updatedEvent.date,
+        status: updatedEvent.status,
+        storage: updatedEvent.storage,
+        price: updatedEvent.price,
+        notes: updatedEvent.notes,
+        assignedTo: updatedEvent.assignedTo
+    };
+
+    Event.findOneAndUpdate(query, data, callback);
+}
+
+// DELETE
+module.exports.removeEvent = function (id, callback) {
+    var query = {_id: id};
+    Event.remove(query, callback);
+}
+
+ */

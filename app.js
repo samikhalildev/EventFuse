@@ -100,7 +100,6 @@ app.use(function(req, res, next) {
 app.use("/", dashboard);
 app.use("/manager", manager);
 app.use("/users", users);
-app.use("/api/events", dashboard);
 
 app.use("/editDetails", editDetails);
 app.use("/changePassword", changePassword);

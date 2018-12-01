@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var User = require("../models/user");
 var Company = require("../models/company");
-var Event = require("../models/event");
 
 const mongoose = require('mongoose');
 
