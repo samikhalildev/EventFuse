@@ -23,7 +23,10 @@ $(document).ready(function(){
         }
     );
     $('.datepicker').datepicker({
-        format: 'dd-mmm-yyyy'
+        format: 'dd-mmm-yyyy',
+        autoClose: true,
+        yearRange: [2014, 2019],
+        showClearBtn: true
     });
 
 });

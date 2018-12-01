@@ -9,6 +9,20 @@
                         <img class="logo-pg" src="/images/eventhub-logo.png">
                     </div>
 
+                    <ul class="alert-box right">
+                        {{#if success_msg}}
+                            <li class="alert success-msg"> {{success_msg}} </li>
+                        {{/if}}
+
+                        {{#if error_msg}}
+                            <li class="alert error-msg"> {{error_msg}} </li>
+                        {{/if}}
+
+                        {{#if error}}
+                            <li class="alert error-msg"> {{error}} </li>
+                        {{/if}}
+                    </ul>
+
                     <form id="login-register" action="/users/login" method="POST">
 
                         <div class="input-field col s12">
@@ -42,21 +56,6 @@
                             <button class="button-primary waves-effect waves-light" type="submit" id="register-btn-submit">
                                 <span>Sign In</span>
                             </button>
-
-
-                            <ul class="alert-box right">
-                                {{#if success_msg}}
-                                    <li class="alert success-msg"> {{success_msg}} </li>
-                                {{/if}}
-
-                                {{#if error_msg}}
-                                    <li class="alert error-msg"> {{error_msg}} </li>
-                                {{/if}}
-
-                                {{#if error}}
-                                    <li class="alert error-msg"> {{error}} </li>
-                                {{/if}}
-                            </ul>
 
                         </div>
 

@@ -35,7 +35,7 @@ router.post("/register", function(req, res) {
   req.checkBody("lastname", "Last name is too short or empty.").isLength({min: 3});
   req.checkBody("lastname", "Last name must contain letters only.").isAlpha();
 
-  req.checkBody("email", "Email is not valid").isEmail();
+  req.checkBody("email", "Email is not valid.").isEmail();
   req.checkBody("username", "Username is too short or empty.").isLength({min: 3});
 
   req.checkBody("password", "Password must be atleast 6 characters.").isLength({min: 6});
@@ -148,7 +148,7 @@ router.post(
 router.get("/logout", function(req, res) {
     req.logout();
 
-    req.flash("success_msg", "You are logged out 😒");
+    req.flash("success_msg", "You are logged out ✋");
 
     res.redirect("/users/login");
 });
