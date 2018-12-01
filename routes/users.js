@@ -29,14 +29,14 @@ router.post("/register", function(req, res) {
   var password2 = req.body.password2;
 
   // Validation
-  req.checkBody("firstname", "First name is too short or doesn't exist.").isLength({min: 3});
+  req.checkBody("firstname", "First name is too short or empty.").isLength({min: 3});
   req.checkBody("firstname", "First name must contain letters only.").isAlpha();
 
-  req.checkBody("lastname", "Last name is too short or doesn't exist.").isLength({min: 3});
+  req.checkBody("lastname", "Last name is too short or empty.").isLength({min: 3});
   req.checkBody("lastname", "Last name must contain letters only.").isAlpha();
 
   req.checkBody("email", "Email is not valid").isEmail();
-  req.checkBody("username", "Username is too short or doesn't exist.").isLength({min: 3});
+  req.checkBody("username", "Username is too short or empty.").isLength({min: 3});
 
   req.checkBody("password", "Password must be atleast 6 characters.").isLength({min: 6});
   req.checkBody("password2", "Password does not match.").equals(password);
@@ -66,7 +66,7 @@ router.post("/register", function(req, res) {
           function(err, mail) {
             if (user || mail) {
               res.render("register", {
-                user: user
+                  error_msg: errors, firstname: firstname, lastname: lastname, email: email, username: username, usernameTaken: true
               });
             } else {
 
@@ -88,7 +88,7 @@ router.post("/register", function(req, res) {
                 if (err) throw err;
               });
 
-              req.flash("success_msg", "You can now login!");
+              req.flash("success_msg", "You can now login 😬");
               res.redirect("/users/login");
             }
           }
@@ -98,57 +98,61 @@ router.post("/register", function(req, res) {
   }
 });
 
+
 passport.use(
-  new LocalStrategy(function(username, password, done) {
-    User.getUserByUsername(username, function(err, user) {
-      // Throw error if username was incorrect
-      if (err) throw err;
-      if (!user) {
-          return done(null, false, { message: "Unknown User" });
-      }
+    new LocalStrategy(function(username, password, done) {
+        User.getUserByUsername(username, function(err, user) {
+            // Throw error if username was incorrect
+            if (err) throw err;
+            if (!user) {
+                return done(null, false, { message: "Unknown username 😱" });
+            }
 
-      User.comparePassword(password, user.password, function(err, isMatch) {
-        // Throw error if password was not matched
-        if (err) throw err;
+            User.comparePassword(password, user.password, function(err, isMatch) {
+                // Throw error if password was not matched
+                if (err) throw err;
 
-        // If it matched, return the user
-        if (isMatch) {
-            return done(null, user);
-        } else {
-          return done(null, false, { message: "Invalid password" });
-        }
-      });
-    });
-  })
+                // If it matched, return the user
+                if (isMatch) {
+                    return done(null, user);
+                } else {
+                    return done(null, false, { message: "Invalid password 😰" });
+                }
+            });
+        });
+    })
 );
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+    done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-  User.getUserById(id, function(err, user) {
-    done(err, user);
-  });
+    User.getUserById(id, function(err, user) {
+        done(err, user);
+    });
 });
 
-router.post("/login", passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/users/login",
-    failureFlash: true
-  }),
-  function(req, res) {
-    req.flash("error_msg", "Invalid username or password.");
-    res.redirect("/users/login");
-  }
+router.post(
+    "/login",
+    passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/users/login",
+        failureFlash: true
+    }),
+    function(req, res) {
+        res.redirect("/");
+    }
 );
 
 router.get("/logout", function(req, res) {
-  req.logout();
+    req.logout();
 
-  req.flash("success_msg", "You have logged out.");
-  res.redirect("/users/login");
+    req.flash("success_msg", "You are logged out 😒");
+
+    res.redirect("/users/login");
 });
+
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);

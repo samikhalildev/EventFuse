@@ -14,6 +14,23 @@ const userID = document.getElementById('userID').value;
 var companyValidateElement = document.getElementById('CompanyValidation');
 var memberValidateElement = document.getElementById('MemberValidation');
 
+document.addEventListener("DOMContentLoaded", function(){
+    $('.preloader-background').delay(1500).fadeOut('slow');
+    $('.preloader-wrapper').delay(1500).fadeOut();
+
+    var loading = document.querySelector('.managerLoading');
+    var list = document.querySelector('.ListOfCompanies');
+
+    list.style.display = 'none';
+    loading.style.display = '';
+
+    $('.managerLoading').delay(1500).fadeOut('slow');
+
+    setTimeout(function () {
+        list.style.display = '';
+    },1500);
+});
+
 $(document).ready(function() {
     $('.modal').modal({
             dismissible: false, // Modal cannot be closed by clicking anywhere outside
@@ -47,7 +64,7 @@ createComapny.addEventListener('submit', (event) => {
 
         // Send data to the server
     } else {
-        var success = "Company created successfully!\nPlease refresh!";
+        var success = "Company created successfully!";
         CompanyDisplayError(success, false);
 
         // display button
@@ -63,9 +80,9 @@ createComapny.addEventListener('submit', (event) => {
                 'content-type': 'application/json'
             }
         }).then(respones => respones.json())
-            .then(createdCompany => {
-                console.log(createdCompany);
-                createComapny.reset();
+            .then(data => {
+                console.log(data.company);
+                location.reload(true);
             });
     }
 });
@@ -87,7 +104,7 @@ function addTeamMemberButton(btn) {
             name: name
         }
 
-        var success = "Member added successfully!\nYou may add more and reload page when done!";
+        var success = name + " has been added successfully!\nFeel free to add more 😬";
         MemberDisplayError(success, false);
 
         // display button
@@ -103,10 +120,9 @@ function addTeamMemberButton(btn) {
                 'content-type': 'application/json'
             }
         }).then(respones => respones.json())
-            .then(newTeam => {
-                console.log(newTeam);
-                addTeamMembers.reset();
-                window.location.replace(redirect_to_manager);
+            .then(data => {
+                console.log(data.company.team);
+                document.getElementById('teamName').value = '';
             });
     });
 }

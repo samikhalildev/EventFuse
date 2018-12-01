@@ -43,7 +43,7 @@
                             <a href="#!" class="modal-action modal-close">
                                 <i class="material-icons right">close</i>
                             </a>
-                            <h4 class="PopupHeading"> Create Company</h4>
+                            <h4 class="PopupHeading"> Create Company </h4>
 
                             <form id="createCompanyForm">
                                 <!-- Name -->
@@ -69,28 +69,75 @@
                     <!-- List of companies -->
                     <div class="col s12">
 
-                        {{#each companies}}
-                        <ul class="collection ListOfCompanies">
-                                <li class="collection-item avatar">
-                                    <span class="title">{{name}}</span>
+                        <ul class="managerLoading center">
+                            <li>
+                                <div class="preloader-wrapper big active">
+                                    <div class="spinner-layer spinner-blue">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div><div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                    </div>
 
-                                    <p>
-                                        {{#team}}
-                                            {{#if isOwner}}
-                                                 Owner: {{username}} <br> Team:
-                                            {{else}}
-                                                {{username}}
-                                            {{/if}}
-                                        {{/team}}
-                                    </p>
+                                    <div class="spinner-layer spinner-red">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div><div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                    </div>
 
-                                    <button onclick="addTeamMemberButton(this)" value="{{_id}}" class="secondary-content modal-trigger button-secondary3" href="#add-team-members-modal">
-                                        <i class="material-icons left">add</i>
-                                        <span class="right"> Add team members</span>
-                                    </button>
-                                </li>
+                                    <div class="spinner-layer spinner-yellow">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div><div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                    </div>
+
+                                    <div class="spinner-layer spinner-green">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div><div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
-                        {{/each}}
+
+                        {{#if companies}}
+                        <ul class="collection ListOfCompanies">
+                            {{#each companies}}
+                                <li class="collection-item avatar">
+                                        <span class="title">{{name}}</span>
+                                            <p>
+                                                {{#team}}
+                                                    {{#if isOwner}}
+                                                         Owner: {{username}} <br> Team:
+                                                    {{else}}
+                                                        {{username}},
+                                                    {{/if}}
+                                                {{/team}}
+                                            </p>
+                                        <button onclick="addTeamMemberButton(this)" value="{{_id}}" class="secondary-content modal-trigger button-secondary3" href="#add-team-members-modal">
+                                            <i class="material-icons left">add</i>
+                                            <span class="right"> Add team members <span class="emoji"> 👨‍👩‍👦‍👦 </span></span>
+                                        </button>
+                                    </li>
+                            {{/each}}
+                        </ul>
+
+                        {{/if}}
 
                     </div>
 
@@ -98,7 +145,7 @@
                     <!-- Add team members form -->
                     <div id="add-team-members-modal" class="PopUpWindow modal">
                         <div class="modal-content">
-                            <a href="#!" class="modal-action modal-close">
+                            <a onclick="location.reload(true)" href="#!" class="modal-action modal-close">
                                 <i class="material-icons right">close</i>
                             </a>
                             <h4 class="PopupHeading"> Add A Team Member </h4>
@@ -107,7 +154,7 @@
 
                                 <!-- Name -->
                                 <div class="input-field col s12">
-                                    <input name="name" id="name" type="text" placeholder="Johny" class="validate" required="" aria-required="true">
+                                    <input name="name" id="teamName" type="text" placeholder="Jack" class="validate" required="" aria-required="true">
                                     <label for="name">Member's Name <span class="requiredField">*</span></label>
                                 </div>
 
@@ -134,5 +181,5 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-<script src="/js/createCompany.js"></script>
+<script src="/js/manager.js"></script>
 

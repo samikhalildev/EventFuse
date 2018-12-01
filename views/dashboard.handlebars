@@ -252,7 +252,7 @@
 
                             {{#unless companies}}
                                 <tr>
-                                    <td class="alert error-msg" colspan="9" aria-colspan="9"> Please go to manager and create a company.</td>
+                                    <td class="small success-msg" colspan="9" aria-colspan="9"> Welcome {{user.firstname}}! <br> Let's get started by creating a company in your manager 💻 🔝</td>
                                 </tr>
                             {{/unless}}
 
@@ -314,14 +314,14 @@
 
 </section>
 
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
 <!-- loader -->
-<script src="/js/loading.js"></script>
+<script src="/js/eventLoader.js"></script>
 
 <!-- List.js -->
 <script type="text/javascript" src="/js/list.min.js"></script>
-
-<!-- jQuery -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
 <!-- Price slider -->
 <script src="https://refreshless.com/nouislider/distribute/nouislider.min.js"></script>

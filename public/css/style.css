@@ -332,10 +332,19 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     color: #0086FF;
 }
 
+.input-field{
+    margin-top: 0;
+}
+
 
 /* Error messages */
 .alert{
     font-weight: 200;
+    font-size: 15px;
+}
+
+.emoji{
+    font-size: 18px;
 }
 
 .error-msg{

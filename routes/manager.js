@@ -34,13 +34,19 @@ router.post("/create", ensureAuthenticated, function (req, res) {
 
     Company.addCompany(newCompany, function (err, company) {
 
-        if(err)
-            return console.log("An error occured: " + err);
+        if(err){
+            console.log("An error occured: " + err);
+            res.status(404);
+            res.json({success: false});
+        }
+
+        res.json({
+            success: true,
+            company: company
+        });
 
         console.log("Company created: " + company);
     });
-
-    res.render("manager");
 
 });
 
@@ -52,14 +58,20 @@ router.post("/addTeam/:_id", ensureAuthenticated, function (req, res) {
 
     Company.addTeamMember(companyID, newTeamMember, function (err, company) {
 
-        if(err)
-            return console.log("An error occured: " + err);
+        if(err){
+            console.log("An error occured: " + err);
+            res.status(404);
+            res.json({success: false});
+        }
+
+        res.json({
+            success: true,
+            company: company
+        });
 
         console.log("Team member added: " + company);
 
     });
-
-    res.redirect("/manager");
 
 });
 
@@ -68,7 +80,7 @@ function ensureAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
 		return next();
 	} else {
-		req.flash('error_msg','You are not logged in!');
+		req.flash('error_msg','You are not logged in 🔑');
 		res.redirect('/users/login');
 	}
 }

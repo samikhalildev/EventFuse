@@ -182,7 +182,7 @@ function fetchEvents(){
             if(events.length == 0){
                 table +=
                     `<tr>
-                        <td class="alert error-msg"  colspan="9" aria-colspan="9">  You have no events. Click the add event button!</td>
+                        <td class="alert small error-msg"  colspan="9" aria-colspan="9"> Oh no! You have no events. <br> Click the add event button 📸</td>
                     </tr>
                     `;
             } else if(success){
@@ -205,11 +205,11 @@ function fetchEvents(){
                                     <td class="notes"> ${event.notes}</td>
                                     
                                     <td class=""> 
-                                        <a href="/fdsf"> <i class="material-icons prefix edit">edit</i> </a> 
+                                        <a> <i class="material-icons prefix edit">edit</i> </a> 
                                     </td>
                                     
                                     <td class=""> 
-                                        <a href="#delete-modal"> <i class="material-icons prefix delete modal-trigger">delete</i> </a> 
+                                        <a> <i class="material-icons prefix delete modal-trigger">delete</i> </a> 
                                     </td>
                                </tr>
                             `;
@@ -246,6 +246,8 @@ function fetchEvents(){
 
             tableElement.style.display = '';
             loadingElement.style.display = 'none';
+
+            console.log("Rows: " + rows.length);
 
         })
         .catch(err => console.log(err));
