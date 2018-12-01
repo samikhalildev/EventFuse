@@ -190,8 +190,15 @@ function fetchEvents(){
                     `;
             } else if(success){
                 events.forEach((event) => {
+                    var statusClass = '';
 
-                    table += `
+                    if(event.status == "Missing-Song-info"){
+                        statusClass = "Missing";
+                    } else {
+                        statusClass = event.status;
+                    }
+
+                        table += `
                                <tr>
                                     <td scope="row">${id++}</td>
                                     <td class="type"> ${event.type} </td>
@@ -200,7 +207,7 @@ function fetchEvents(){
                                     <td class="price"> $${event.price}</td>
                                     <td class="storage"> ${event.storage}</td>
                                     <td class="status">
-                                         <button class="button-status ${event.status}">
+                                         <button class="button-status ${statusClass}">
                                             ${event.status}
                                          </button> 
                                     </td>
