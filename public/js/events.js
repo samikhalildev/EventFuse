@@ -1,9 +1,15 @@
 
-// START UP
+
+// API endpoints
+const ADD_EVENTS_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/addEvents/' : 'http://eventhubz.herokuapp.com/api/addEvents/';
+const GET_EVENTS_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/company/' : 'http://eventhubz.herokuapp.com/api/company/';
+
+// DOM elements
 const addEvent = document.querySelector('#addEventForm');
-const API_URL = 'http://localhost:3000/api/addEvents/';
 const userID = document.getElementById('userID').value;
 var validateElement = document.getElementById('validation');
+
+
 
 // Date picker and add event modal
 $(document).ready(function(){
@@ -104,7 +110,7 @@ addEvent.addEventListener('submit', (event) => {
         var companyID = selector.options[selector.selectedIndex].value;
 
         // USING FETCH TO POST DATA TO THE SERVER USING JSON
-        fetch(API_URL + companyID, {
+        fetch(ADD_EVENTS_API + companyID, {
             method: 'POST',
             body: JSON.stringify(newEvent),
             headers: {
@@ -150,7 +156,7 @@ selector.addEventListener('change', fetchEvents);
 function fetchEvents(){
     var companyID = selector.value;
 
-    fetch('http://localhost:3000/api/company/' + companyID)
+    fetch(GET_EVENTS_API + companyID)
         .then(response => response.json())
         .then(data => {
             var events = data.company.events;

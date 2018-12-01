@@ -1,9 +1,13 @@
 
+
+// api endpoints
+const ADD_COMPANY_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/manager/create' : 'http://eventhubz.herokuapp.com/manager/create/';
+const ADD_TEAM_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/manager/addTeam/' : 'http://eventhubz.herokuapp.com/manager/addTeam/';
+
+
+// DOM elements
 const createComapny = document.querySelector('#createCompanyForm');
 const addTeamMembers = document.querySelector('#addTeamMembersForm');
-
-const API_URL_ADD_COMPANY = 'http://localhost:3000/manager/create';
-const API_URL_ADD_TEAM = 'http://localhost:3000/manager/addTeam/';
 
 const userID = document.getElementById('userID').value;
 var companyValidateElement = document.getElementById('CompanyValidation');
@@ -51,7 +55,7 @@ createComapny.addEventListener('submit', (event) => {
         console.log(newComapny);
 
         // USING FETCH TO POST DATA TO THE SERVER USING JSON
-        fetch(API_URL_ADD_COMPANY, {
+        fetch(ADD_COMPANY_API, {
             method: 'POST',
             body: JSON.stringify(newComapny),
             headers: {
@@ -91,7 +95,7 @@ function addTeamMemberButton(btn) {
         console.log(newTeamMember);
 
         // USING FETCH TO POST DATA TO THE SERVER USING JSON
-        fetch(API_URL_ADD_TEAM + companyID, {
+        fetch(ADD_TEAM_API + companyID, {
             method: 'POST',
             body: JSON.stringify(newTeamMember),
             headers: {
