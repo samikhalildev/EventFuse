@@ -5,6 +5,51 @@
 <section class="box">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
+    <div class="preloader-background">
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container">
         <div class="row">
             <div class="col s12">
@@ -24,15 +69,18 @@
                     <!-- Select company -->
                         <div class="input-field col s2">
                             <select class="selectCompany">
-                                {{#if companies.length}}
-                                    {{#each companies}}
-                                        <option value="{{_id}}"> {{name}} </option>
-                                    {{/each}}
-                                {{else}}
-                                    <option value="" disabled aria-disabled="">Please add a company</option>
-                                {{/if}}
+
+                                {{#each companies}}
+                                    <option value="{{_id}}"> {{name}} </option>
+                                {{/each}}
+
                             </select>
-                            <label class="selectCompanyLabel">Select a company</label>
+
+                                {{#unless companies}}
+
+                                {{else}}
+                                    <label class="selectCompanyLabel">Select a company</label>
+                                {{/unless}}
                         </div>
 
                     <!-- Search bar
@@ -54,10 +102,18 @@
 
                     <!-- Add Event Button -->
                     <div class="addEventBtn right">
-                        <a class="waves-effect waves-light btn-large button-secondary modal-trigger" href="#add-event-modal">
-                            <i class="material-icons left">add</i>
-                            <span> Add Event </span>
-                        </a>
+                        {{#if companies}}
+                            <a class="waves-effect waves-light btn-large button-secondary modal-trigger" href="#add-event-modal">
+                                <i class="material-icons left">add</i>
+                                <span> Add Event </span>
+                            </a>
+
+                        {{else}}
+                            <a class="waves-effect waves-light btn-large button-secondary modal-trigger disabled" href="#add-event-modal">
+                                <i class="material-icons left">add</i>
+                                <span> Add Event </span>
+                            </a>
+                        {{/if}}
                     </div>
 
                     <!-- Add Event Form -->
@@ -79,6 +135,9 @@
                                         <option value="Holy Communion">Holy Communion</option>
                                         <option value="Christening">Christening</option>
                                         <option value="Birthday">Birthday</option>
+                                        <option value="Anniversary">Anniversary</option>
+                                        <option value="Graduation">Graduation</option>
+                                        <option value="School formals">School formals</option>
                                     </select>
                                     <label>Event Type <span class="requiredField">*</span></label>
                                 </div>
@@ -168,6 +227,9 @@
                         </div>
                     </nav>
 
+                    <div id="loadingSearchElement" class="progress">
+                        <div class="indeterminate"></div>
+                    </div>
 
                     <!-- EVENTS TABLE -->
                     <div class="tableSection">
@@ -194,7 +256,53 @@
                                 </tr>
                             {{/unless}}
 
-                            <tbody class="list" id="here">
+                            <tr id="loadingElement">
+                                <td colspan="9" aria-colspan="9">
+                                    <div class="preloader-wrapper big active">
+                                        <div class="spinner-layer spinner-blue">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-red">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-yellow">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-green">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tbody class="list" id="table-data">
 
                             </tbody>
                         </table>
@@ -205,6 +313,9 @@
     </div>
 
 </section>
+
+<!-- loader -->
+<script src="/js/loading.js"></script>
 
 <!-- List.js -->
 <script type="text/javascript" src="/js/list.min.js"></script>
@@ -218,6 +329,7 @@
 
 <!-- Events.js -->
 <script type="text/javascript" src="/js/events.js"></script>
+
 
 <!--
 <script>
@@ -239,3 +351,4 @@
 
 </script>
 -->
+

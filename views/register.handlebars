@@ -64,10 +64,19 @@
                             <label for="password2">Re-Enter Password</label>
                         </div>
 
+                        <div class="col s12">
+                            <div id="loadingElement" class="center">
+                                <div class="progress">
+                                    <div class="indeterminate"></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="input-field col s12 left">
-                            <button class="waves-effect waves-light button-secondary" type="submit" id="register-btn-submit">
+                            <button onclick="loginLoader()" class="waves-effect waves-light button-secondary" type="submit" id="register-btn-submit">
                                 <span>Sign Up</span>
                             </button>
+
                         </div>
 
                     </form>
@@ -78,3 +87,5 @@
     </div>
 
 </section>
+
+<script src="/js/loading.js"></script>

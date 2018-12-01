@@ -1,5 +1,5 @@
 # EventHub
-An online tool that helps film creators and editors to schedule and orgainse their events in a new way.
+EventHub is a modern web-based application that helps video producers and event creators to manage their work in a new and systematic way.
 
 ## Some Features
 

@@ -19,6 +19,7 @@
                         {{/if}}
                     </ul>
 
+
                     <form action="/users/login" method="POST">
 
                         <div class="input-field col s12">
@@ -39,10 +40,20 @@
                             </a>
                         </div>
 
+                        <div class="col s12">
+                            <div id="loadingElement" class="center">
+                                <div class="progress">
+                                    <div class="indeterminate"></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="input-field col s12">
-                            <button class="button-primary waves-effect waves-light" type="submit" id="register-btn-submit">
+
+                            <button onclick="loginLoader()" class="button-primary waves-effect waves-light" type="submit" id="register-btn-submit">
                                 <span>Sign In</span>
                             </button>
+
                         </div>
 
                     </form>
@@ -52,3 +63,6 @@
     </div>
 
 </section>
+
+<script src="/js/loading.js"></script>
+

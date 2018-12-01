@@ -1,9 +1,10 @@
 
 
 // api endpoints
-const ADD_COMPANY_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/manager/create' : 'http://eventhubz.herokuapp.com/manager/create/';
+const ADD_COMPANY_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/manager/create' : 'http://eventhubz.herokuapp.com/manager/create';
 const ADD_TEAM_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/manager/addTeam/' : 'http://eventhubz.herokuapp.com/manager/addTeam/';
 
+const redirect_to_manager = window.location.hostname === 'localhost' ? 'http://localhost:3000/manager' : 'htto://eventhubz.herokuapp.com/manager';
 
 // DOM elements
 const createComapny = document.querySelector('#createCompanyForm');
@@ -65,7 +66,7 @@ createComapny.addEventListener('submit', (event) => {
             .then(createdCompany => {
                 console.log(createdCompany);
                 createComapny.reset();
-        });
+            });
     }
 });
 
@@ -86,11 +87,11 @@ function addTeamMemberButton(btn) {
             name: name
         }
 
-        var success = "Company created successfully!\nPlease refresh!";
+        var success = "Member added successfully!\nYou may add more and reload page when done!";
         MemberDisplayError(success, false);
 
         // display button
-        document.querySelector('#register-btn-submit').className = 'modal-action button-secondary btn-large disabled left';
+        //document.querySelector('#register-btn-submit').className = 'modal-action button-secondary btn-large disabled left';
 
         console.log(newTeamMember);
 
@@ -105,6 +106,7 @@ function addTeamMemberButton(btn) {
             .then(newTeam => {
                 console.log(newTeam);
                 addTeamMembers.reset();
+                window.location.replace(redirect_to_manager);
             });
     });
 }

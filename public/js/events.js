@@ -7,9 +7,14 @@ const GET_EVENTS_API = window.location.hostname === 'localhost' ? 'http://localh
 // DOM elements
 const addEvent = document.querySelector('#addEventForm');
 const userID = document.getElementById('userID').value;
+
 var validateElement = document.getElementById('validation');
+var loadingElement = document.getElementById('loadingElement');
 
+var tableElement = document.getElementById('table-data');
+var teamDataElement = document.getElementById('teamData');
 
+loadingElement.style.display = 'none';
 
 // Date picker and add event modal
 $(document).ready(function(){
@@ -102,7 +107,7 @@ addEvent.addEventListener('submit', (event) => {
         DisplayError(success, false);
 
         // display button
-        document.querySelector('#register-btn-submit').className = 'modal-action button-secondary btn-large disabled left';
+        //document.querySelector('#register-btn-submit').className = 'modal-action button-secondary btn-large disabled left';
 
         console.log(newEvent);
 
@@ -148,13 +153,19 @@ function DisplayError(msg, error) {
 
 
 
-
 let selector = document.querySelector('.selectCompany');
 selector.addEventListener('change', fetchEvents);
 
 
 function fetchEvents(){
     var companyID = selector.value;
+
+    if(!companyID)
+        return;
+
+    tableElement.style.display = 'none';
+    loadingElement.style.display = '';
+
 
     fetch(GET_EVENTS_API + companyID)
         .then(response => response.json())
@@ -171,7 +182,7 @@ function fetchEvents(){
             if(events.length == 0){
                 table +=
                     `<tr>
-                        <td class="alert error-msg"  colspan="9" aria-colspan="9">  You currently have no events. Click the add event button!</td>
+                        <td class="alert error-msg"  colspan="9" aria-colspan="9">  You have no events. Click the add event button!</td>
                     </tr>
                     `;
             } else if(success){
@@ -220,8 +231,8 @@ function fetchEvents(){
                 });
             }
 
-            document.getElementById('here').innerHTML = table;
-            document.getElementById('teamData').innerHTML = teamData;
+            tableElement.innerHTML = table;
+            teamDataElement.innerHTML = teamData;
 
             $(document).ready(function(){
                 $('select').formSelect();
@@ -233,6 +244,8 @@ function fetchEvents(){
 
             var userList = new List('events', options);
 
+            tableElement.style.display = '';
+            loadingElement.style.display = 'none';
 
         })
         .catch(err => console.log(err));
