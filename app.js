@@ -10,10 +10,11 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var mongo = require("mongodb");
 var mongoose = require("mongoose");
-const MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient;
 
-//connecting to mastodon db, make sure you have created this db locally
-mongoose.connect("mongodb://localhost/eventhub");
+var db_URI = MONGODB_URI || "mongodb://localhost/eventhub";
+mongoose.connect(db_URI);
+
 var db = mongoose.connection;
 
 
