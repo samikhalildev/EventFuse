@@ -12,7 +12,7 @@ var mongo = require("mongodb");
 var mongoose = require("mongoose");
 var MongoClient = require('mongodb').MongoClient;
 
-var db_URI = MONGODB_URI || "mongodb://localhost/eventhub";
+var db_URI = process.env.MONGODB_URI || "mongodb://localhost/eventhub";
 mongoose.connect(db_URI);
 
 var db = mongoose.connection;
