@@ -206,12 +206,12 @@ function fetchEvents(){
                                     <td class="date"> ${event.date}</td>
                                     <!--<td class="price"> $${event.price}</td>-->
                                     <td class="storage"> ${event.storage}</td>
-                                    <td class="notes"> ${event.notes}</td>
                                     <td class="status">
                                          <button class="button-status ${statusClass}">
                                             ${event.status}
                                          </button> 
                                     </td>
+                                    <td class="notes"> ${event.notes}</td>
                                     <td class="assignedTo"> ${event.assignedTo}</td>
                                     
                                     <td class=""> 
