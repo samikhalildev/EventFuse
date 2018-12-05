@@ -29,7 +29,8 @@
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
-    "webdriverio": "^4.13.2"
+    "webdriverio": "^4.13.2",
+    "word-extractor": "^0.1.4"
   },
   "devDependencies": {
     "wdio-mocha-framework": "^0.6.3"
