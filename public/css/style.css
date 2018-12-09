@@ -267,7 +267,6 @@ hr {
     color: #fff;
     border-radius: 7px;
     border: none;
-    text-transform: uppercase;
     padding: 10px 15px;
 }
 
@@ -302,11 +301,11 @@ hr {
 }
 
 .Ready{
-    background-color: #f9d545 !important;
+    background-color: #ffaa28 !important;
 }
 
 .Complete{
-    background-color: #1ac696 !important;
+    background-color: #32c1c4 !important;
 }
 
 .Canceled{
@@ -314,7 +313,7 @@ hr {
 }
 
 .Missing{
-    background-color: #ee523f !important;
+    background-color: #ff5370 !important;
 }
 
 .Editing{
