@@ -29,7 +29,6 @@ $(document).ready(function(){
         yearRange: [2014, 2019],
         showClearBtn: true
     });
-    $('.sidenav').sidenav();
 });
 
 // Loads these functions when page loads
@@ -258,7 +257,7 @@ function fetchEvents(deleteMessageSuccess){
                 console.log(ele);
 
                 if(deleteMessageSuccess){
-                    message = "Event was successfully deleted.";
+                    message = "Event deleted successfully.";
                     ele.className = "alert success-msg";
                     ele.innerText = message;
 

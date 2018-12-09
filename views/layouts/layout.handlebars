@@ -19,6 +19,11 @@
     <!-- Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <!-- Mobile Nav -->
+    <script type="text/javascript" src="/js/nav-mobile.js"></script>
 </head>
 
 <body>
@@ -29,12 +34,12 @@
                 <a href="/" class="brand-logo">
                     <img class="logo" src="/images/eventhub-logo.png">
                 </a>
-                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <a href="#" data-target="mobile" class="sidenav-trigger"><i class="material-icons nav-mobile-icon">menu</i></a>
             </div>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
 
                 {{#if user}}
-                    <li class="menuItem"> <a href="#"> HI, {{user.firstname}} </a> </li>
+                    <li class="menuItem"> <a href="#" class="welcomeItem"> HI, {{user.firstname}} </a> </li>
                     <li class="menuItem"> <a href="/"> DASHBOARD </a> </li>
                     <li class="menuItem"> <a href="/manager"> Manager </a> </li>
                     <li class="menuItem"> <a href="/users/logout"> LOGOUT </a> </li>
@@ -46,9 +51,9 @@
         </div>
     </nav>
 
-    <ul class="sidenav" id="mobile-demo">
+    <ul class="sidenav" id="mobile">
         {{#if user}}
-            <li class="menuItem"> <a href="#"> HI, {{user.firstname}} </a> </li>
+            <li class="menuItem"> <a href="#" class="welcomeItem"> HI, {{user.firstname}} </a> </li>
             <li class="menuItem"> <a href="/"> DASHBOARD </a> </li>
             <li class="menuItem"> <a href="/manager"> Manager </a> </li>
             <li class="menuItem"> <a href="/users/logout"> LOGOUT </a> </li>
@@ -62,6 +67,9 @@
 
     <!-- Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+
 
 </body>
 

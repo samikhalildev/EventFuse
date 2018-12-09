@@ -36,7 +36,6 @@ $(document).ready(function() {
             dismissible: false, // Modal cannot be closed by clicking anywhere outside
         }
     );
-    $('.sidenav').sidenav();
 });
 
 /*

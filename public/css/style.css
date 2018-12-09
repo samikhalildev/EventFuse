@@ -67,7 +67,7 @@ hr {
 /* Menu */
 
 .menuItem a{
-    color: #3a416f !important;
+    color: #3a416f;
     letter-spacing: 1.5px;
     padding: 0 20px;
     font-size: 0.75rem;
@@ -76,12 +76,20 @@ hr {
 }
 
 .menuItem a:hover{
-    background: #F5F5F5 !important;
-    color: #4f6df5 !important;
+    background: #F5F5F5;
+    color: #4f6df5;
     -webkit-transition-duration: .7s;
     transition-duration: .7s;
 }
 
+.welcomeItem {
+    color: #4f6df5 !important;
+    background: transparent !important;
+}
+
+.nav-mobile-icon{
+    color: black;
+}
 
 
 /* Shadow Box */
@@ -401,13 +409,13 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 .table tr th, td{
     border: 1px solid #e5e5e5;
     border-spacing: 15px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .table th{
     background: #0facf3;
     color: #fff;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bolder;
     text-transform: uppercase;
 }
@@ -428,7 +436,12 @@ table.highlight>tbody>tr:hover{
 
 .customModal {
     max-height: 90% !important;
+    height: 60% !important;
     width: 65% !important;
+}
+
+.addEventBtnModal{
+    margin-top: 10px;
 }
 
 .modal-form-row {
