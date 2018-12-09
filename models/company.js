@@ -10,6 +10,11 @@ const CompanySchema = mongoose.Schema({
     },
 
     team: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+
         username: {
             type: String
         },
@@ -23,7 +28,13 @@ const CompanySchema = mongoose.Schema({
             type: Boolean,
             default: false
         }
+    }],
+
+    events: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event'
     }]
+
 });
 
 const Company = module.exports = mongoose.model('Company', CompanySchema);
@@ -33,6 +44,12 @@ const Company = module.exports = mongoose.model('Company', CompanySchema);
 module.exports.getCompanyById = function (companyID, callback) {
     Company.findById(companyID, callback);
 }
+
+module.exports.addEventToCompany = function (companyID, eventID, callback) {
+    var query = {_id: companyID};
+    Company.findOneAndUpdate(query, {$push: {events: eventID}}, callback);
+}
+
 
 // Returns all companies for that user
 module.exports.getAllUserCompanies = function (username, callback){
@@ -70,15 +87,13 @@ module.exports.removeCompany = function (id, callback) {
 
 
 
-module.exports.getEventt = function (type, name, callback){
+module.exports.getEvent = function (companyID, eventID, callback){
 
     var query = {
-        "events.type" : type,
-        "events.name" : name
+        _id: companyID
     };
 
-    Company.find(query, {events: {$elemMatch: {type: type}}}, callback);
-
+    Company.find(query, {events: {$elemMatch: {_id: eventID}}}, callback);
 }
 
 // GET all events where status is complete
@@ -91,33 +106,8 @@ module.exports.getAllCompletedEvents = function (username, callback){
     Company.find(query, callback);
 }
 
-
-// Get an event
-module.exports.getEvent = function (eventID, callback) {
-
-    var query = {
-        "events.eventID" : eventID
-    };
-
-    Company.findById(query, callback);
-}
-
-
-module.exports.updateEvent = function(company, updateEvent, callback) {
-
-    var query = {
-        "events.type": updateEvent.type,
-        "events.name": updateEvent.name,
-        "events.date": updateEvent.date,
-        "events.status": updateEvent.status,
-        "events.storage": updateEvent.storage,
-        "events.price": updateEvent.price,
-        "events.notes": updateEvent.notes,
-        "events.assignedTo": updateEvent.assignedTo
-    };
-
-    company.findOneAndUpdate({"events.eventID": updateEvent.eventID}, query, callback);
-
-    //User.findOneAndUpdate({ _id: eventID }, query, { new: true }, callback);
+module.exports.removeEventFromCompany = function (companyID, eventID, callback) {
+    var query = {_id: companyID};
+    Company.findOneAndUpdate(query, {$pull: {events: eventID}}, callback);
 };
 

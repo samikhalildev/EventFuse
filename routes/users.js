@@ -21,19 +21,15 @@ router.get("/login", function(req, res) {
 // Register User
 router.post("/register", function(req, res) {
   // Get the data from the register form
-  var firstname = req.body.firstname;
-  var lastname = req.body.lastname;
+  var name = req.body.name;
   var email = req.body.email;
   var username = req.body.username;
   var password = req.body.password;
   var password2 = req.body.password2;
 
   // Validation
-  req.checkBody("firstname", "First name is too short.").isLength({min: 3});
-  req.checkBody("firstname", "First name must contain letters only.").isAlpha();
-
-  req.checkBody("lastname", "Last name is too short.").isLength({min: 3});
-  req.checkBody("lastname", "Last name must contain letters only.").isAlpha();
+  req.checkBody("name", "First name is too short.").isLength({min: 3});
+  req.checkBody("name", "First name must contain letters only.").isAlpha();
 
   req.checkBody("email", "Email is not valid.").isEmail();
   req.checkBody("username", "Username is too short.").isLength({min: 3});
@@ -44,7 +40,7 @@ router.post("/register", function(req, res) {
   var errors = req.validationErrors();
 
   if (errors) {
-      res.render("register", { error_msg: errors, firstname: firstname, lastname: lastname, email: email, username: username });
+      res.render("register", { error_msg: errors, name: name, lastname: lastname, email: email, username: username });
 
   } else {
     //checking for email and username are already taken
@@ -66,17 +62,15 @@ router.post("/register", function(req, res) {
           function(err, mail) {
             if (user || mail) {
               res.render("register", {
-                  error_msg: errors, firstname: firstname, lastname: lastname, email: email, username: username, usernameTaken: true
+                  error_msg: errors, name: name, email: email, username: username, usernameTaken: true
               });
             } else {
 
-                let _firstname = capitalizeFirstLetter(firstname.toString().toLowerCase());
-                let _lastname = capitalizeFirstLetter(lastname.toString().toLowerCase());
+                let _name = capitalizeFirstLetter(name.toString().toLowerCase());
 
                 // Creates a new user object
               var newUser = new User({
-                  firstname: _firstname,
-                  lastname: _lastname,
+                  name: _name,
                   email: email,
                   username: username,
                   password: password

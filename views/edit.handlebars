@@ -58,11 +58,11 @@
                         <div class="input-field col s6">
                             <select name="status" class="">
                                 <option class="{{event.status}}" value="{{event.status}}">{{event.status}}</option>
-                                <option class="Missing" value="Missing Song">Missing Song</option>
+                                <option class="Missing" value="Missing song">Missing song</option>
                                 <option class="Ready" value="Ready">Ready</option>
                                 <option class="Editing" value="Editing">Editing</option>
                                 <option class="Complete" value="Complete">Complete</option>
-                                <option class="Deleted" value="Deleted">Deleted</option>
+                                <option class="Canceled" value="Canceled">Canceled</option>
                             </select>
                             <label>Status</label>
                         </div>
@@ -85,9 +85,7 @@
                             <label>Assigned To</label>
                         </div>
 
-                        <input type="hidden" name="originalType" value="{{event.type}}">
-                        <input type="hidden" name="originalName" value="{{event.name}}">
-                        <input type="hidden" name="originalDate" value="{{event.date}}">
+                        <input type="hidden" name="eventID" value="{{event._id}}">
 
                         <div class="modal-footer input-field col s12">
 

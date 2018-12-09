@@ -3,59 +3,39 @@ const mongoose = require('mongoose');
 // User Schema
 const eventSchema = mongoose.Schema({
 
-    company: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Company',
+    type: {
+        type: String,
         required: true
     },
 
-    events: [{
-        eventID: mongoose.Schema.Types.ObjectId,
+    name: {
+        type: String,
+        required: true
+    },
 
-        type: {
-            type: String,
-            required: true
-        },
+    date: {
+        type: String,
+        required: true
+    },
 
-        name: {
-            type: String,
-            required: true
-        },
+    status: String,
 
-        date: {
-            type: String,
-            required: true
-        },
+    storage: String,
 
-        status: String,
+    price: String,
 
-        storage: String,
+    notes: String,
 
-        price: String,
-
-        notes: String,
-
-        assignedTo: String
-    }]
+    assignedTo: String
 
 });
 
 const Event = module.exports = mongoose.model('Event', eventSchema);
 
-// Get events
-module.exports.getEvents = function (callback, limit) {
-    Event.find(callback).limit(limit);
-}
-
 
 // Get an event
 module.exports.getEvent = function (eventID, callback) {
-
-    var query = {
-        "events._id" : eventID
-    };
-
-    Event.find(query, { 'events.$': 1 }, callback);
+    Event.findById({_id: eventID}, callback);
 }
 
 
@@ -66,40 +46,30 @@ module.exports.getAllEventsByCompany = function (companyID, callback) {
 }
 
 
-// Add Comapny
-module.exports.addCompany = function (newCompany, callback) {
-    var query = {company: newCompany};
-    Event.create(query, callback);
-}
 
-// Add Event
-module.exports.addEvent = function (companyID, newEvent, callback) {
-    var query = {company: companyID};
-    Event.findOneAndUpdate(query, {$push: {events: newEvent}}, callback);
+// Create Event
+module.exports.addEvent = function (newEvent, callback) {
+    Event.create(newEvent, callback);
 }
 
 
 
-module.exports.updateEvent = function(data, callback) {
+module.exports.updateEvent = function(eventID, data, callback) {
 
-    var query = {
-        "events.type" : data.originalType,
-        "events.name": data.originalName,
-        "events.date": data.originalDate
-    };
+    var query = {_id: eventID};
 
     var updateEvent = { $set: {
-            "events.$.type": data.type,
-            "events.$.name": data.name,
-            "events.$.date": data.date,
-            "events.$.status": data.status,
-            "events.$.storage": data.storage,
-            "events.$.notes": data.notes,
-            "events.$.assignedTo": data.assignedTo
+            type: data.type,
+            name: data.name,
+            date: data.date,
+            status: data.status,
+            storage: data.storage,
+            notes: data.notes,
+            assignedTo: data.assignedTo
         }
     };
 
-    Event.update(query, updateEvent, callback);
+    Event.findOneAndUpdate(query, updateEvent, callback);
 };
 
 

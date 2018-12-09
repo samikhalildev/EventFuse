@@ -23,39 +23,22 @@ router.get("/", ensureAuthenticated, function(req, res) {
 });
 
 
-router.get("/update/:_id", ensureAuthenticated, function (req, res) {
-    var id = req.params._id;
-    console.log(id);
-
-    Event.getEvent(id, function (err, event) {
-
-        if(err)
-            return console.log("error " + err);
-
-        console.log(event[0]);
-    });
-});
-
-router.get("/delete/:_id", ensureAuthenticated, function (req, res) {
-
-});
-
-
 // GET ALL Company Events
 router.get('/api/company/:_id', function (req, res) {
 
-    var query = {company: req.params._id};
+    var query = {_id: req.params._id};
 
-    Event.find(query)
-        .populate("company")
+    Company.findOne(query)
+        .populate("events")
         .exec()
         .then(docs => {
 
             res.json({
                 success: true,
-                events: docs[0].events,
-                company: docs[0].company
+                company: docs
             });
+
+            //console.log(docs);
 
         })
         .catch(err => {
@@ -92,7 +75,7 @@ router.get('/api/events/:_id', function (req, res) {
 
     var eventID = req.params._id;
 
-    Company.getEvent(eventID, function (err, event) {
+    Event.getEvent(eventID, function (err, event) {
 
         if(err)
             throw err;
@@ -103,38 +86,41 @@ router.get('/api/events/:_id', function (req, res) {
 
 // POST add event
 router.post('/api/addEvents/:_id', function (req, res) {
-    let event = req.body;
     let companyID = req.params._id;
 
-    Event.addEvent(companyID, event, function (err, newEvent) {
+    var event = new Event({
+        type: req.body.type,
+        name: req.body.name,
+        date: req.body.date,
+        status: req.body.status,
+        storage: req.body.storage,
+        price: req.body.price,
+        notes: req.body.notes,
+        assignedTo: req.body.assignedTo
+    });
+
+    Event.addEvent(event, function (err, newEvent) {
 
         if(err){
             res.status(404);
             res.json({success: false});
         }
 
+        Company.addEventToCompany(companyID, newEvent._id, function (err, doc) {
+
+            if(err)
+                throw err;
+
+        });
+
         res.json({
             success: true,
             events: newEvent
         });
-        console.log(newEvent);
+
+        //console.log(newEvent);
     });
 });
-
-
-// DELETE event
-router.delete('/api/events:_id', function (req, res) {
-    let id = req.params._id;
-
-    Event.removeEvent(id, function (err, event) {
-
-        if(err)
-            throw err;
-
-        res.json(event);
-    });
-});
-
 
 
 

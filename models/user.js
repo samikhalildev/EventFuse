@@ -6,12 +6,7 @@ var Comapny = require("./company");
 // User Schema
 const UserSchema = mongoose.Schema({
 
-    firstname: {
-        type: String,
-        required: true
-    },
-
-    lastname: {
+    name: {
         type: String,
         required: true
     },
@@ -29,7 +24,16 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+
+    checkins: {
+        type: Number,
+    },
+
+    companies: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company'
+    }]
 });
 
 
@@ -96,4 +100,15 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
     if (err) throw err;
     callback(null, isMatch);
   });
+};
+
+
+module.exports.addCompanyToUser = function (userID, companyID, callback) {
+    var query = {_id: userID};
+    User.findOneAndUpdate(query, {$push: {companies: companyID}}, callback);
+};
+
+// Get company by ID
+module.exports.getUserCompanies = function (userID, callback) {
+    User.findById(userID, callback);
 };

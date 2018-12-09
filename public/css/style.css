@@ -311,7 +311,7 @@ hr {
 }
 
 .Canceled{
-    background-color: #ee0e00 !important;
+    background-color: #ff3f5a !important;
 }
 
 .Missing{
@@ -426,6 +426,12 @@ table.highlight>tbody>tr:hover{
     */
 }
 
+.eventUpdated{
+    background: rgba(175, 255, 198, 0.42) !important;
+}
+/*
+background: rgba(175, 255, 235, 0.67) !important;
+*/
 
 /* Add Event Window */
 .PopUpWindow{

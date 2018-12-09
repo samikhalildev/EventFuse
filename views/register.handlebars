@@ -25,41 +25,36 @@
                     </ul>
 
                     <form id="login-register" action="/users/register" method="POST">
-                        <div class="input-field col s6">
+                        <div class="input-field col s12">
                             <i class="material-icons prefix">sentiment_very_satisfied</i>
-                            <input name="firstname" value="{{firstname}}" id="first_name" type="text" class="validate" required aria-required="">
-                            <label for="first_name">First Name <span class="requiredField">*</span></label>
-                        </div>
-
-                        <div class="input-field col s6">
-                            <input name="lastname" value="{{lastname}}" id="last_name" type="text" class="validate" required aria-required="">
-                            <label for="last_name">Last Name <span class="requiredField">*</span></label>
+                            <input name="name" value="{{name}}" id="name" type="text" class="validate" required aria-required="">
+                            <label for="name">Name</label>
                         </div>
 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">email</i>
                             <input name="email" value="{{email}}" id="email" type="email" class="validate" required aria-required="">
-                            <label for="email">Email <span class="requiredField">*</span></label>
-                            <span class="helper-text" data-error="Not valid" data-success="Valid"></span>
+                            <label for="email">Email</label>
                         </div>
 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">account_box</i>
                             <input name="username" value="{{username}}" id="username" type="text" class="validate" required aria-required="">
-                            <label for="username">Username <span class="requiredField">*</span></label>
+                            <label for="username">Username</label>
+                            <span class="helper-text">You will use this to sign in.</span>
                         </div>
 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock_outline</i>
                             <input name="password" id="password" type="password" class="validate" required aria-required="">
-                            <label for="password">Password <span class="requiredField">*</span></label>
+                            <label for="password">Password</label>
                             <span class="helper-text">Password must be atleast 6 characters.</span>
                         </div>
 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock_outline</i>
                             <input name="password2" id="password2" type="password" class="validate" required aria-required="">
-                            <label for="password2">Re-Enter Password <span class="requiredField">*</span></label>
+                            <label for="password2">Re-Enter Password</label>
                         </div>
 
                         <div class="col s12">

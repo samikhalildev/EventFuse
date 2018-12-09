@@ -5,6 +5,8 @@ const ADD_EVENTS_API = window.location.hostname === 'localhost' ? 'http://localh
 const GET_EVENTS_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/company/' : 'http://eventhubz.herokuapp.com/api/company/';
 const Delete_Event_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/edit/delete/' : 'http://eventhubz.herokuapp.com/edit/delete/';
 
+const eventHub = window.location.hostname === 'localhost' ? 'http://localhost:3000/' : 'http://eventhubz.herokuapp.com/';
+
 // DOM elements
 const addEvent = document.querySelector('#addEventForm');
 const userID = document.getElementById('userID').value;
@@ -131,8 +133,6 @@ addEvent.addEventListener('submit', (event) => {
             });
     }
 
-
-
 });
 
 
@@ -159,7 +159,7 @@ let selector = document.querySelector('.selectCompany');
 selector.addEventListener('change', fetchEvents);
 
 
-function fetchEvents(deleteMessageSuccess){
+function fetchEvents(deleteMessageSuccess, param){
     var companyID = selector.value;
 
     if(!companyID)
@@ -173,7 +173,7 @@ function fetchEvents(deleteMessageSuccess){
         .then(response => response.json())
         .then(data => {
 
-            var events = data.events;
+            var events = data.company.events;
             console.log(events);
 
             var team = data.company.team;
@@ -207,7 +207,7 @@ function fetchEvents(deleteMessageSuccess){
                     }
 
                         table += `
-                               <tr id="${data.company._id}%${event.type}%${event.name}%${event.date}">
+                               <tr id="${event._id}">
                                     <td scope="row">${id++}</td>
                                     <td class="type"> ${event.type} </td>
                                     <td class="name"> ${event.name}</td>
@@ -223,11 +223,11 @@ function fetchEvents(deleteMessageSuccess){
                                     <td class="assignedTo"> ${event.assignedTo}</td>
                                     <input name="eventID" id="eventID" type="hidden" value="${event._id}">
                                     <td class=""> 
-                                        <a href="/edit/${event.type}/${event.name}/${event.date}" onclick="showUpdateData(this)"> <i class="material-icons prefix edit">edit</i> </a> 
+                                        <a href="/edit/${companyID}/${event._id}" onclick="showUpdateData(this)"> <i class="material-icons prefix edit">edit</i> </a> 
                                     </td>
                                     
                                     <td class=""> 
-                                        <a class="modal-trigger" onclick="deleteEvent(this)"> <i class="material-icons prefix delete modal-trigger deleteEventBtn">delete</i> </a> 
+                                        <a class="modal-trigger" id="${companyID}%${event._id}" onclick="deleteEvent(this)"> <i class="material-icons prefix delete modal-trigger deleteEventBtn">delete</i> </a> 
                                     </td>
                                </tr>
                             `;
@@ -249,7 +249,7 @@ function fetchEvents(deleteMessageSuccess){
                 });
             }
 
-            if(deleteMessageSuccess != undefined){
+            if(param == "del"){
                 var message = "";
 
                 var ele = document.querySelector('#deleteMessage');
@@ -266,6 +266,7 @@ function fetchEvents(deleteMessageSuccess){
                     ele.className = "alert error-msg";
                     ele.innerText = message;
                 }
+
             }
 
 
@@ -285,10 +286,18 @@ function fetchEvents(deleteMessageSuccess){
             tableElement.style.display = '';
             loadingElement.style.display = 'none';
 
+            if(updatedEventID){
+                var updatedRow = document.getElementById(updatedEventID);
+                updatedRow.className = "eventUpdated";
+                console.log(updatedRow);
+            }
+
+
         })
         .catch(err => console.log(err));
 
 }
+
 
 function updateEvent(eventID, id) {
     var actualEventID = eventID[--id].value;
@@ -299,27 +308,33 @@ function updateEvent(eventID, id) {
 }
 
 function deleteEvent(element) {
-    var row = element.parentNode.parentNode;
-    var eventData = row.id;
+    var eventData = element.id;
 
     console.log(eventData);
 
     if (confirm("Are you sure you want to delete this event?")) {
 
+        tableElement.style.display = 'none';
+        loadingElement.style.display = '';
+
         // split data by percent sign then pass them to the endpoint as parameters
         var data = eventData.split('%');
 
         let companyID = data[0];
-        let type = data[1];
-        let name = data[2];
-        let date = data[3];
+        let eventID = data[1];
 
-        fetch(Delete_Event_API + companyID + "/" + type + "/" + name + "/" + date)
+        console.log(companyID +" " + eventID);
+
+        fetch(Delete_Event_API + companyID + "/" + eventID)
             .then(respones => respones.json())
             .then(data => {
                 let success = data.success;
-                fetchEvents(success);
+
+                fetchEvents(success, "del");
             });
+
+        tableElement.style.display = '';
+        loadingElement.style.display = 'none';
 
     } else {
         console.log("cancel");

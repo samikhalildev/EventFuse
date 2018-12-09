@@ -10,38 +10,70 @@ const ObjectId = require('mongodb').ObjectID;
 var path = require("path");
 
 
-router.get("/:type/:name/:date", ensureAuthenticated, function(req, res) {
+router.get("/:companyID/:eventID", ensureAuthenticated, function(req, res) {
 
-    var query = { "events" : {
-            "$elemMatch": {
-                "type": req.params.type,
-                "name": req.params.name,
-                "date": req.params.date
-            }
-        }
-    };
+    let companyID = req.params.companyID;
+    let eventID = req.params.eventID;
 
-    Event.find(query, { 'events.$': 1 })
-        .populate("company")
-        .exec()
-        .then(doc => {
-            res.render("edit", {
-                event: doc[0].events[0],
-                team: doc[0].company.team
-            });
+    User.getUserCompanies(user._id, function (err, user) {
 
-            //console.log(doc[0].events[0]);
-            //console.log(doc[0].company.team);
-        })
+       if(err)
+           throw err;
 
+       if(isMatch(user.companies, companyID)){
 
-        .catch(err => {
-            console.log("Error " + err);
-        });
+           Company.getCompanyById(companyID, function (err, company) {
+
+               if(err)
+                   throw err;
+
+               if(isMatch(company.events, eventID)){
+
+                   Event.getEvent(eventID, function (err, event) {
+
+                       if(err)
+                           throw err;
+
+                       console.log(event);
+
+                       res.render("edit", {
+                           event: event,
+                           team: company.team
+                       });
+
+                   });
+
+               } else {
+                   redirectWithError(res)
+               }
+
+           });
+
+       } else {
+            redirectWithError(res)
+       }
+    });
 });
+
+
 
 router.post("/", ensureAuthenticated, function (req, res) {
 
+    Event.updateEvent(req.body.eventID, req.body, function (err, doc) {
+        if(err)
+            throw err;
+
+        Company.getAllUserCompanies(user.username, function (err, companies) {
+
+            if(err){
+                return console.log("error");
+            }
+
+            res.render("dashboard", {companies: companies, eventUpdated: req.body.eventID, success_msg: "Event has been updated."});
+        });
+
+    });
+    /*
     var query = {
         "events.type" : req.body.originalType,
         "events.name": req.body.originalName,
@@ -91,29 +123,52 @@ router.post("/", ensureAuthenticated, function (req, res) {
 
         });
     });
+    */
 
 });
 
-router.get("/delete/:company/:type/:name/:date", ensureAuthenticated, function (req, res) {
-    console.log(req.params.name);
-    Event.update({company: ObjectId(req.params.company)}, { $pull: { 'events': { 'type': req.params.type, 'name': req.params.name, 'date': req.params.date } } }, function (err, doc) {
+// DELETE event
+router.get("/delete/:companyID/:eventID", ensureAuthenticated, function (req, res) {
 
-        if(err){
-            res.status(404);
-            res.json({success: false});
-            console.log(err);
+    let companyID = req.params.companyID;
+    let eventID = req.params.eventID;
 
-        } else {
-            res.json({
-                success: true
+    User.getUserCompanies(user._id, function (err, user) {
+
+        if(err)
+            throw err;
+
+        if(isMatch(user.companies, companyID)){
+
+            Company.getEvent(companyID, eventID, function (err, event) {
+
+                if(err)
+                    throw err;
+
+                Event.removeEvent(eventID, function (err, doc) {
+
+                    if(err){
+                        res.status(404);
+                        res.json({success: false});
+                        console.log(err);
+
+                    } else {
+                        Company.removeEventFromCompany(companyID, eventID, function (err, done) {
+
+                            if(err)
+                                throw err;
+
+                            res.json({
+                                success: true
+                            });
+
+                        });
+                    }
+                });
             });
-
-            console.log("Success " + doc);
         }
-
     });
 });
-
 
 function ensureAuthenticated(req, res, next){
     if(req.isAuthenticated()){
@@ -122,6 +177,27 @@ function ensureAuthenticated(req, res, next){
         req.flash('error_msg','You are not logged in 🔑');
         res.redirect('/users/login');
     }
+}
+
+function isMatch(search,query) {
+    for(var i = 0; i < search.length ; i++) {
+        if(search[i].toString() == query.toString())
+            return true;
+    }
+    return false;
+}
+
+function redirectWithError(res){
+    Company.getAllUserCompanies(user.username, function (err, companies) {
+
+        if(err)
+            throw err;
+
+        res.render("dashboard", {
+            error_msg: "Error: Trying to access unauthorised event.",
+            companies: companies
+        });
+    });
 }
 
 module.exports = router;

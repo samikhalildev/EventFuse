@@ -5,19 +5,21 @@ var path = require("path");
 
 var Company = require("../models/company");
 var Event = require("../models/event");
-
+var User = require("../models/user");
 
 router.get("/", ensureAuthenticated, function(req, res) {
 
-    Company.getAllUserCompanies(user.username, function (err, companies) {
+    User.findById({_id: user._id})
+        .populate("companies")
+        .exec()
+        .then(data => {
+            res.render("manager", {
+                companies: data.companies,
+            });
 
-        if(err)
-            return console.log("An error occured: " + err);
-
-        res.render("manager", {
-            companies: companies,
-        });
-    });
+            //console.log(data);
+        })
+        .catch(err => console.log(err));
 });
 
 
@@ -41,22 +43,17 @@ router.post("/create", ensureAuthenticated, function (req, res) {
 
         } else {
 
-            Event.addCompany(company._id, function (err, added) {
-               if(err)
-                   throw err;
+            User.addCompanyToUser(user._id, company._id, function (err, companyAdded) {
+                if(err)
+                    throw err;
 
-               console.log(added.events);
+                res.json({
+                    success: true,
+                    company: company
+                });
 
             });
-
-            res.json({
-                success: true,
-                company: company
-            });
-
-            console.log("Company created: " + company);
         }
-
 
     });
 
@@ -81,7 +78,7 @@ router.post("/addTeam/:_id", ensureAuthenticated, function (req, res) {
             company: company
         });
 
-        console.log("Team member added: " + company);
+        //console.log("Team member added: " + company);
 
     });
 

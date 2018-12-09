@@ -64,7 +64,6 @@
                         {{#if error_msg}}
                             <li class="alert error-msg"> {{error_msg}} </li>
                         {{/if}}
-
                     </ul>
 
                     <ul class="alert-box">
@@ -167,11 +166,11 @@
                                 <!-- Status -->
                                 <div class="input-field col s4">
                                     <select name="status" class="status">
-                                        <option class="Missing" value="Missing Song">Missing Song</option>
+                                        <option class="Missing" value="Missing song">Missing song</option>
                                         <option class="Ready" value="Ready">Ready</option>
                                         <option class="Editing" value="Editing">Editing</option>
                                         <option class="Complete" value="Complete">Complete</option>
-                                        <option class="Deleted" value="Deleted">Deleted</option>
+                                        <option class="Canceled" value="Canceled">Canceled</option>
                                     </select>
                                     <label>Status</label>
                                 </div>
@@ -251,13 +250,12 @@
                                     <th scope="col" class="w250">Notes</th>
                                     <th scope="col" class="w100">Assigned to</th>
                                     <th scope="col" colspan="2" class="w100"><i class="material-icons previx">settings</i></th>
-
                                 </tr>
                             </thead>
 
                             {{#unless companies}}
                                 <tr>
-                                    <td class="small success-msg" colspan="9" aria-colspan="9"> Welcome {{user.firstname}}! <br> Let's get started by creating a company in your manager 💻 🔝</td>
+                                    <td class="small success-msg" colspan="9" aria-colspan="9"> Welcome {{user.name}}! <br> Let's get started by creating a company in your manager 💻 🔝</td>
                                 </tr>
                             {{/unless}}
 
@@ -329,10 +327,14 @@
 <script src="https://refreshless.com/nouislider/distribute/nouislider.min.js"></script>
 <script src="http://materializecss.com/extras/noUiSlider/nouislider.js"></script>
 
+<script>
+
+    var updatedEventID = "{{eventUpdated}}";
+
+</script>
+
 <!-- Events.js -->
 <script type="text/javascript" src="/js/events.js"></script>
-
-
 
 <!--
 <script>
