@@ -323,8 +323,6 @@ hr {
 }
 
 
-
-
 .Button {
     align-items: center;
     border-radius: 4px;
@@ -406,9 +404,8 @@ input:-webkit-autofill {
 }
 
 /* Table */
-
 .table tr th, td{
-    /*border: 1px solid #e5e5e5;*/
+    /* border: 1px solid #e5e5e5; */
     border-spacing: 15px;
     font-size: 14px;
 }
