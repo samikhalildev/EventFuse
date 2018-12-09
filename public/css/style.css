@@ -104,6 +104,7 @@ hr {
     transition-timing-function: ease-out;
 }
 
+/*
 .box:hover{
     -webkit-transition-property: -webkit-box-shadow;
     transition-property: -webkit-box-shadow;
@@ -117,7 +118,7 @@ hr {
     box-shadow: 0 14px 42px 0 rgba(0,0,0,.2);
     text-decoration: none;
 }
-
+*/
 
 /* Link Box */
 
@@ -267,9 +268,19 @@ hr {
 .button-status:hover{
     /*background: #4f6df5;*/
     color: #fff;
-    cursor: pointer;
     -webkit-transform: scale(1.02);
     transform: scale(1.02);
+}
+
+.cancelBtn{
+    font-size: 17px;
+    background: red;
+    margin-top: -1px;
+    margin-left: -15px;
+}
+
+.cancelBtn:hover{
+    background-color: #fa6559;
 }
 
 /* edit and delete */
@@ -281,12 +292,16 @@ hr {
     color: #ee849b;
 }
 
-.Waiting{
+.Deleted{
+    background-color: #49c728;
+}
+
+.Ready{
     background-color: #f9c546;
 }
 
 .Complete{
-    background-color: #58c6a5;
+    background-color: #1ac696;
 }
 
 .Canceled{
@@ -294,12 +309,15 @@ hr {
 }
 
 .Missing{
-    background-color: #ee443b;
+    background-color: #ee0e00;
 }
 
 .Editing{
     background-color: #14aaf5;
 }
+
+
+
 
 .Button {
     align-items: center;
@@ -320,6 +338,9 @@ hr {
     transition-property: background, border, box-shadow, color, fill;
 }
 
+.deleteEventBtn{
+    cursor: pointer;
+}
 
 /* Form input colour */
 input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]), input[type=password]:not(.browser-default):focus:not([readonly]), input[type=email]:not(.browser-default):focus:not([readonly]), input[type=url]:not(.browser-default):focus:not([readonly]), input[type=time]:not(.browser-default):focus:not([readonly]), input[type=date]:not(.browser-default):focus:not([readonly]), input[type=datetime]:not(.browser-default):focus:not([readonly]), input[type=datetime-local]:not(.browser-default):focus:not([readonly]), input[type=tel]:not(.browser-default):focus:not([readonly]), input[type=number]:not(.browser-default):focus:not([readonly]), input[type=search]:not(.browser-default):focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
@@ -341,6 +362,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 .alert{
     font-weight: 200;
     font-size: 15px;
+    padding: 10px;
 }
 
 .emoji{
@@ -353,6 +375,10 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 
 .success-msg{
     color: #009b00;
+}
+
+.deleteAlert{
+    display: none;
 }
 
 
@@ -371,21 +397,17 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 }
 
 /* Table */
-.tableSection{
-
-}
-
 
 .table tr th, td{
     border: 1px solid #e5e5e5;
     border-spacing: 15px;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .table th{
     background: #0facf3;
     color: #fff;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bolder;
     text-transform: uppercase;
 }
@@ -470,4 +492,32 @@ table.highlight>tbody>tr:hover{
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+
+@media only screen and (min-width: 992px) {
+    /* column widths */
+    .w100 {
+        width: 100px;
+    }
+
+    .w150 {
+        width: 150px;
+    }
+
+    .w165 {
+        width: 165px;
+    }
+
+    .w200 {
+        width: 200px;
+    }
+
+    .w225 {
+        width: 225px;
+    }
+
+    .w250 {
+        width: 250px;
+    }
 }

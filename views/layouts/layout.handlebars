@@ -29,6 +29,7 @@
                 <a href="/" class="brand-logo">
                     <img class="logo" src="/images/eventhub-logo.png">
                 </a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             </div>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
 
@@ -44,6 +45,18 @@
             </ul>
         </div>
     </nav>
+
+    <ul class="sidenav" id="mobile-demo">
+        {{#if user}}
+            <li class="menuItem"> <a href="#"> HI, {{user.firstname}} </a> </li>
+            <li class="menuItem"> <a href="/"> DASHBOARD </a> </li>
+            <li class="menuItem"> <a href="/manager"> Manager </a> </li>
+            <li class="menuItem"> <a href="/users/logout"> LOGOUT </a> </li>
+        {{else}}
+            <li class="menuItem"> <a href="/users/login"> LOGIN </a> </li>
+            <li class="menuItem"> <a href="/users/register"> REGISTER </a> </li>
+        {{/if}}
+    </ul>
 
     {{{body}}}
 

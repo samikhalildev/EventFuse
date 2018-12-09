@@ -3,6 +3,7 @@
 // API endpoints
 const ADD_EVENTS_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/addEvents/' : 'http://eventhubz.herokuapp.com/api/addEvents/';
 const GET_EVENTS_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/api/company/' : 'http://eventhubz.herokuapp.com/api/company/';
+const Delete_Event_API = window.location.hostname === 'localhost' ? 'http://localhost:3000/edit/delete/' : 'http://eventhubz.herokuapp.com/edit/delete/';
 
 // DOM elements
 const addEvent = document.querySelector('#addEventForm');
@@ -28,9 +29,8 @@ $(document).ready(function(){
         yearRange: [2014, 2019],
         showClearBtn: true
     });
-
+    $('.sidenav').sidenav();
 });
-
 
 // Loads these functions when page loads
 window.onload = function(){
@@ -160,7 +160,7 @@ let selector = document.querySelector('.selectCompany');
 selector.addEventListener('change', fetchEvents);
 
 
-function fetchEvents(){
+function fetchEvents(deleteMessageSuccess){
     var companyID = selector.value;
 
     if(!companyID)
@@ -173,8 +173,13 @@ function fetchEvents(){
     fetch(GET_EVENTS_API + companyID)
         .then(response => response.json())
         .then(data => {
-            var events = data.company.events;
+
+            var events = data.events;
+            console.log(events);
+
             var team = data.company.team;
+            console.log(team);
+
             var success = data.success;
 
             let table = '';
@@ -190,36 +195,40 @@ function fetchEvents(){
                     `;
             } else if(success){
                 events.forEach((event) => {
-                    var statusClass = '';
+                    var status = '';
 
-                    if(event.status == "Missing-Song-info"){
-                        statusClass = "Missing";
+                    if(event.status == "Missing-Song-info") {
+                        status = "Missing";
+
+                    } else if(event.status == "Waiting") {
+                        status = "Ready";
+
                     } else {
-                        statusClass = event.status;
+                        status = event.status;
                     }
 
                         table += `
-                               <tr>
+                               <tr id="${data.company._id}%${event.type}%${event.name}%${event.date}">
                                     <td scope="row">${id++}</td>
                                     <td class="type"> ${event.type} </td>
                                     <td class="name"> ${event.name}</td>
                                     <td class="date"> ${event.date}</td>
                                     <!--<td class="price"> $${event.price}</td>-->
                                     <td class="status">
-                                         <button class="button-status ${statusClass}">
-                                            ${event.status}
+                                         <button class="button-status ${status}">
+                                            ${status}
                                          </button> 
                                     </td>
                                     <td class="storage"> ${event.storage}</td>
                                     <td class="notes"> ${event.notes}</td>
                                     <td class="assignedTo"> ${event.assignedTo}</td>
-                                    
+                                    <input name="eventID" id="eventID" type="hidden" value="${event._id}">
                                     <td class=""> 
-                                        <a> <i class="material-icons prefix edit">edit</i> </a> 
+                                        <a href="/edit/${event.type}/${event.name}/${event.date}" onclick="showUpdateData(this)"> <i class="material-icons prefix edit">edit</i> </a> 
                                     </td>
                                     
                                     <td class=""> 
-                                        <a> <i class="material-icons prefix delete modal-trigger">delete</i> </a> 
+                                        <a class="modal-trigger" onclick="deleteEvent(this)"> <i class="material-icons prefix delete modal-trigger deleteEventBtn">delete</i> </a> 
                                     </td>
                                </tr>
                             `;
@@ -241,6 +250,26 @@ function fetchEvents(){
                 });
             }
 
+            if(deleteMessageSuccess != undefined){
+                var message = "";
+
+                var ele = document.querySelector('#deleteMessage');
+
+                console.log(ele);
+
+                if(deleteMessageSuccess){
+                    message = "Event was successfully deleted.";
+                    ele.className = "alert success-msg";
+                    ele.innerText = message;
+
+                } else {
+                    message = "Failed to delete event.";
+                    ele.className = "alert error-msg";
+                    ele.innerText = message;
+                }
+            }
+
+
             tableElement.innerHTML = table;
             teamDataElement.innerHTML = teamData;
 
@@ -257,9 +286,42 @@ function fetchEvents(){
             tableElement.style.display = '';
             loadingElement.style.display = 'none';
 
-            console.log("Rows: " + rows.length);
-
         })
         .catch(err => console.log(err));
 
 }
+
+function updateEvent(eventID, id) {
+    var actualEventID = eventID[--id].value;
+    var data = document.getElementById(actualEventID);
+
+    console.log(data.attributes["update_name"].value);
+    // Create a data object to send to our endpoint
+}
+
+function deleteEvent(element) {
+    var row = element.parentNode.parentNode;
+    var eventData = row.id;
+
+    console.log(eventData);
+
+    if (confirm("Are you sure you want to delete this event?")) {
+
+        // split data by percent sign then pass them to the endpoint as parameters
+        var data = eventData.split('%');
+
+        let companyID = data[0];
+        let type = data[1];
+        let name = data[2];
+        let date = data[3];
+
+        fetch(Delete_Event_API + companyID + "/" + type + "/" + name + "/" + date)
+            .then(respones => respones.json())
+            .then(data => {
+                let success = data.success;
+                fetchEvents(success);
+            });
+
+    } else {
+        console.log("cancel");
+    }}

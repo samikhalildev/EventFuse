@@ -64,6 +64,11 @@
                         {{#if error_msg}}
                             <li class="alert error-msg"> {{error_msg}} </li>
                         {{/if}}
+
+                    </ul>
+
+                    <ul class="alert-box">
+                        <li id="deleteMessage"></span>
                     </ul>
 
                     <!-- Select company -->
@@ -162,18 +167,18 @@
                                 <!-- Status -->
                                 <div class="input-field col s4">
                                     <select name="status" class="status">
-                                        <option class="waiting" value="Waiting">Waiting</option>
-                                        <option class="editing" value="Editing">Editing</option>
-                                        <option class="missing" value="Missing">Deleted</option>
-                                        <option class="completed" value="Complete">Complete</option>
-                                        <option class="missing" value="Missing-Song-info">Missing Song and Info</option>
+                                        <option class="Waiting" value="Waiting">Ready</option>
+                                        <option class="Missing" value="Missing Song">Missing Song</option>
+                                        <option class="Editing" value="Editing">Editing</option>
+                                        <option class="Complete" value="Complete">Complete</option>
+                                        <option class="Deleted" value="Deleted">Deleted</option>
                                     </select>
                                     <label>Status</label>
                                 </div>
 
                                 <!-- Price Slider -->
-                                <div class="input-field col s12 priceSection">
-                                    <label class="priceLabel">Price $<span id="price">50</span> </label>
+                                <div style="display: none;" class="input-field col s12 priceSection">
+                                    <label class="priceLabel">Price $<span id="price"></span> </label>
                                     <div onmouseup="" id="priceSlider"></div>
                                 </div>
 
@@ -203,6 +208,7 @@
                             </form>
                         </div>
                     </div>
+
 
                     <!-- Delete Event Modal -->
                     <div id="delete-modal" class="modal">
@@ -236,15 +242,15 @@
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col" width="150">Event Type</th>
-                                    <th scope="col" width="150">Name</th>
-                                    <th scope="col" width="150">Date</th>
+                                    <th scope="col" class="w150">Type</th>
+                                    <th scope="col" class="w225">Name</th>
+                                    <th scope="col" class="w165">Date</th>
                                     <!--<th scope="col">Price</th>-->
-                                    <th scope="col" width="100">Status</th>     <!-- Complete: Green, In Progress: yellow, N/A, On hold -->
-                                    <th scope="col" width="150">Storage</th>
-                                    <th scope="col" width="150">Notes</th>
-                                    <th scope="col" width="100">Assigned to</th>
-                                    <th scope="col" colspan="2"><i class="material-icons previx">settings</i></th>
+                                    <th scope="col" class="w165">Status</th>     <!-- Complete: Green, In Progress: yellow, N/A, On hold -->
+                                    <th scope="col" class="w150">Storage</th>
+                                    <th scope="col" class="w250">Notes</th>
+                                    <th scope="col" class="w100">Assigned to</th>
+                                    <th scope="col" colspan="2" class="w100"><i class="material-icons previx">settings</i></th>
 
                                 </tr>
                             </thead>

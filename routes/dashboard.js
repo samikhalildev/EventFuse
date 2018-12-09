@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require("../models/user");
 var Company = require("../models/company");
+var Event = require("../models/event");
 
 const mongoose = require('mongoose');
 
@@ -22,25 +23,46 @@ router.get("/", ensureAuthenticated, function(req, res) {
 });
 
 
+router.get("/update/:_id", ensureAuthenticated, function (req, res) {
+    var id = req.params._id;
+    console.log(id);
+
+    Event.getEvent(id, function (err, event) {
+
+        if(err)
+            return console.log("error " + err);
+
+        console.log(event[0]);
+    });
+});
+
+router.get("/delete/:_id", ensureAuthenticated, function (req, res) {
+
+});
+
 
 // GET ALL Company Events
 router.get('/api/company/:_id', function (req, res) {
 
-    var companyID = req.params._id;
+    var query = {company: req.params._id};
 
-    Company.getAllEventsByCompany(companyID, function (err, company) {
+    Event.find(query)
+        .populate("company")
+        .exec()
+        .then(docs => {
 
-        if(err){
+            res.json({
+                success: true,
+                events: docs[0].events,
+                company: docs[0].company
+            });
+
+        })
+        .catch(err => {
             res.status(404);
             res.json({success: false});
-        }
-
-        res.json({
-            success: true,
-            company: company
+            console.log(err);
         });
-
-    });
 });
 
 
@@ -84,7 +106,7 @@ router.post('/api/addEvents/:_id', function (req, res) {
     let event = req.body;
     let companyID = req.params._id;
 
-    Company.addEvent(companyID, event, function (err, event) {
+    Event.addEvent(companyID, event, function (err, newEvent) {
 
         if(err){
             res.status(404);
@@ -93,30 +115,15 @@ router.post('/api/addEvents/:_id', function (req, res) {
 
         res.json({
             success: true,
-            events: event.events
+            events: newEvent
         });
-        console.log(event);
+        console.log(newEvent);
     });
 });
 
-
-// UPDATE event
-router.put('/api/events:_id', function (req, res) {
-    let id = req.params._id;
-    let updatedEvent = req.body;
-    //console.log(updatedEvent);
-
-    Event.updateUser(id, updatedEvent, {}, function (err, event) {
-
-        if(err)
-            throw err;
-
-        res.json(event);
-    });
-});
 
 // DELETE event
-router.put('/api/events:_id', function (req, res) {
+router.delete('/api/events:_id', function (req, res) {
     let id = req.params._id;
 
     Event.removeEvent(id, function (err, event) {

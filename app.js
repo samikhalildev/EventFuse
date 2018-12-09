@@ -22,6 +22,7 @@ var db = mongoose.connection;
 var users = require("./routes/users");
 var dashboard = require("./routes/dashboard");
 var manager = require("./routes/manager");
+var edit = require("./routes/edit");
 
 var editDetails = require("./routes/editDetails");
 var changePassword = require("./routes/changePassword");
@@ -103,6 +104,7 @@ app.use("/users", users);
 
 app.use("/editDetails", editDetails);
 app.use("/changePassword", changePassword);
+app.use("/edit", edit);
 //add path to a route here
 
 // Set Port

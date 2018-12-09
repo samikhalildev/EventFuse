@@ -28,6 +28,7 @@ router.post("/", ensureAuthenticated, function(req, res) {
 
       errors: errors
     });
+
   } else {
     //checking for email and username are already taken
     User.getUserByNameAndId(

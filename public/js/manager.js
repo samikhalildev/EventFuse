@@ -36,6 +36,7 @@ $(document).ready(function() {
             dismissible: false, // Modal cannot be closed by clicking anywhere outside
         }
     );
+    $('.sidenav').sidenav();
 });
 
 /*
@@ -104,7 +105,7 @@ function addTeamMemberButton(btn) {
             name: name
         }
 
-        var success = name + " has been added successfully!\nFeel free to add more 😬";
+        var success = name + " has been added successfully!\nFeel free to add more 😁";
         MemberDisplayError(success, false);
 
         // display button

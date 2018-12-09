@@ -8,4 +8,6 @@ loginnregister.addEventListener('submit', function() {
     loadingElement.style.display = '';
 });
 
-
+$(document).ready(function(){
+    $('.sidenav').sidenav();
+});

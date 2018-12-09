@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 var path = require("path");
 
 var Company = require("../models/company");
-var User = require("../models/user");
+var Event = require("../models/event");
 
 
 router.get("/", ensureAuthenticated, function(req, res) {
@@ -38,14 +38,26 @@ router.post("/create", ensureAuthenticated, function (req, res) {
             console.log("An error occured: " + err);
             res.status(404);
             res.json({success: false});
+
+        } else {
+
+            Event.addCompany(company._id, function (err, added) {
+               if(err)
+                   throw err;
+
+               console.log(added.events);
+
+            });
+
+            res.json({
+                success: true,
+                company: company
+            });
+
+            console.log("Company created: " + company);
         }
 
-        res.json({
-            success: true,
-            company: company
-        });
 
-        console.log("Company created: " + company);
     });
 
 });
