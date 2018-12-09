@@ -112,7 +112,6 @@ hr {
     transition-timing-function: ease-out;
 }
 
-/*
 .box:hover{
     -webkit-transition-property: -webkit-box-shadow;
     transition-property: -webkit-box-shadow;
@@ -126,7 +125,6 @@ hr {
     box-shadow: 0 14px 42px 0 rgba(0,0,0,.2);
     text-decoration: none;
 }
-*/
 
 /* Link Box */
 
@@ -300,27 +298,27 @@ hr {
 }
 
 .Deleted{
-    background-color: #49c728;
+    background-color: #49c728 !important;
 }
 
 .Ready{
-    background-color: #f9c546;
+    background-color: #f9c546 !important;
 }
 
 .Complete{
-    background-color: #1ac696;
+    background-color: #1ac696 !important;
 }
 
 .Canceled{
-    background-color: #ee0e00;
+    background-color: #ee0e00 !important;
 }
 
 .Missing{
-    background-color: #ee0e00;
+    background-color: #ee0e00 !important;
 }
 
 .Editing{
-    background-color: #14aaf5;
+    background-color: #14aaf5 !important;
 }
 
 

@@ -10,7 +10,7 @@ EventHub is a modern web-based application that helps video producers and event 
 * [x] 🙈 View events
 * [x] ➡️ Assign a member to an event
 * [x] 🔍 Search
-* [ ] ␥ Edit & delete
+* [x] ␥ Edit & delete
 * [ ] 🗃 Show events for specific user
 * [ ] 💬 Chat room
 
