@@ -298,11 +298,11 @@ hr {
 }
 
 .Deleted{
-    background-color: #49c728 !important;
+    background-color: #b46ec7 !important;
 }
 
 .Ready{
-    background-color: #f9c546 !important;
+    background-color: #f9d545 !important;
 }
 
 .Complete{
@@ -314,7 +314,7 @@ hr {
 }
 
 .Missing{
-    background-color: #ee0e00 !important;
+    background-color: #ee523f !important;
 }
 
 .Editing{
