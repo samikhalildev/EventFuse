@@ -283,8 +283,7 @@ hr {
 .cancelBtn{
     font-size: 17px;
     background: red;
-    margin-top: -1px;
-    margin-left: -15px;
+    margin-right: 5px;
 }
 
 .cancelBtn:hover{
@@ -436,12 +435,7 @@ table.highlight>tbody>tr:hover{
 
 .customModal {
     max-height: 90% !important;
-    height: 60% !important;
     width: 65% !important;
-}
-
-.addEventBtnModal{
-    margin-top: 10px;
 }
 
 .modal-form-row {
