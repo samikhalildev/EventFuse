@@ -257,7 +257,7 @@ function fetchEvents(deleteMessageSuccess, param){
                 console.log(ele);
 
                 if(deleteMessageSuccess){
-                    message = "Event has been deleted successfully.";
+                    message = "Event has been deleted.";
                     ele.className = "alert success-msg";
                     ele.innerText = message;
 
