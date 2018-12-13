@@ -44,13 +44,13 @@ router.get("/:companyID/:eventID", ensureAuthenticated, function(req, res) {
                    });
 
                } else {
-                   redirectWithError(res)
+                   redirectWithError(res, "Error: Trying to access unauthorised event.");
                }
 
            });
 
        } else {
-            redirectWithError(res)
+            redirectWithError(res, "Error: Trying to access unauthorised event.");
        }
     });
 });
@@ -63,7 +63,7 @@ router.post("/", ensureAuthenticated, function (req, res) {
         if(err)
             throw err;
 
-        Company.getAllUserCompanies(user.username, function (err, companies) {
+        Company.getAllUserCompaniesByID(user._id, function (err, companies) {
 
             if(err){
                 return console.log("error");
@@ -113,7 +113,7 @@ router.post("/", ensureAuthenticated, function (req, res) {
         console.log("updated " + doc);
 
 
-        Company.getAllUserCompanies(user.username, function (err, companies) {
+        Company.getAllUserCompaniesByID(user._id, function (err, companies) {
 
             if(err){
                 return console.log("error");
@@ -133,41 +133,57 @@ router.get("/delete/:companyID/:eventID", ensureAuthenticated, function (req, re
     let companyID = req.params.companyID;
     let eventID = req.params.eventID;
 
-    User.getUserCompanies(user._id, function (err, user) {
+    Company.getUser(companyID, user._id, function (err, userc) {
+       if(err)
+           throw err;
 
-        if(err)
-            throw err;
+       if(!userc[0].team[0].isOwner){
 
-        if(isMatch(user.companies, companyID)){
+           res.json({
+               success: false
+           });
 
-            Company.getEvent(companyID, eventID, function (err, event) {
+       } else {
+           User.getUserCompanies(user._id, function (err, user) {
 
-                if(err)
-                    throw err;
+               if(err)
+                   throw err;
 
-                Event.removeEvent(eventID, function (err, doc) {
+               if(isMatch(user.companies, companyID)){
 
-                    if(err){
-                        res.status(404);
-                        res.json({success: false});
-                        console.log(err);
+                   Company.getEvent(companyID, eventID, function (err, event) {
 
-                    } else {
-                        Company.removeEventFromCompany(companyID, eventID, function (err, done) {
+                       if(err)
+                           throw err;
 
-                            if(err)
-                                throw err;
+                       Event.removeEvent(eventID, function (err, doc) {
 
-                            res.json({
-                                success: true
-                            });
+                           if(err){
+                               res.status(404);
+                               res.json({success: false});
+                               console.log(err);
 
-                        });
-                    }
-                });
-            });
-        }
+                           } else {
+                               Company.removeEventFromCompany(companyID, eventID, function (err, done) {
+
+                                   if(err)
+                                       throw err;
+
+                                   res.json({
+                                       success: true
+                                   });
+
+                               });
+                           }
+                       });
+                   });
+               }
+           });
+       }
+
     });
+
+
 });
 
 function ensureAuthenticated(req, res, next){
@@ -187,14 +203,14 @@ function isMatch(search,query) {
     return false;
 }
 
-function redirectWithError(res){
-    Company.getAllUserCompanies(user.username, function (err, companies) {
+function redirectWithError(res, error){
+    Company.getAllUserCompaniesByID(user._id, function (err, companies) {
 
         if(err)
             throw err;
 
         res.render("dashboard", {
-            error_msg: "Error: Trying to access unauthorised event.",
+            error_msg: error,
             companies: companies
         });
     });

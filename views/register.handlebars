@@ -19,8 +19,8 @@
                             <li class="alert error-msg"> {{msg}} </li>
                         {{/each}}
 
-                        {{#if usernameTaken}}
-                            <li class="alert error-msg"> This username has already been taken <span class="emoji"> 😫 </span></li>
+                        {{#if error}}
+                            <li class="alert error-msg"> {{error}} </li>
                         {{/if}}
                     </ul>
 
@@ -31,11 +31,21 @@
                             <label for="name">Name</label>
                         </div>
 
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">email</i>
-                            <input name="email" value="{{email}}" id="email" type="email" class="validate" required aria-required="">
-                            <label for="email">Email</label>
-                        </div>
+                        {{#if userEmail}}
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">email</i>
+                                <input name="email" value="{{userEmail}}" id="email" type="email" class="validate" disabled aria-disabled="" required aria-required="">
+                                <label for="email">Email</label>
+                            </div>
+
+                        {{else}}
+
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">email</i>
+                                <input name="email" value="{{email}}" id="email" type="email" class="validate" required aria-required="">
+                                <label for="email">Email</label>
+                            </div>
+                        {{/if}}
 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">account_box</i>
@@ -56,6 +66,11 @@
                             <input name="password2" id="password2" type="password" class="validate" required aria-required="">
                             <label for="password2">Re-Enter Password</label>
                         </div>
+
+                        {{#if userID}}
+                            <input type="hidden" name="userID" value="{{userID}}">
+                            <input type="hidden" name="userEmail" value="{{userEmail}}">
+                        {{/if}}
 
                         <div class="col s12">
                             <div id="loadingElement" class="center">

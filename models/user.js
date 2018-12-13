@@ -7,8 +7,7 @@ var Comapny = require("./company");
 const UserSchema = mongoose.Schema({
 
     name: {
-        type: String,
-        required: true
+        type: String
     },
 
     email: {
@@ -17,17 +16,15 @@ const UserSchema = mongoose.Schema({
     },
 
     username: {
-        type: String,
-        required: true
+        type: String
     },
 
     password: {
-        type: String,
-        required: true
+        type: String
     },
 
     checkins: {
-        type: Number,
+        type: Number
     },
 
     companies: [{
@@ -40,9 +37,6 @@ const UserSchema = mongoose.Schema({
 
 var User = (module.exports = mongoose.model("User", UserSchema));
 
-
-
-
 module.exports.createUser = function(newUser, callback) {
   bcrypt.genSalt(10, function(err, salt) {
     bcrypt.hash(newUser.password, salt, function(err, hash) {
@@ -50,6 +44,29 @@ module.exports.createUser = function(newUser, callback) {
       newUser.save(callback);
     });
   });
+};
+
+module.exports.createUser_invite = function(newUser, callback){
+    User.create(newUser, callback);
+};
+
+
+module.exports.userRegistration_invite = function(newUser, userID, callback) {
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(newUser.password, salt, function(err, hash) {
+            newUser.password = hash;
+
+            query = { $set: {
+                    name: newUser.name,
+                    email: newUser.email,
+                    username: newUser.username,
+                    password: newUser.password,
+                }
+            }
+
+            User.findOneAndUpdate({_id: userID}, query, {new: true}, callback);
+        });
+    });
 };
 
 module.exports.getUserByUsername = function(username, callback) {

@@ -122,10 +122,16 @@
                                         <span class="title">{{name}}</span>
                                             <p>
                                                 {{#team}}
-                                                    {{#if isOwner}}
-                                                         Owner: {{username}} <br> Team:
+                                                    {{#if name}}
+                                                        {{#if isOwner}}
+                                                             Owner: {{name}} <br> Team:
+                                                        {{else}}
+                                                            {{name}},
+                                                        {{/if}}
+
                                                     {{else}}
-                                                        {{username}},
+                                                        <br>
+                                                        <span class="alert error-msg"> {{email}} </span> is not registered yet. Tell them to check their email.
                                                     {{/if}}
                                                 {{/team}}
                                             </p>
@@ -141,7 +147,6 @@
 
                     </div>
 
-
                     <!-- Add team members form -->
                     <div id="add-team-members-modal" class="PopUpWindow modal">
                         <div class="modal-content">
@@ -152,10 +157,11 @@
 
                             <form id="addTeamMembersForm">
 
-                                <!-- Name -->
+                                <!-- Email -->
                                 <div class="input-field col s12">
-                                    <input name="name" id="teamName" type="text" placeholder="Jack" class="validate" required="" aria-required="true">
-                                    <label for="name">Member's Name <span class="requiredField">*</span></label>
+                                    <input name="email" id="teamEmail" type="email" placeholder="tom@gmail.com" class="validate" required="" aria-required="true">
+                                    <label for="email">Email <span class="requiredField">*</span></label>
+                                    <span class="helper-text" data-error="Not valid" data-success="Valid"></span>
                                 </div>
 
                                 <div class="modal-footer input-field col s12">

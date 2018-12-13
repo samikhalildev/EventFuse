@@ -3,23 +3,24 @@ var router = express.Router();
 const mongoose = require('mongoose');
 var path = require("path");
 
+'use strict';
+const nodemailer = require("nodemailer");
+
 var Company = require("../models/company");
 var Event = require("../models/event");
 var User = require("../models/user");
+var emailTemplate = require(".//email/teamEmail");
 
 router.get("/", ensureAuthenticated, function(req, res) {
 
-    User.findById({_id: user._id})
-        .populate("companies")
-        .exec()
-        .then(data => {
-            res.render("manager", {
-                companies: data.companies,
-            });
+    Company.getAllUserCompaniesByID(user._id, function (err, companies) {
 
-            //console.log(data);
-        })
-        .catch(err => console.log(err));
+       if(err)
+           throw err;
+
+        res.render("manager", {companies: companies});
+        console.log(companies);
+    });
 });
 
 
@@ -28,9 +29,12 @@ router.post("/create", ensureAuthenticated, function (req, res) {
     var newCompany = new Company({
         name: req.body.name,
         team: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
             username: user.username,
-            isAdmin: true,
-            isOwner: true
+            isOwner: true,
+            isAdmin: true
         }
     });
 
@@ -42,7 +46,6 @@ router.post("/create", ensureAuthenticated, function (req, res) {
             res.json({success: false});
 
         } else {
-
             User.addCompanyToUser(user._id, company._id, function (err, companyAdded) {
                 if(err)
                     throw err;
@@ -62,23 +65,86 @@ router.post("/create", ensureAuthenticated, function (req, res) {
 
 router.post("/addTeam/:_id", ensureAuthenticated, function (req, res) {
 
-    var newTeamMember = {"username": req.body.name, "isAdmin": true, "isOwner": false};
     var companyID = req.params._id;
+    var email = req.body.email;
+    var teamMemberID = mongoose.Types.ObjectId();
+    console.log(teamMemberID);
 
-    Company.addTeamMember(companyID, newTeamMember, function (err, company) {
+    var newTeamMember = {
+        "_id": teamMemberID,
+        "email": email,
+        "isOwner": false,
+        "isAdmin": true
+    };
 
-        if(err){
-            console.log("An error occured: " + err);
-            res.status(404);
-            res.json({success: false});
-        }
+    var newUser = new User ({
+       _id: teamMemberID,
+       email: email
+    });
 
-        res.json({
-            success: true,
-            company: company
+    User.createUser_invite(newUser, function (err, userAdded) {
+
+        if(err)
+            throw err;
+
+        User.addCompanyToUser(userAdded._id, companyID, function (err, companyAdded) {
+
+            if(err)
+                throw err;
+
         });
 
-        //console.log("Team member added: " + company);
+        Company.addTeamMember(companyID, newTeamMember, function (err, company) {
+
+            if(err){
+                console.log("An error occured: " + err);
+                res.status(404);
+                res.json({success: false});
+
+            } else {
+
+                var link = "http://localhost:3000/users/invite/" + userAdded._id;
+
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    secure: false,
+                    port: 25,
+                    auth: {
+                        user: 'oventshub@gmail.com',
+                        pass: 'F32k041-14<$!<$L'
+                    },
+                    tls: {
+                        rejectUnauthorized: false
+                    }
+                });
+
+                // Message object
+                let message = {
+                    from: '"EventHub" <oventshub@gmail.com>',
+                    to: email,
+                    subject: user.name + ' has invited you to join ' + company.name + ' on EventHub!',
+                    html: emailTemplate(user.name, company.name, link)
+                };
+
+                transporter.sendMail(message, (err, info) => {
+                    if (err) {
+                        console.log('Error occurred. ' + err.message);
+                        return process.exit(1);
+                    }
+
+                    console.log('Message sent: %s', info.messageId);
+                    // Preview only available when sending through an Ethereal account
+                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                });
+
+                res.json({
+                    success: true,
+                    email: "sent",
+                    company: company
+                });
+            }
+
+        });
 
     });
 

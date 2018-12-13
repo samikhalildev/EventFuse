@@ -78,7 +78,9 @@
                                 <option value="">No one</option>
                                 <option selected value="{{event.assignedTo}}">{{event.assignedTo}}</option>
                                 {{#each team}}
-                                    <option value="{{username}}">{{username}}</option>
+                                    {{#if name}}
+                                        <option value="{{name}}">{{name}}</option>
+                                    {{/if}}
                                 {{/each}}
                             </select>
                             <label>Assigned To</label>

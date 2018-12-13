@@ -87,7 +87,6 @@ createComapny.addEventListener('submit', (event) => {
     }
 });
 
-
 function addTeamMemberButton(btn) {
     var companyID = btn.value;
 
@@ -97,14 +96,14 @@ function addTeamMemberButton(btn) {
 
         const formData = new FormData(addTeamMembers);
 
-        const name = formData.get('name');
+        const email = formData.get('email');
 
         // Create a data object to send to our endpoint
         const newTeamMember = {
-            name: name
+            email: email
         }
 
-        var success = name + " has been added successfully!\nFeel free to add more 😁";
+        var success = "An email has been sent to " + email + "\nThey will need to follow the email and register.";
         MemberDisplayError(success, false);
 
         // display button
@@ -122,7 +121,7 @@ function addTeamMemberButton(btn) {
         }).then(respones => respones.json())
             .then(data => {
                 console.log(data.company.team);
-                document.getElementById('teamName').value = '';
+                document.getElementById('teamEmail').value = '';
             });
     });
 }

@@ -11,11 +11,19 @@ var path = require("path");
 
 router.get("/", ensureAuthenticated, function(req, res) {
 
-    Company.getAllUserCompanies(user.username, function (err, companies) {
+    Company.getAllUserCompaniesByID(user._id, function (err, companies) {
 
         if(err){
             return console.log("error");
         }
+
+        /*
+        Company.getUser(companyID, user._id, function (err, user) {
+            if(err)
+                throw err;
+
+            var teamUser = user[0].team[0];
+        */
 
         res.render("dashboard", {companies: companies});
 

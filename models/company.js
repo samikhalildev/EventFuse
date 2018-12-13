@@ -10,21 +10,30 @@ const CompanySchema = mongoose.Schema({
     },
 
     team: [{
-        user: {
+        _id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
+        },
+
+        name: {
+            type: String
+        },
+
+        email: {
+            type: String,
+            required: true
         },
 
         username: {
             type: String
         },
 
-        isAdmin: {
+        isOwner: {
             type: Boolean,
             default: false
         },
 
-        isOwner: {
+        isAdmin: {
             type: Boolean,
             default: false
         }
@@ -51,15 +60,45 @@ module.exports.addEventToCompany = function (companyID, eventID, callback) {
 }
 
 
-// Returns all companies for that user
-module.exports.getAllUserCompanies = function (username, callback){
+module.exports.getAllUserCompaniesByID = function (userID, callback){
 
     var query = {
-        "team.username" : username
+        "team._id" : userID
     };
 
     Company.find(query, callback);
 }
+
+module.exports.getUser = function (companyID, userID, callback){
+
+    var query = {
+        _id: companyID
+    };
+
+    Company.find(query, {team: {$elemMatch: {_id: userID}}}, callback);
+}
+
+module.exports.updateUserDetails = function (user, callback){
+
+    var query = {
+        "team._id" : user._id
+    };
+
+    var data = { $set: {
+            "team.$[i].username": user.username,
+            "team.$[i].name": user.name
+        }
+    };
+
+    var filter = {
+        arrayFilters: [
+                {"i._id": user._id}
+        ]
+    };
+
+    Company.update(query, data, filter, callback);
+}
+
 
 // Add Comapny
 module.exports.addCompany = function (newCompany, callback) {

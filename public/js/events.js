@@ -189,7 +189,7 @@ function fetchEvents(deleteMessageSuccess, param){
             if(events.length == 0){
                 table +=
                     `<tr>
-                        <td class="alert small error-msg"  colspan="9" aria-colspan="9"> Oh no! You have no events. <br> Click the add event button 📸</td>
+                        <td class="alert small error-msg"  colspan="9" aria-colspan="9"> You have no events. Click the add event button 📸</td>
                     </tr>
                     `;
             } else if(success){
@@ -243,9 +243,11 @@ function fetchEvents(deleteMessageSuccess, param){
 
             if(success){
                 team.forEach((t) => {
-                    teamData += `
-                                <option value="${t.username}">${t.username}</option>
+                    if(t.name){
+                        teamData += `
+                                <option value="${t.name}">${t.name}</option>
                             `;
+                    }
                 });
             }
 
