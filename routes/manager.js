@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
 var path = require("path");
+var os = require("os");
 
 'use strict';
 const nodemailer = require("nodemailer");
@@ -103,7 +104,15 @@ router.post("/addTeam/:_id", ensureAuthenticated, function (req, res) {
 
             } else {
 
-                var link = "http://localhost:3000/users/invite/" + userAdded._id;
+                var link = "";
+
+                var host = process.env.NODE_ENV || 'development';
+
+                if(host == 'development')
+                    link = "http://localhost:3000/users/invite/" + userAdded._id;
+                else
+                    link = "http://eventhubz.herokuapp.com/users/invite/" + userAdded._id;
+
 
                 let transporter = nodemailer.createTransport({
                     service: 'gmail',
