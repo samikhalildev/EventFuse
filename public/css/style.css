@@ -303,7 +303,15 @@ hr {
 }
 
 .Ready{
+    background-color: #ff783a !important;
+}
+
+.Waiting{
     background-color: #ffaa28 !important;
+}
+
+.Finished{
+    background-color: #78ff8e !important;
 }
 
 .Complete{
@@ -390,7 +398,6 @@ input:-webkit-autofill {
 
 
 /* Search */
-
 .search{
     background-image: linear-gradient(to right, #0facf3 , #49bc9a);
     margin-top: 100px;
