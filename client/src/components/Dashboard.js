@@ -1,26 +1,18 @@
 import React, { Component } from 'react'
 import M from 'materialize-css';
+import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 
 class Dashboard extends Component {
 
     constructor() {
         super();
         this.state = {
-            events: [
-                {
-                    name: "ss"
-                },
-                {
-                    name: "Test"
-                }
-            ],
+            user: {},
+            companies: [],
+            events: [],
             isEditing: [],
-            newEvent: {},
-            user: {
-                id: 1,
-                name: "sami"
-            },
-            companies: []
+            newEvent: {}
         }
     }
 
@@ -29,8 +21,10 @@ class Dashboard extends Component {
     }
 
     render() {
-        const { user, companies, events, isEditing } = this.state;
-        const { success_msg, error_msg } = this.props;
+        const { user, events, isEditing, newEvent, companies } = this.state;
+        const { auth, success_msg, error_msg } = this.props;
+
+        console.log(auth);
 
         return (
             <section className="box">
@@ -262,4 +256,14 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors,
+    loading: state.loading
+  });
+  
+  export default connect(
+    mapStateToProps,
+    { }
+  )(withRouter(Dashboard));
+  

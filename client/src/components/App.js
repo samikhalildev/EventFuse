@@ -12,7 +12,7 @@ import jwt_decode from 'jwt-decode';
 import setAuthToken from '../utils/setAuthToken';
 
 // Actions
-import { logoutUser, setCurrentUser } from '../actions/authActions';
+import { setCurrentUser } from '../actions/authActions';
 
 import Header from './Layout/Header';
 import Login from './Account/Login';
@@ -23,13 +23,8 @@ import PrivateRoute from './Layout/PrivateRoute';
 
 // check for token
 if (localStorage.jwtToken) {
-  // Set account token header
   setAuthToken(localStorage.jwtToken);
-
-  // Decode token and get user info and expiration
   const decoded = jwt_decode(localStorage.jwtToken);
-
-  // Set user and isAuthenticate
   store.dispatch(setCurrentUser(decoded));
 }
 
