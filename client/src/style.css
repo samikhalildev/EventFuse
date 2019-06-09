@@ -41,6 +41,10 @@ a:hover {
   color: red;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .logo {
   width: 175px;
   margin-top: 10px;

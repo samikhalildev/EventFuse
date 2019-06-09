@@ -20,6 +20,7 @@
     "casperjs": "^1.1.4",
     "chai": "^4.2.0",
     "chai-http": "^4.2.0",
+    "classnames": "^2.2.6",
     "concurrently": "^4.1.0",
     "connect-flash": "*",
     "cookie-parser": "^1.4.1",

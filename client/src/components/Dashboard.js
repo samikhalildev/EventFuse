@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import M from 'materialize-css';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+import classnames from 'classnames';
+import TextField from './Layout/TextField';
 
 class Dashboard extends Component {
 
@@ -10,21 +12,103 @@ class Dashboard extends Component {
         this.state = {
             user: {},
             companies: [],
-            events: [],
+            companyEvents: {},
             isEditing: [],
-            newEvent: {}
+            newEvent: {},
+            search: ''
         }
     }
+
 
     componentDidMount() {
         M.AutoInit();
     }
 
-    render() {
-        const { user, events, isEditing, newEvent, companies } = this.state;
-        const { auth, success_msg, error_msg } = this.props;
+    static getDerivedStateFromProps(props, state) {
+        if (props.auth) {
+            let { user } = props.auth;
+            return {
+                user,
+                companies: user.companies,
+                companyEvents: user.companies[0] ? user.companies[0] : {}
+            };
+        }
+        // return null to indicate no change to state
+        return null;
+    }
 
-        console.log(auth);
+    // Get all the events from the companyID passed in
+    getEvents = event => {
+        let companyID = event.target.value;
+        console.log('Output: Dashboard -> companyID', companyID);
+        let companyEvents = this.state.companies.filter(company => company._id === companyID);
+        let isEditing = new Array(companyEvents.events.length).fill(false);
+        this.setState({ companyEvents, isEditing });
+    }
+
+    switchToEditingMode(index) {
+        let arr = new Array(this.state.companyEvents.events.length).fill(false);
+        arr[index] = true; 
+        console.log('edit mode:', this.state.companyEvents.events[index].name);
+        this.state.isEditing = arr;
+        this.forceUpdate()
+    }
+
+    onChange = event => {
+        event.preventDefault();
+        let { companyEvents } = this.state;
+
+        let newUpdates = {
+            ...companyEvents.events,
+            [event.target.name]: event.target.value
+        }
+
+        companyEvents.events = newUpdates;
+
+        console.log(newUpdates);
+        this.setState({ companyEvents });
+    }
+
+    closeEditingMode() {
+        let arr = new Array(this.state.companyEvents.events.length).fill(false);
+        this.state.isEditing = arr;
+        this.forceUpdate()
+    }
+
+    search = event => {
+        event.preventDefault();
+        
+        this.setState({ search: event.target.value}, () => {
+          let query = this.state.search;
+          //this.props.searchEvent(query);
+        });
+    }
+
+    editEvent(index) {
+        //this.props.clearFeedback();
+
+        this.setState({ errors: {} });
+        let newEventDetails = this.state.companyEvents.events[index];
+        console.log('Output: editEvent -> newEventDetails', newEventDetails);
+
+        //this.props.editEvent(newEventDetails);
+    }
+
+    deleteEvent(index) {
+        //this.props.clearFeedback();
+
+        if (window.confirm("Are you sure you want to delete this event?")) {
+            let event = this.state.companyEvents.events[index];
+            console.log('Output: deleteEvent -> event', event);
+            //this.props.deleteEvent(event);
+        }
+    }
+
+    render() {
+        const { user, companyEvents, isEditing, newEvent, companies } = this.state;
+        const { auth, loading, success_msg, error_msg } = this.props;
+        
+        console.log(this.state);
 
         return (
             <section className="box">
@@ -50,15 +134,16 @@ class Dashboard extends Component {
 
                                 {/* Select company */}
                                     <div className="input-field col s2">
-                                        <select className="selectCompany">
-                                            { companies.map(company => {
-                                                return <option value={company.id}> {company.name} </option>
-                                            })}
-                                        </select>
-                                        
-                                            { companies ? 
-                                                <label className="selectCompanyLabel">Select a company</label>
-                                            : null }
+                                    { companies ? 
+                                        <Fragment>
+                                            <select onChange={this.getEvents} value={companyEvents.name} className="selectCompany">
+                                                { companies.map(company => {
+                                                    return <option value={company.id}> {company.name} </option>
+                                                })}
+                                            </select>
+                                            <label className="selectCompanyLabel">Select a company</label>
+                                        </Fragment>
+                                    : null }
                                     </div>
 
                                 {/* Search bar
@@ -80,17 +165,10 @@ class Dashboard extends Component {
 
                                 {/* Add Event Button */}
                                 <div className="addEventBtn right">
-                                    { companies ? (
-                                        <a className="waves-effect waves-light btn-large button-secondary modal-trigger" href="#add-event-modal">
-                                            <i className="material-icons left">add</i>
-                                            <span> Add Event </span>
-                                        </a>
-                                    ) : (
-                                        <a className="waves-effect waves-light btn-large button-secondary modal-trigger disabled" href="#add-event-modal">
-                                            <i className="material-icons left">add</i>
-                                            <span> Add Event </span>
-                                        </a>
-                                    )}
+                                    <a className="waves-effect waves-light btn-large button-secondary modal-trigger" href="#add-event-modal">
+                                        <i className="material-icons left">add</i>
+                                        <span> Add Event </span>
+                                    </a>
                                 </div>
 
                                 {/* Add Event Form */}
@@ -106,7 +184,7 @@ class Dashboard extends Component {
                                             {/* Type */}
                                             <div className="input-field col s6">
                                                 <select name="type" className="eventTypes">
-                                                    <option value="None" disabled selected>Choose an option</option>
+                                                    <option value="None" disabled defaultValue>Choose an option</option>
                                                     <option value="Wedding">Wedding</option>
                                                     <option value="Engagement">Engagement</option>
                                                     <option value="Holy Communion">Holy Communion</option>
@@ -119,13 +197,13 @@ class Dashboard extends Component {
                                             {/* Name */}
                                             <div className="input-field col s6">
                                                 <input name="name" id="name" type="text" className="validate" required="" aria-required="true"/>
-                                                <label for="name">Name <span className="requiredField">*</span></label>
+                                                <label htmlFor="name">Name <span className="requiredField">*</span></label>
                                             </div>
 
                                             {/* Date */}
                                             <div className="input-field col s4">
                                                 <input name="date" id="date" type="text" className="datepicker" required="" aria-required="true"/>
-                                                <label for="date">Date <span className="requiredField">*</span></label>
+                                                <label htmlFor="date">Date <span className="requiredField">*</span></label>
                                             </div>
 
                                             {/* Status */}
@@ -144,19 +222,19 @@ class Dashboard extends Component {
                                             {/* Storage */}
                                             <div className="input-field col s4">
                                                 <input name="storage" id="storage" type="text" className="validate"/>
-                                                <label for="storage">Storage</label>
+                                                <label htmlFor="storage">Storage</label>
                                             </div>
 
                                             {/* Price Slider */}
                                             <div style={{display: 'none'}} className="input-field col s12 priceSection">
                                                 <label className="priceLabel">Price $<span id="price"></span> </label>
-                                                <div onmouseup="" id="priceSlider"></div>
+                                                <div id="priceSlider"></div>
                                             </div>
 
                                             {/* Notes */}
                                             <div className="input-field col s6 notesField">
                                                 <textarea name="notes" id="notes" className="materialize-textarea"></textarea>
-                                                <label for="notes">Notes (additional info/song requests)</label>
+                                                <label htmlFor="notes">Notes (additional info/song requests)</label>
                                             </div>
 
                                             {/* Assigned To */}
@@ -196,16 +274,18 @@ class Dashboard extends Component {
                                     <div className="nav-wrapper">
                                         <form>
                                             <div className="input-field">
-                                                <input id="search" type="search" required/>
-                                                <label className="label-icon" for="search"><i className="material-icons">search</i></label>
+                                                <input id="search" type="search" onChange={this.search} required/>
+                                                <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                             </div>
                                         </form>
                                     </div>
                                 </nav>
 
-                                <div id="loadingSearchElement" className="progress">
-                                    <div className="indeterminate"></div>
-                                </div>
+                                { loading ? (
+                                    <div id="loadingSearchElement" className="progress">
+                                        <div className="indeterminate"></div>
+                                    </div>
+                                ) : null}
 
                                 {/* EVENTS TABLE */}
                                 <div className="tableSection">
@@ -222,27 +302,134 @@ class Dashboard extends Component {
                                                 <th scope="col" className="w150">Storage</th>
                                                 <th scope="col" className="w250">Notes</th>
                                                 <th scope="col" className="w100">Assigned to</th>
-                                                <th scope="col" colspan="2" className="w100"><i className="material-icons previx">settings</i></th>
+                                                <th scope="col" colSpan="2" className="w100"><i className="material-icons previx">settings</i></th>
                                             </tr>
                                         </thead>
 
                                         {!companies ? (
                                             <tr>
-                                                <td className="small success-msg" colspan="9" aria-colspan="9"> Welcome {user.name}! <br/> Let's get started by creating a company in your manager 💻 🔝</td>
+                                                <td className="small success-msg" colSpan="9" aria-colspan="9"> Welcome {user.name}! <br/> Let's get started by creating a company in your manager 💻 🔝</td>
                                             </tr>
                                        ) : null}
 
                                         <tbody className="list" id="table-data">
-                                            { events.length > 0 ? events.map((event, index) => {
+                                            { companyEvents.events ? companyEvents.events.map((event, index) => {
+                                                let statusClass = `button-status ${event.status}`;
+
                                                 return (
                                                     isEditing[index] ? (
-                                                        <td> <input type="text" name="name" id="name" /></td>
+                                                        <tr key={event._id}>
+                                                            <td>
+                                                                {index+1}
+                                                            </td>
+
+                                                            <td>
+                                                                <TextField
+                                                                    type='text'
+                                                                    name='type'
+                                                                    id='type'
+                                                                    value={event.type}
+                                                                    onChange={this.onChange}
+                                                                />
+                                                            </td>
+
+                                                            <td>
+                                                                <TextField
+                                                                    type='text'
+                                                                    name='name'
+                                                                    id='name'
+                                                                    value={event.name}
+                                                                    onChange={this.onChange}
+                                                                />
+                                                            </td>
+
+                                                            <td>
+                                                                <TextField
+                                                                    type='text'
+                                                                    name='date'
+                                                                    id='date'
+                                                                    value={event.date}
+                                                                    onChange={this.onChange}
+                                                                />
+                                                            </td>
+
+                                                            <td>
+                                                                <TextField
+                                                                    type='text'
+                                                                    name='status'
+                                                                    id='status'
+                                                                    value={event.status}
+                                                                    onChange={this.onChange}
+                                                                />
+                                                            </td>
+
+                                                            <td>
+                                                                <TextField
+                                                                    type='text'
+                                                                    name='storage'
+                                                                    id='storage'
+                                                                    value={event.storage}
+                                                                    onChange={this.onChange}
+                                                                />
+                                                            </td>
+
+                                                            <td>
+                                                                <TextField
+                                                                    type='text'
+                                                                    name='notes'
+                                                                    id='notes'
+                                                                    value={event.notes}
+                                                                    onChange={this.onChange}
+                                                                />
+                                                            </td>
+
+                                                            <td>
+                                                                <TextField
+                                                                    type='text'
+                                                                    name='assignedTo'
+                                                                    id='assignedTo'
+                                                                    value={event.assignedTo}
+                                                                    onChange={this.onChange}
+                                                                />
+                                                            </td>
+
+                                                            <td>
+                                                                <i onClick={() => this.editEvent(index)} className="material-icons pointer">save</i>
+                                                            </td>
+
+                                                            <td>
+                                                                <i onClick={() => this.closeEditingMode()} className="material-icons pointer">close</i>
+                                                            </td>
+                                                        </tr>
                                                     ) : (
-                                                        <td> {event.name} </td>
+                                                        <tr key={event._id} id={event._id}>
+                                                            <td scope="row"> {index+1} </td>
+                                                            <td className="type"> {event.type}</td>
+                                                            <td className="name"> {event.name}</td>
+                                                            <td className="date"> {event.date}</td>
+                                                            {/* <td className="price"> ${event.price}</td> */}
+                                                            <td className="status">
+                                                                <button className={statusClass}>
+                                                                    {event.status}
+                                                                </button> 
+                                                            </td>
+                                                            <td className="storage"> {event.storage}</td>
+                                                            <td className="notes"> {event.notes}</td>
+                                                            <td className="assignedTo"> {event.assignedTo}</td>
+                                                            <td className=""> 
+                                                                <i onClick={() => this.switchToEditingMode(index)} className="material-icons prefix edit pointer">edit</i>
+                                                            </td>
+                                                            
+                                                            <td className=""> 
+                                                                <i onClick={() => this.deleteEvent(index)} className="material-icons prefix delete modal-trigger deleteEventBtn pointer">delete</i>
+                                                            </td>
+                                                        </tr>
                                                     )
                                                 )
                                             }) : (
-                                                <p>No events</p>
+                                                <tr>
+                                                    <td className="alert small error-msg" colSpan="9" aria-colspan="9"> You have no events. Click the add event button <span role="img" aria-label="camera">📸</span></td>
+                                                </tr>
                                             )}
                                         </tbody>
                                     </table>

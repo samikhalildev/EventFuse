@@ -16,7 +16,7 @@ class Header extends Component {
               <Link to='/dashboard' className='brand-logo'>
                 <img className='logo' alt='EventHub' src={Logo} />
               </Link>
-              <Link data-target='mobile' className='sidenav-trigger'>
+              <Link to='' data-target='mobile' className='sidenav-trigger'>
                 <i className='material-icons nav-mobile-icon'>menu</i>
               </Link>
             </div>
@@ -25,7 +25,9 @@ class Header extends Component {
               {isAuthenticated ? (
                 <Fragment>
                   <li className='menuItem'>
-                    <Link className='welcomeItem'> HI, {user.name} </Link>{' '}
+                    <Link to='' className='welcomeItem'>
+                      HI, {user.name}{' '}
+                    </Link>
                   </li>
                   <li className='menuItem'>
                     <Link to='/dashboard'> DASHBOARD </Link>{' '}
@@ -58,7 +60,10 @@ class Header extends Component {
           {isAuthenticated ? (
             <Fragment>
               <li className='menuItem'>
-                <Link className='welcomeItem'> HI, {user.name} </Link>{' '}
+                <Link to='' className='welcomeItem'>
+                  {' '}
+                  HI, {user.name}{' '}
+                </Link>{' '}
               </li>
               <li className='menuItem'>
                 <Link to='/dashboard'> DASHBOARD </Link>{' '}

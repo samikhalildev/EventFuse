@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Logo from '../../images/eventhub-logo.png';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/authActions';
 import TextField from '../Layout/TextField';

@@ -17,7 +17,7 @@ import { setCurrentUser } from '../actions/authActions';
 import Header from './Layout/Header';
 import Login from './Account/Login';
 import Register from './Account/Register';
-import Landing from './Landing';
+// import Landing from './Landing';
 import Dashboard from './Dashboard';
 import PrivateRoute from './Layout/PrivateRoute';
 
