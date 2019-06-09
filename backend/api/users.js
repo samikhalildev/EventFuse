@@ -66,34 +66,41 @@ router.post('/login', (req, res) => {
   const password = req.body.password;
 
   // Find user by email
-  User.findOne({ email }).then(user => {
-    if (!user) {
-      errors.email = 'User not found';
-      return res.status(404).json(errors);
-    }
-
-    // Check if user with the same email matches with the found user password
-    bcrypt.compare(password, user.password).then(isMatch => {
-      // User matched
-      if (isMatch) {
-        // Create JWT payload
-        const payload = { id: user.id, name: user.name };
-
-        // Create Token
-        jwt.sign(payload, keys.secretOrKey, (err, token) => {
-          if (err) throw err;
-
-          res.json({
-            success: true,
-            token: 'Bearer ' + token
-          });
-        });
-      } else {
-        errors.password = 'Password incorrect';
+  User.findOne({ email })
+    .populate({
+      path: 'companies', // populate user companies
+      populate: { path: 'events' } // populate all events for each company
+    })
+    .exec()
+    .then(user => {
+      if (!user) {
+        errors.email = 'User not found';
         return res.status(404).json(errors);
       }
+
+      // Check if user with the same email matches with the found user password
+      bcrypt.compare(password, user.password).then(isMatch => {
+        // User matched
+        if (isMatch) {
+          // Create JWT payload
+          const payload = { id: user.id, name: user.name, email: user.email };
+
+          // Create Token
+          jwt.sign(payload, keys.secretOrKey, (err, token) => {
+            if (err) throw err;
+
+            res.json({
+              success: true,
+              token: 'Bearer ' + token,
+              user
+            });
+          });
+        } else {
+          errors.password = 'Password incorrect';
+          return res.status(404).json(errors);
+        }
+      });
     });
-  });
 });
 
 // Protected route

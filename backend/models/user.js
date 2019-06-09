@@ -20,11 +20,6 @@ const UserSchema = mongoose.Schema({
     type: Number
   },
 
-  selectedCompany: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Company'
-  },
-
   companies: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -65,15 +60,6 @@ module.exports.userRegistration_invite = function(newUser, userID, callback) {
       User.findOneAndUpdate({ _id: userID }, query, { new: true }, callback);
     });
   });
-};
-
-module.exports.getUserByUsername = function(username, callback) {
-  var query = { username: username };
-  User.findOne(query, callback);
-};
-
-module.exports.getUserById = function(id, callback) {
-  User.findById(id, callback);
 };
 
 module.exports.getUserByNameAndId = function(name, id, callback) {
