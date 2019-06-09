@@ -60,9 +60,7 @@ class Login extends Component {
 
   render() {
     const { email, password, errors } = this.state;
-    const { success_msg, error_msg, feedback } = this.props;
-
-    console.log(errors);
+    const { feedback } = this.props;
 
     return (
       <section className='loginForm box'>
@@ -74,14 +72,12 @@ class Login extends Component {
                   <img className='logo-pg' alt='EventHub' src={Logo} />
                 </div>
 
-                <ul className='alert-box right'>
-                  {success_msg ? (
-                    <li className='alert success-msg'> {success_msg} </li>
+                <ul className='alert-box center'>
+                  {feedback ? (
+                    <li className='alert success-msg'> {feedback} </li>
                   ) : null}
 
-                  {error_msg ? (
-                    <li className='alert error-msg'> {error_msg} </li>
-                  ) : null}
+                  {<li className='alert error-msg'> </li>}
                 </ul>
 
                 <form id='login-register' noValidate onSubmit={this.onSubmit}>
