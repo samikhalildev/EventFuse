@@ -60,7 +60,7 @@ class Login extends Component {
 
   render() {
     const { email, password, errors } = this.state;
-    const { feedback } = this.props;
+    const { feedback, loading } = this.props;
 
     return (
       <section className='loginForm box'>
@@ -77,7 +77,7 @@ class Login extends Component {
                     <li className='alert success-msg'> {feedback} </li>
                   ) : null}
 
-                  {<li className='alert error-msg'> </li>}
+                  {/* <li className='alert error-msg'> </li> */}
                 </ul>
 
                 <form id='login-register' noValidate onSubmit={this.onSubmit}>
@@ -103,13 +103,15 @@ class Login extends Component {
                     error={errors.password}
                   />
 
-                  <div className='col s12'>
-                    <div id='loadingElement' className='center'>
-                      <div className='progress'>
-                        <div className='indeterminate' />
+                  {loading ? (
+                    <div className='col s12'>
+                      <div id='loadingElement' className='center'>
+                        <div className='progress'>
+                          <div className='indeterminate' />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : null}
 
                   <div className='right'>
                     <Link to='/register'>
@@ -139,7 +141,8 @@ class Login extends Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  feedback: state.feedback
+  feedback: state.feedback,
+  loading: state.loading
 });
 
 export default connect(

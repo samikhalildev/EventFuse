@@ -9,3 +9,6 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 export const GET_FEEDBACK = 'GET_FEEDBACK';
 export const CLEAR_FEEDBACK = 'CLEAR_FEEDBACK';
+
+export const SET_LOADING = 'SET_LOADING';
+export const CLEAR_LOADING = 'CLEAR_LOADING';

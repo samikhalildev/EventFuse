@@ -54,7 +54,7 @@ class Register extends Component {
 
   render() {
     const { name, email, password, password2, errors } = this.state;
-    const { success_msg, error_msg } = this.props;
+    const { loading } = this.props;
 
     return (
       <section class='loginForm box'>
@@ -65,16 +65,6 @@ class Register extends Component {
                 <div class='center'>
                   <img className='logo-pg' alt='EventHub' src={Logo} />
                 </div>
-
-                <ul class='alert-box'>
-                  {success_msg ? (
-                    <li className='alert success-msg'> {success_msg} </li>
-                  ) : null}
-
-                  {error_msg ? (
-                    <li className='alert error-msg'> {error_msg} </li>
-                  ) : null}
-                </ul>
 
                 <form id='login-register' noValidate onSubmit={this.onSubmit}>
                   <TextField
@@ -122,6 +112,16 @@ class Register extends Component {
                     error={errors.password2}
                   />
 
+                  {loading ? (
+                    <div className='col s12'>
+                      <div id='loadingElement' className='center'>
+                        <div className='progress'>
+                          <div className='indeterminate' />
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+
                   <div class='input-field col s12 left'>
                     <button
                       class='waves-effect waves-light button-secondary'
@@ -143,7 +143,8 @@ class Register extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  loading: state.loading
 });
 
 export default connect(

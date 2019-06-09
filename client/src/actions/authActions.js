@@ -6,11 +6,15 @@ import {
   GET_ERRORS,
   CLEAR_ERRORS,
   SET_USER_EMAIL,
-  GET_FEEDBACK
+  GET_FEEDBACK,
+  SET_LOADING,
+  CLEAR_LOADING
 } from './types';
 
 // Register
 export const registerUser = (userData, history) => dispatch => {
+  dispatch(setLoading());
+
   axios
     .post('/api/users/register', userData)
     .then(res => {
@@ -24,19 +28,22 @@ export const registerUser = (userData, history) => dispatch => {
         type: GET_FEEDBACK,
         payload: 'You have successfully registered, please login.'
       });
-
+      dispatch(clearLoading());
       history.push(`/login/${userData.email}`);
     })
-    .catch(err =>
+    .catch(err => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
-      })
-    );
+      });
+      dispatch(clearLoading());
+    });
 };
 
 // Login - Get User Token
 export const loginUser = userData => dispatch => {
+  dispatch(setLoading());
+
   axios
     .post('/api/users/login', userData)
     .then(res => {
@@ -54,13 +61,15 @@ export const loginUser = userData => dispatch => {
 
       // Set current user
       dispatch(setCurrentUser(decoded));
+      dispatch(clearLoading());
     })
-    .catch(err =>
+    .catch(err => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
-      })
-    );
+      });
+      dispatch(clearLoading());
+    });
 };
 
 // Set logged in user
@@ -86,5 +95,17 @@ export const logoutUser = () => dispatch => {
 export const clearErrors = () => {
   return {
     type: CLEAR_ERRORS
+  };
+};
+
+export const setLoading = () => {
+  return {
+    type: SET_LOADING
+  };
+};
+
+export const clearLoading = () => {
+  return {
+    type: CLEAR_LOADING
   };
 };
