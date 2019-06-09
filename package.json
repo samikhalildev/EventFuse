@@ -5,6 +5,11 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "server": "nodemon app.js",
+    "client-install": "npm install --prefix client",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "test": "node_modules/.bin/wdio wdio.conf.js"
   },
   "author": "",
@@ -15,6 +20,7 @@
     "casperjs": "^1.1.4",
     "chai": "^4.2.0",
     "chai-http": "^4.2.0",
+    "concurrently": "^4.1.0",
     "connect-flash": "*",
     "cookie-parser": "^1.4.1",
     "express": "*",
@@ -29,7 +35,9 @@
     "nodemailer": "^4.7.0",
     "passport": "*",
     "passport-http": "*",
+    "passport-jwt": "^4.0.0",
     "passport-local": "*",
+    "validator": "^11.0.0",
     "webdriverio": "^4.13.2",
     "word-extractor": "^0.1.4"
   },
