@@ -3,7 +3,7 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/config');
-const passport = require('passport');
+const auth = require('../config/auth');
 
 const router = express.Router();
 
@@ -67,10 +67,6 @@ router.post('/login', (req, res) => {
 
   // Find user by email
   User.findOne({ email })
-    .populate({
-      path: 'companies', // populate user companies
-      populate: { path: 'events' } // populate all events for each company
-    })
     .exec()
     .then(user => {
       if (!user) {
@@ -83,15 +79,20 @@ router.post('/login', (req, res) => {
         // User matched
         if (isMatch) {
           // Create JWT payload
-          const payload = { user };
+          const payload = {
+            user: {
+              id: user.id,
+              name: user.name,
+              email: user.email
+            }
+          };
 
           // Create Token
           jwt.sign(payload, keys.secretOrKey, (err, token) => {
             if (err) throw err;
 
             res.json({
-              success: true,
-              token: 'Bearer ' + token,
+              token,
               user
             });
           });
@@ -110,17 +111,13 @@ router.post('/login', (req, res) => {
     @access     Private
  */
 
-router.get(
-  '/current',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    res.json({
-      id: req.user.id,
-      name: req.user.name,
-      email: req.user.email
-    });
-  }
-);
+router.get('/current', auth, (req, res) => {
+  res.json({
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email
+  });
+});
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);

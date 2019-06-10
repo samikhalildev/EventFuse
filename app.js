@@ -14,13 +14,14 @@ mongoose.connect(db_URI);
 mongoose.connection;
 
 // Store the routes for each page
-var users = require('./backend/api/users');
-var events = require('./backend/api/events');
-var manager = require('./backend/api/manager');
-var edit = require('./backend/api/edit');
+var users = require('./backend/API/users');
+var companies = require('./backend/API/companies');
+var events = require('./backend/API/events');
+var manager = require('./backend/API/manager');
+var edit = require('./backend/API/edit');
 
-var editDetails = require('./backend/api/editDetails');
-var changePassword = require('./backend/api/changePassword');
+var editDetails = require('./backend/API/editDetails');
+var changePassword = require('./backend/API/changePassword');
 // store routes here
 
 // Init App
@@ -89,8 +90,9 @@ app.use(function(req, res, next) {
 });
 
 //when a url path is requested, call the router for that page
-app.use('/api/events', events);
 app.use('/api/users', users);
+app.use('/api/companies', companies);
+app.use('/api/events', events);
 
 app.use('/manager', manager);
 

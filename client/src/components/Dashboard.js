@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import TextField from './Layout/TextField';
+import { getCompaniesByUser, getEventsByCompany, searchEvents } from '../actions/eventActions';
+import isEmpty from '../utils/isEmpty';
 
 class Dashboard extends Component {
 
@@ -12,65 +14,87 @@ class Dashboard extends Component {
         this.state = {
             user: {},
             companies: [],
-            companyEvents: {},
+            selectedCompany: {},
+            selectedCompanyIndex: '',
             isEditing: [],
-            newEvent: {},
-            search: ''
+            newEvent: {}
         }
     }
-
 
     componentDidMount() {
         M.AutoInit();
+        this.props.getCompaniesByUser();
+    }
+
+    componentDidUpdate() {
+        if (isEmpty(this.state.selectedCompany) && this.state.companies.length > 0) {
+            this.setState({
+                selectedCompany: this.state.companies[0],
+                selectedCompanyIndex: 0
+            })
+        }
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (props.auth) {
-            let { user } = props.auth;
+
+        if (props.events.eventsSearchList.length > 0) {
             return {
-                user,
-                companies: user.companies,
-                companyEvents: user.companies[0] ? user.companies[0] : {}
-            };
+                selectedCompany: {
+                    ...state.selectedCompany,
+                    events: props.events.eventsSearchList
+                }
+            }
         }
-        // return null to indicate no change to state
-        return null;
+
+        return {
+            user: props.auth.user,
+            companies: props.events.companies
+        };
     }
 
     // Get all the events from the companyID passed in
-    getEvents = event => {
-        let companyID = event.target.value;
-        console.log('Output: Dashboard -> companyID', companyID);
-        let companyEvents = this.state.companies.filter(company => company._id === companyID);
-        let isEditing = new Array(companyEvents.events.length).fill(false);
-        this.setState({ companyEvents, isEditing });
+    getEvents(index) {
+        let selectedCompany = this.state.companies[index];
+
+        // if (this.props.events.eventsSearchList) {
+        //     let events = this.props.events.eventsSearchList;
+        //     if (events.length > 0) {
+        //         selectedCompany.events = events;
+        //         console.log('updated search', events);
+        //     }
+        // }
+
+        console.log("Selected company: ", selectedCompany);
+        
+        let isEditing = new Array(selectedCompany.events.length).fill(false);
+        this.setState({ selectedCompany, isEditing, selectedCompanyIndex: index });
     }
 
     switchToEditingMode(index) {
-        let arr = new Array(this.state.companyEvents.events.length).fill(false);
+        let arr = new Array(this.state.selectedCompany.events.length).fill(false);
         arr[index] = true; 
-        console.log('edit mode:', this.state.companyEvents.events[index].name);
+        console.log('edit mode:', this.state.selectedCompany.events[index].name);
         this.state.isEditing = arr;
         this.forceUpdate()
     }
 
     onChange = event => {
         event.preventDefault();
-        let { companyEvents } = this.state;
+        let { selectedCompany } = this.state;
 
         let newUpdates = {
-            ...companyEvents.events,
+            ...selectedCompany.events,
             [event.target.name]: event.target.value
         }
 
-        companyEvents.events = newUpdates;
+        selectedCompany.events = newUpdates;
 
         console.log(newUpdates);
-        this.setState({ companyEvents });
+        this.setState({ selectedCompany });
     }
 
     closeEditingMode() {
-        let arr = new Array(this.state.companyEvents.events.length).fill(false);
+        let arr = new Array(this.state.selectedCompany.events.length).fill(false);
         this.state.isEditing = arr;
         this.forceUpdate()
     }
@@ -78,17 +102,20 @@ class Dashboard extends Component {
     search = event => {
         event.preventDefault();
         
-        this.setState({ search: event.target.value}, () => {
-          let query = this.state.search;
-          //this.props.searchEvent(query);
-        });
+        let query = event.target.value;
+        let index = this.state.selectedCompanyIndex;
+        this.props.searchEvents(query, index);
+
+        // setTimeout(() => {
+        //     this.getEvents(index);
+        // }, 500)
     }
 
     editEvent(index) {
         //this.props.clearFeedback();
 
         this.setState({ errors: {} });
-        let newEventDetails = this.state.companyEvents.events[index];
+        let newEventDetails = this.state.selectedCompany.events[index];
         console.log('Output: editEvent -> newEventDetails', newEventDetails);
 
         //this.props.editEvent(newEventDetails);
@@ -98,17 +125,15 @@ class Dashboard extends Component {
         //this.props.clearFeedback();
 
         if (window.confirm("Are you sure you want to delete this event?")) {
-            let event = this.state.companyEvents.events[index];
+            let event = this.state.selectedCompany.events[index];
             console.log('Output: deleteEvent -> event', event);
             //this.props.deleteEvent(event);
         }
     }
 
     render() {
-        const { user, companyEvents, isEditing, newEvent, companies } = this.state;
+        const { user, selectedCompany, isEditing, companies } = this.state;
         const { auth, loading, success_msg, error_msg } = this.props;
-        
-        console.log(this.state);
 
         return (
             <section className="box">
@@ -116,7 +141,7 @@ class Dashboard extends Component {
                     <div className="row">
                         <div className="col s12">
                             <div id="events">
-                                <h2 className="heading"> Dashboard </h2>
+                                <h2 className="heading"> {selectedCompany.name} </h2>
 
                                 <ul className="alert-box">
                                     { success_msg ? 
@@ -136,12 +161,13 @@ class Dashboard extends Component {
                                     <div className="input-field col s2">
                                     { companies ? 
                                         <Fragment>
-                                            <select onChange={this.getEvents} value={companyEvents.name} className="selectCompany">
-                                                { companies.map(company => {
-                                                    return <option value={company.id}> {company.name} </option>
+                                            <a className='dropdown-trigger' href='#' data-target='dropdown1'>Change company</a>
+                                            <ul id='dropdown1' className='dropdown-content'>
+                                                { companies.map((company, index) => {
+                                                    return <li key={index} onClick={() => this.getEvents(index)}><a>{company.name}</a></li>
                                                 })}
-                                            </select>
-                                            <label className="selectCompanyLabel">Select a company</label>
+                                            </ul>
+      
                                         </Fragment>
                                     : null }
                                     </div>
@@ -313,7 +339,7 @@ class Dashboard extends Component {
                                        ) : null}
 
                                         <tbody className="list" id="table-data">
-                                            { companyEvents.events ? companyEvents.events.map((event, index) => {
+                                            { selectedCompany.events ? selectedCompany.events.map((event, index) => {
                                                 let statusClass = `button-status ${event.status}`;
 
                                                 return (
@@ -445,12 +471,13 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    events: state.events,
     errors: state.errors,
     loading: state.loading
   });
   
   export default connect(
     mapStateToProps,
-    { }
+    { getCompaniesByUser, getEventsByCompany, searchEvents }
   )(withRouter(Dashboard));
   

@@ -29,6 +29,7 @@
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
+    "jsonwebtoken": "^8.5.1",
     "list.js": "^1.5.0",
     "mocha": "^5.2.0",
     "mongodb": "*",

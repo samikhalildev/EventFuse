@@ -2,56 +2,12 @@ var express = require('express');
 var router = express.Router();
 var Company = require('../models/company');
 var Event = require('../models/event');
-var passport = require('passport');
+var auth = require('../config/auth');
 
-router.get('/', passport.authenticate('jwt', { session: false }), function(
-  req,
-  res
-) {
-  Company.getAllUserCompaniesByID(user._id, function(err, companies) {
-    if (err) {
-      return console.log('error');
-    }
-    res.render('dashboard', { companies: companies });
-  });
-});
-
-// GET ALL Company Events
-router.get('/api/company/:_id', function(req, res) {
-  var query = { _id: req.params._id };
-
-  Company.findOne(query)
-    .populate('events')
-    .exec()
-    .then(docs => {
-      res.json({
-        success: true,
-        company: docs
-      });
-    })
-    .catch(err => {
-      res.status(404);
-      res.json({ success: false });
-      console.log(err);
-    });
-});
-
-// GET Company team
-router.get('/api/company/team/:_id', function(req, res) {
-  var companyID = req.params._id;
-
-  Company.getCompanyById(companyID, function(err, company) {
-    if (err) {
-      res.status(404);
-      res.json({ success: false });
-    }
-
-    res.json({
-      success: true,
-      company: company
-    });
-  });
-});
+/*  @route      GET api/events/
+    @desc       gets post data
+    @access     Public
+ */
 
 // GET An Event BY ID
 router.get('/api/events/:_id', function(req, res) {
@@ -95,14 +51,5 @@ router.post('/api/addEvents/:_id', function(req, res) {
     });
   });
 });
-
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    req.flash('error_msg', 'You are not logged in 🔑');
-    res.redirect('/users/login');
-  }
-}
 
 module.exports = router;
