@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import TextField from './Layout/TextField';
-import { getCompaniesByUser, searchEvents, addEvent } from '../actions/eventActions';
+import { getCompaniesByUser, searchEvents, addEvent, editEvent, deleteEvent } from '../actions/eventActions';
 import isEmpty from '../utils/isEmpty';
 
 class Dashboard extends Component {
@@ -54,6 +54,12 @@ class Dashboard extends Component {
                 }
             }
         }
+        
+        if (state.selectedCompanyIndex) {
+            return {
+                selectedCompany: state.companies[state.selectedCompanyIndex]
+            }
+        }
 
         return {
             user: props.auth.user,
@@ -90,7 +96,6 @@ class Dashboard extends Component {
 
         selectedCompany.events = newUpdates;
 
-        console.log(newUpdates);
         this.setState({ selectedCompany });
     }
 
@@ -118,6 +123,19 @@ class Dashboard extends Component {
         })
     }
 
+    clearFormData() {
+        this.setState({
+            newEvent: {
+                type: '',
+                name: '',
+                date: Date,
+                status: '',
+                storage: '',
+                notes: '',
+            }
+        })
+    }
+
     addEvent = event => {
         event.preventDefault();
         this.props.addEvent(this.state.newEvent, this.state.selectedCompany._id, this.state.selectedCompanyIndex);
@@ -125,11 +143,9 @@ class Dashboard extends Component {
 
     editEvent(index) {
         //this.props.clearFeedback();
-
         this.setState({ errors: {} });
         let newEventDetails = this.state.selectedCompany.events[index];
         console.log('Output: editEvent -> newEventDetails', newEventDetails);
-
         //this.props.editEvent(newEventDetails);
     }
 
@@ -139,13 +155,16 @@ class Dashboard extends Component {
         if (window.confirm("Are you sure you want to delete this event?")) {
             let event = this.state.selectedCompany.events[index];
             console.log('Output: deleteEvent -> event', event);
-            //this.props.deleteEvent(event);
+            this.props.deleteEvent(event, this.state.selectedCompanyIndex);
+            this.setState({ query: '', selectedCompany: this.state.companies[this.state.selectedCompanyIndex] });
         }
     }
 
     render() {
         const { user, selectedCompany, isEditing, companies, newEvent } = this.state;
         const { auth, loading, success_msg, error_msg } = this.props;
+
+        console.log(selectedCompany);
 
         return (
             <section className="box">
@@ -209,7 +228,7 @@ class Dashboard extends Component {
                                 {/* Add Event Form */}
                                 <div id="add-event-modal" className="PopUpWindow modal customModal">
                                     <div className="modal-content">
-                                        <a href="#!" className="modal-action modal-close">
+                                        <a href="#!" onClick={() => this.clearFormData()} className="modal-action modal-close">
                                             <i className="material-icons right">close</i>
                                         </a>
                                         <h4 className="PopupHeading">Add Event </h4>
@@ -464,6 +483,52 @@ class Dashboard extends Component {
                                                     <td className="small success-msg" colSpan="9" aria-colspan="9"> Welcome {user.name}! <br/> Let's get started by creating a company in manager. <span role="img" aria-label="laptop">💻 🔝</span></td>
                                                 </tr>
                                             )}
+
+                                            { loading ? (
+                                                <div class="preloader-background">
+                                                    <div class="preloader-wrapper big active">
+                                                        <div class="spinner-layer spinner-blue">
+                                                            <div class="circle-clipper left">
+                                                                <div class="circle"></div>
+                                                            </div><div class="gap-patch">
+                                                            <div class="circle"></div>
+                                                        </div><div class="circle-clipper right">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                        </div>
+                                            
+                                                        <div class="spinner-layer spinner-red">
+                                                            <div class="circle-clipper left">
+                                                                <div class="circle"></div>
+                                                            </div><div class="gap-patch">
+                                                            <div class="circle"></div>
+                                                        </div><div class="circle-clipper right">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                        </div>
+                                            
+                                                        <div class="spinner-layer spinner-yellow">
+                                                            <div class="circle-clipper left">
+                                                                <div class="circle"></div>
+                                                            </div><div class="gap-patch">
+                                                            <div class="circle"></div>
+                                                        </div><div class="circle-clipper right">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                        </div>
+                                            
+                                                        <div class="spinner-layer spinner-green">
+                                                            <div class="circle-clipper left">
+                                                                <div class="circle"></div>
+                                                            </div><div class="gap-patch">
+                                                            <div class="circle"></div>
+                                                        </div><div class="circle-clipper right">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ): null}
                                         </tbody>
                                     </table>
                                 </div>
@@ -485,6 +550,6 @@ const mapStateToProps = state => ({
   
   export default connect(
     mapStateToProps,
-    { getCompaniesByUser, searchEvents, addEvent }
+    { getCompaniesByUser, searchEvents, addEvent, editEvent, deleteEvent }
   )(withRouter(Dashboard));
   

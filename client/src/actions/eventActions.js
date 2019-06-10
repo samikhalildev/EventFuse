@@ -88,6 +88,58 @@ export const addEvent = (data, companyID, index) => dispatch => {
     });
 };
 
+export const editEvent = (event, index) => dispatch => {
+  dispatch(setLoading());
+  axios
+    .put(`/api/events/${event._id}`, event)
+    .then(res => {
+      console.log(res.data);
+
+      dispatch({
+        type: EDIT_EVENT,
+        payload: {
+          company: res.data.company,
+          index
+        }
+      });
+
+      dispatch(clearLoading());
+    })
+    .catch(err => {
+      console.log('err', err.response.data);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+      dispatch(clearLoading());
+    });
+};
+
+export const deleteEvent = (event, index) => dispatch => {
+  dispatch(setLoading());
+  axios
+    .delete(`/api/events/${event._id}`, event)
+    .then(res => {
+      dispatch({
+        type: DELETE_EVENT,
+        payload: {
+          event,
+          index
+        }
+      });
+
+      dispatch(clearLoading());
+    })
+    .catch(err => {
+      console.log('err', err.response.data);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+      dispatch(clearLoading());
+    });
+};
+
 export const searchEvents = (query, index) => {
   return {
     type: SEARCH_EVENTS,

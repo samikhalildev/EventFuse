@@ -77,8 +77,7 @@ router.delete('/:_id', function(req, res) {
   var query = { _id: req.params._id };
   Event.remove(query)
     .then(event => {
-      console.log(event);
-      res.json({ success: true, event });
+      res.json({ success: true });
     })
     .catch(err => {
       res.status(400).json({ success: false });
