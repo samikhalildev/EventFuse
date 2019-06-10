@@ -85,20 +85,6 @@ class Dashboard extends Component {
         this.forceUpdate()
     }
 
-    onChange = event => {
-        event.preventDefault();
-        let { selectedCompany } = this.state;
-
-        let newUpdates = {
-            ...selectedCompany.events,
-            [event.target.name]: event.target.value
-        }
-
-        selectedCompany.events = newUpdates;
-
-        this.setState({ selectedCompany });
-    }
-
     closeEditingMode() {
         let arr = new Array(this.state.selectedCompany.events.length).fill(false);
         this.state.isEditing = arr;
@@ -141,12 +127,37 @@ class Dashboard extends Component {
         this.props.addEvent(this.state.newEvent, this.state.selectedCompany._id, this.state.selectedCompanyIndex);
     }
 
+    onChange = (event, index) => {
+        event.preventDefault();
+
+        this.state.selectedCompany.events[index][event.target.name] = event.target.value;
+        this.forceUpdate();
+
+        console.log(this.state.selectedCompany.events[index]);
+    }
+
     editEvent(index) {
         //this.props.clearFeedback();
+        const { companies, selectedCompanyIndex, selectedCompany } = this.state;
         this.setState({ errors: {} });
-        let newEventDetails = this.state.selectedCompany.events[index];
-        console.log('Output: editEvent -> newEventDetails', newEventDetails);
-        //this.props.editEvent(newEventDetails);
+        //let isUpdated = this.checkEventsEqual(companies[selectedCompanyIndex].events[index], selectedCompany.events[index])
+
+        if (true) {
+            console.log('edit', selectedCompany.events[index]);
+            this.props.editEvent(selectedCompany.events[index]);
+            this.closeEditingMode();
+        }
+    }
+
+    checkEventsEqual(arr1, arr2) {
+        if (arr1.length !== arr2.length)
+            return false;
+
+        for (var i = 0; i < arr1.length; i++)
+            if (arr1[i] !== arr2[i])
+                return false;
+
+        return true;
     }
 
     deleteEvent(index) {
@@ -256,7 +267,7 @@ class Dashboard extends Component {
 
                                             {/* Date */}
                                             <div className="input-field col s4">
-                                                <input value={newEvent.date} onChange={this.onEventChange} name="date" id="date" type="text" className="datepicker" required="" aria-required="true"/>
+                                                <input value={newEvent.name} onChange={this.onEventChange} name="date" id="date" type="text" className="datepicker" required="" aria-required="true"/>
                                                 <label htmlFor="date">Date <span className="requiredField">*</span></label>
                                             </div>
 
@@ -343,6 +354,7 @@ class Dashboard extends Component {
 
                                 {/* EVENTS TABLE */}
                                 <div className="tableSection">
+                                <form noValidate>
                                     <table id="eventsTable" className="table bordered highlight centered responsive-table">
                                         <thead>
                                             <tr>
@@ -377,7 +389,7 @@ class Dashboard extends Component {
                                                                     name='type'
                                                                     id='type'
                                                                     value={event.type}
-                                                                    onChange={this.onChange}
+                                                                    onChange={event => this.onChange(event, index)}
                                                                 />
                                                             </td>
 
@@ -387,7 +399,7 @@ class Dashboard extends Component {
                                                                     name='name'
                                                                     id='name'
                                                                     value={event.name}
-                                                                    onChange={this.onChange}
+                                                                    onChange={event => this.onChange(event, index)}
                                                                 />
                                                             </td>
 
@@ -397,7 +409,7 @@ class Dashboard extends Component {
                                                                     name='date'
                                                                     id='date'
                                                                     value={event.date}
-                                                                    onChange={this.onChange}
+                                                                    onChange={event => this.onChange(event, index)}
                                                                 />
                                                             </td>
 
@@ -407,7 +419,7 @@ class Dashboard extends Component {
                                                                     name='status'
                                                                     id='status'
                                                                     value={event.status}
-                                                                    onChange={this.onChange}
+                                                                    onChange={event => this.onChange(event, index)}
                                                                 />
                                                             </td>
 
@@ -417,7 +429,7 @@ class Dashboard extends Component {
                                                                     name='storage'
                                                                     id='storage'
                                                                     value={event.storage}
-                                                                    onChange={this.onChange}
+                                                                    onChange={event => this.onChange(event, index)}
                                                                 />
                                                             </td>
 
@@ -427,7 +439,7 @@ class Dashboard extends Component {
                                                                     name='notes'
                                                                     id='notes'
                                                                     value={event.notes}
-                                                                    onChange={this.onChange}
+                                                                    onChange={event => this.onChange(event, index)}
                                                                 />
                                                             </td>
 
@@ -437,7 +449,7 @@ class Dashboard extends Component {
                                                                     name='assignedTo'
                                                                     id='assignedTo'
                                                                     value={event.assignedTo}
-                                                                    onChange={this.onChange}
+                                                                    onChange={event => this.onChange(event, index)}
                                                                 />
                                                             </td>
 
@@ -484,53 +496,54 @@ class Dashboard extends Component {
                                                 </tr>
                                             )}
 
-                                            { loading ? (
-                                                <div class="preloader-background">
-                                                    <div class="preloader-wrapper big active">
-                                                        <div class="spinner-layer spinner-blue">
-                                                            <div class="circle-clipper left">
-                                                                <div class="circle"></div>
-                                                            </div><div class="gap-patch">
-                                                            <div class="circle"></div>
-                                                        </div><div class="circle-clipper right">
-                                                            <div class="circle"></div>
+                                        </tbody>
+                                    </table>
+                                    </form>
+                                    { loading ? (
+                                                <div className="preloader-background">
+                                                    <div className="preloader-wrapper big active">
+                                                        <div className="spinner-layer spinner-blue">
+                                                            <div className="circle-clipper left">
+                                                                <div className="circle"></div>
+                                                            </div><div className="gap-patch">
+                                                            <div className="circle"></div>
+                                                        </div><div className="circle-clipper right">
+                                                            <div className="circle"></div>
                                                         </div>
                                                         </div>
                                             
-                                                        <div class="spinner-layer spinner-red">
-                                                            <div class="circle-clipper left">
-                                                                <div class="circle"></div>
-                                                            </div><div class="gap-patch">
-                                                            <div class="circle"></div>
-                                                        </div><div class="circle-clipper right">
-                                                            <div class="circle"></div>
+                                                        <div className="spinner-layer spinner-red">
+                                                            <div className="circle-clipper left">
+                                                                <div className="circle"></div>
+                                                            </div><div className="gap-patch">
+                                                            <div className="circle"></div>
+                                                        </div><div className="circle-clipper right">
+                                                            <div className="circle"></div>
                                                         </div>
                                                         </div>
                                             
-                                                        <div class="spinner-layer spinner-yellow">
-                                                            <div class="circle-clipper left">
-                                                                <div class="circle"></div>
-                                                            </div><div class="gap-patch">
-                                                            <div class="circle"></div>
-                                                        </div><div class="circle-clipper right">
-                                                            <div class="circle"></div>
+                                                        <div className="spinner-layer spinner-yellow">
+                                                            <div className="circle-clipper left">
+                                                                <div className="circle"></div>
+                                                            </div><div className="gap-patch">
+                                                            <div className="circle"></div>
+                                                        </div><div className="circle-clipper right">
+                                                            <div className="circle"></div>
                                                         </div>
                                                         </div>
                                             
-                                                        <div class="spinner-layer spinner-green">
-                                                            <div class="circle-clipper left">
-                                                                <div class="circle"></div>
-                                                            </div><div class="gap-patch">
-                                                            <div class="circle"></div>
-                                                        </div><div class="circle-clipper right">
-                                                            <div class="circle"></div>
+                                                        <div className="spinner-layer spinner-green">
+                                                            <div className="circle-clipper left">
+                                                                <div className="circle"></div>
+                                                            </div><div className="gap-patch">
+                                                            <div className="circle"></div>
+                                                        </div><div className="circle-clipper right">
+                                                            <div className="circle"></div>
                                                         </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             ): null}
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>

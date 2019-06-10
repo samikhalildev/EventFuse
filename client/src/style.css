@@ -473,6 +473,19 @@ table.highlight > tbody > tr:hover {
     */
 }
 
+#eventsTable .input-field .prefix ~ input {
+  font-size: 12px !important;
+  text-align: center;
+  margin-left: 0rem !important;
+  width: 100% !important; 
+  width: calc(100% - 0rem) !important; 
+}
+
+#eventsTable .input-field {
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
 .eventUpdated {
   background: rgba(175, 255, 198, 0.42) !important;
 }

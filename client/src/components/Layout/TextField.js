@@ -24,7 +24,7 @@ const TextField = ({
         required
         aria-required
       />
-      <label className={value ? 'active' : null} for={id}>
+      <label className={value ? 'active' : null} htmlFor={id}>
         {label}
       </label>
       {error ? (
