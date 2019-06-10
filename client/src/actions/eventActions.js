@@ -37,16 +37,16 @@ export const getCompaniesByUser = () => dispatch => {
     });
 };
 
-export const getEventsByCompany = companyID => dispatch => {
+export const addCompany = data => dispatch => {
   dispatch(setLoading());
   axios
-    .get(`/api/companies/events/${companyID}`)
+    .post(`/api/companies`, data)
     .then(res => {
       console.log(res.data);
 
       dispatch({
-        type: GET_EVENTS,
-        payload: res.data.company
+        type: ADD_COMPANY,
+        payload: res.data.companies
       });
 
       dispatch(clearLoading());
@@ -61,16 +61,19 @@ export const getEventsByCompany = companyID => dispatch => {
     });
 };
 
-export const addCompany = data => dispatch => {
+export const addEvent = (data, companyID, index) => dispatch => {
   dispatch(setLoading());
   axios
-    .post(`/api/companies`, data)
+    .post(`/api/events/${companyID}`, data)
     .then(res => {
       console.log(res.data);
 
       dispatch({
-        type: ADD_COMPANY,
-        payload: res.data.companies
+        type: ADD_EVENT,
+        payload: {
+          company: res.data.company,
+          index
+        }
       });
 
       dispatch(clearLoading());

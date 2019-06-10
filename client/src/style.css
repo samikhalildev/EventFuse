@@ -34,6 +34,10 @@ a:hover {
   transition-duration: 0.4s;
 }
 
+.dropdownicon {
+  margin-top: -10px;
+}
+
 .error-text {
   display: block;
   font-size: 12px;

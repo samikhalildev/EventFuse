@@ -20,6 +20,21 @@ export default function(state = initialState, action) {
         companies: action.payload
       };
 
+    case ADD_EVENT:
+      let { company } = action.payload;
+      let i = action.payload.index;
+
+      console.log(company);
+
+      let companies = state.companies;
+      companies[i] = company;
+      console.log(companies);
+
+      return {
+        companies,
+        eventsSearchList: []
+      };
+
     case SEARCH_EVENTS:
       let { query, index } = action.payload;
       query = query.toLowerCase().trim();

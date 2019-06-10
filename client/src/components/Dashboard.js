@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import TextField from './Layout/TextField';
-import { getCompaniesByUser, getEventsByCompany, searchEvents } from '../actions/eventActions';
+import { getCompaniesByUser, searchEvents, addEvent } from '../actions/eventActions';
 import isEmpty from '../utils/isEmpty';
 
 class Dashboard extends Component {
@@ -18,7 +18,15 @@ class Dashboard extends Component {
             selectedCompanyIndex: '',
             isEditing: [],
             query: '',
-            newEvent: {}
+            newEvent: {
+                type: '',
+                name: '',
+                date: Date,
+                status: '',
+                storage: '',
+                notes: '',
+                assignedTo: '',
+            }
         }
     }
 
@@ -101,6 +109,20 @@ class Dashboard extends Component {
         })
     }
 
+    onEventChange = event => {
+        this.setState({
+            newEvent: {
+                ...this.state.newEvent,
+                [event.target.name]: event.target.value
+            }
+        })
+    }
+
+    addEvent = event => {
+        event.preventDefault();
+        this.props.addEvent(this.state.newEvent, this.state.selectedCompany._id, this.state.selectedCompanyIndex);
+    }
+
     editEvent(index) {
         //this.props.clearFeedback();
 
@@ -122,10 +144,8 @@ class Dashboard extends Component {
     }
 
     render() {
-        const { user, selectedCompany, isEditing, companies } = this.state;
+        const { user, selectedCompany, isEditing, companies, newEvent } = this.state;
         const { auth, loading, success_msg, error_msg } = this.props;
-
-        console.log('render', selectedCompany);
 
         return (
             <section className="box">
@@ -153,7 +173,7 @@ class Dashboard extends Component {
                                     <div className="input-field col s2">
                                     { companies ? 
                                         <Fragment>
-                                            <a className='dropdown-trigger' href='#' data-target='dropdown1'>Change company</a>
+                                            <a className='dropdown-trigger' href='#' data-target='dropdown1'>{selectedCompany.name}<i className="material-icons prefix pointer dropdownicon">arrow_drop_down</i></a>
                                             <ul id='dropdown1' className='dropdown-content'>
                                                 { companies.map((company, index) => {
                                                     return <li key={index} onClick={() => this.getEvents(index)}><a>{company.name}</a></li>
@@ -183,10 +203,7 @@ class Dashboard extends Component {
 
                                 {/* Add Event Button */}
                                 <div className="addEventBtn right">
-                                    <a className="waves-effect waves-light btn-large button-secondary modal-trigger" href="#add-event-modal">
-                                        <i className="material-icons left">add</i>
-                                        <span> Add Event </span>
-                                    </a>
+                                    <a className="btn-floating btn-large modal-trigger tooltipped" data-position="right" data-tooltip="Add event" href="#add-event-modal"><i className="material-icons">add</i></a>
                                 </div>
 
                                 {/* Add Event Form */}
@@ -197,12 +214,12 @@ class Dashboard extends Component {
                                         </a>
                                         <h4 className="PopupHeading">Add Event </h4>
 
-                                        <form id="addEventForm" action="/api/events" method="POST">
+                                        <form id="addEventForm" onSubmit={this.addEvent} noValidate>
 
                                             {/* Type */}
                                             <div className="input-field col s6">
-                                                <select name="type" className="eventTypes">
-                                                    <option value="None" disabled defaultValue>Choose an option</option>
+                                                <select onChange={this.onEventChange} name="type" className="eventTypes">
+                                                    <option value="none" defaultValue>Choose an option</option>
                                                     <option value="Wedding">Wedding</option>
                                                     <option value="Engagement">Engagement</option>
                                                     <option value="Holy Communion">Holy Communion</option>
@@ -214,19 +231,19 @@ class Dashboard extends Component {
 
                                             {/* Name */}
                                             <div className="input-field col s6">
-                                                <input name="name" id="name" type="text" className="validate" required="" aria-required="true"/>
+                                                <input value={newEvent.name} onChange={this.onEventChange} name="name" id="name" type="text" className="validate" required="" aria-required="true"/>
                                                 <label htmlFor="name">Name <span className="requiredField">*</span></label>
                                             </div>
 
                                             {/* Date */}
                                             <div className="input-field col s4">
-                                                <input name="date" id="date" type="text" className="datepicker" required="" aria-required="true"/>
+                                                <input value={newEvent.date} onChange={this.onEventChange} name="date" id="date" type="text" className="datepicker" required="" aria-required="true"/>
                                                 <label htmlFor="date">Date <span className="requiredField">*</span></label>
                                             </div>
 
                                             {/* Status */}
                                             <div className="input-field col s4">
-                                                <select name="status" className="status">
+                                                <select onChange={this.onEventChange} name="status" className="status">
                                                     <option className="Missing" value="Missing song">Missing song</option>
                                                     <option className="Ready" value="Ready">Ready</option>
                                                     <option className="Editing" value="Editing">Editing</option>
@@ -239,25 +256,25 @@ class Dashboard extends Component {
 
                                             {/* Storage */}
                                             <div className="input-field col s4">
-                                                <input name="storage" id="storage" type="text" className="validate"/>
+                                                <input onChange={this.onEventChange} value={newEvent.storage} name="storage" id="storage" type="text" className="validate"/>
                                                 <label htmlFor="storage">Storage</label>
                                             </div>
 
                                             {/* Price Slider */}
-                                            <div style={{display: 'none'}} className="input-field col s12 priceSection">
-                                                <label className="priceLabel">Price $<span id="price"></span> </label>
+                                            {/* <div style={{display: 'none'}} className="input-field col s12 priceSection">
+                                                <label onChange={this.onEventChange} value={newEvent.price} name="price" className="priceLabel">Price $<span id="price"></span> </label>
                                                 <div id="priceSlider"></div>
-                                            </div>
+                                            </div> */}
 
                                             {/* Notes */}
                                             <div className="input-field col s6 notesField">
-                                                <textarea name="notes" id="notes" className="materialize-textarea"></textarea>
+                                                <textarea onChange={this.onEventChange} value={newEvent.notes} name="notes" id="notes" className="materialize-textarea">{newEvent.notes}</textarea>
                                                 <label htmlFor="notes">Notes (additional info/song requests)</label>
                                             </div>
 
                                             {/* Assigned To */}
                                             <div className="input-field col s6">
-                                                <select id="teamData" name="assignedTo" className="assignedTo"></select>
+                                                <select id="teamData" onChange={this.onEventChange} name="assignedTo" className="assignedTo"></select>
                                                 <label>Assigned To</label>
                                             </div>
 
@@ -324,14 +341,8 @@ class Dashboard extends Component {
                                             </tr>
                                         </thead>
 
-                                        {!companies ? (
-                                            <tr>
-                                                <td className="small success-msg" colSpan="9" aria-colspan="9"> Welcome {user.name}! <br/> Let's get started by creating a company in your manager 💻 🔝</td>
-                                            </tr>
-                                       ) : null}
-
                                         <tbody className="list" id="table-data">
-                                            { selectedCompany.events ? selectedCompany.events.map((event, index) => {
+                                            { selectedCompany.events ? selectedCompany.events.length > 0 ? selectedCompany.events.map((event, index) => {
                                                 let statusClass = `button-status ${event.status}`;
 
                                                 return (
@@ -446,7 +457,11 @@ class Dashboard extends Component {
                                                 )
                                             }) : (
                                                 <tr>
-                                                    <td className="alert small error-msg" colSpan="9" aria-colspan="9"> You have no events. Click the add event button <span role="img" aria-label="camera">📸</span></td>
+                                                    <td className="alert small error-msg" colSpan="9" aria-colspan="9"> You have no events. Click the add event button. <span role="img" aria-label="camera">📸</span></td>
+                                                </tr>
+                                            ) : companies ? null : (
+                                                <tr>
+                                                    <td className="small success-msg" colSpan="9" aria-colspan="9"> Welcome {user.name}! <br/> Let's get started by creating a company in manager. <span role="img" aria-label="laptop">💻 🔝</span></td>
                                                 </tr>
                                             )}
                                         </tbody>
@@ -470,6 +485,6 @@ const mapStateToProps = state => ({
   
   export default connect(
     mapStateToProps,
-    { getCompaniesByUser, getEventsByCompany, searchEvents }
+    { getCompaniesByUser, searchEvents, addEvent }
   )(withRouter(Dashboard));
   
