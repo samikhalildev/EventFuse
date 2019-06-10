@@ -17,6 +17,7 @@ class Dashboard extends Component {
             selectedCompany: {},
             selectedCompanyIndex: '',
             isEditing: [],
+            query: '',
             newEvent: {}
         }
     }
@@ -37,7 +38,7 @@ class Dashboard extends Component {
 
     static getDerivedStateFromProps(props, state) {
 
-        if (props.events.eventsSearchList.length > 0) {
+        if (props.events.eventsSearchList.length > 0 && state.query !== '') {
             return {
                 selectedCompany: {
                     ...state.selectedCompany,
@@ -56,18 +57,10 @@ class Dashboard extends Component {
     getEvents(index) {
         let selectedCompany = this.state.companies[index];
 
-        // if (this.props.events.eventsSearchList) {
-        //     let events = this.props.events.eventsSearchList;
-        //     if (events.length > 0) {
-        //         selectedCompany.events = events;
-        //         console.log('updated search', events);
-        //     }
-        // }
-
         console.log("Selected company: ", selectedCompany);
         
         let isEditing = new Array(selectedCompany.events.length).fill(false);
-        this.setState({ selectedCompany, isEditing, selectedCompanyIndex: index });
+        this.setState({ selectedCompany, isEditing, selectedCompanyIndex: index, query: '' });
     }
 
     switchToEditingMode(index) {
@@ -102,13 +95,10 @@ class Dashboard extends Component {
     search = event => {
         event.preventDefault();
         
-        let query = event.target.value;
-        let index = this.state.selectedCompanyIndex;
-        this.props.searchEvents(query, index);
-
-        // setTimeout(() => {
-        //     this.getEvents(index);
-        // }, 500)
+        this.setState({ query: event.target.value }, () => {
+            const {query, selectedCompanyIndex} = this.state;
+            this.props.searchEvents(query, selectedCompanyIndex);
+        })
     }
 
     editEvent(index) {
@@ -134,6 +124,8 @@ class Dashboard extends Component {
     render() {
         const { user, selectedCompany, isEditing, companies } = this.state;
         const { auth, loading, success_msg, error_msg } = this.props;
+
+        console.log('render', selectedCompany);
 
         return (
             <section className="box">
@@ -300,7 +292,7 @@ class Dashboard extends Component {
                                     <div className="nav-wrapper">
                                         <form>
                                             <div className="input-field">
-                                                <input id="search" type="search" onChange={this.search} required/>
+                                                <input id="search" type="search" value={this.state.query} onChange={this.search} required/>
                                                 <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                             </div>
                                         </form>
