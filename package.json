@@ -8,8 +8,8 @@
     "test": "node_modules/.bin/wdio wdio.conf.js"
   },
   "engines": {
-    "npm": "6.10.0",
-    "node": "12.7.0"
+    "npm": "6.x",
+    "node": "10.x"
   },
   "author": "",
   "license": "ISC",
