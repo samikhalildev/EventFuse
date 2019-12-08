@@ -7,6 +7,10 @@
     "start": "node app.js",
     "test": "node_modules/.bin/wdio wdio.conf.js"
   },
+  "engines": {
+    "npm": "6.10.0",
+    "node": "12.7.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
